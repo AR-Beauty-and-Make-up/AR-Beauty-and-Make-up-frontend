@@ -1,26 +1,30 @@
 import React from 'react'
+import {useState, useEffect} from 'react'
 import TurnService from '../../services/TurnService'
-import NavBar from '../navbar/Navbar'
+import NavbarAR from '../navbar/Navbar'
 import './homepage.scss'
-
-export class HomePage extends React.Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            turns: []
-        }
-    }
+import '../navbar/navbar.scss'
 
 
-    componentDidMount() {
-        TurnService().getTurns().then( (response) => {
-            
-            this.setState({turns: response.data})
-        })
-    }
+const useTurns = () => {
+    
+    const [turns, setTurns] = useState([])
 
-    turn = (turn) => {
+    return {turns, setTurns}
+
+}
+
+const HomePage = () => {
+
+    const {turns, setTurns} = useTurns()
+
+    useEffect(async () => {
+        const response =  await TurnService().getTurns()
+
+        setTurns(response.data)
+    }, []);
+
+    const turnFunc = (turn) => {
 
         console.log(turn.id)
         return (
@@ -31,13 +35,13 @@ export class HomePage extends React.Component {
 
     }
 
-    render() {
-        return (
-            
-            <div className="home-page">
-                <NavBar />
-                <div>Hola mundo!</div>
-            </div>
-        )
-    }
+    return(
+        <div className="home-page">
+             {NavbarAR()}
+        </div>
+    )
+
 }
+
+
+export default HomePage
