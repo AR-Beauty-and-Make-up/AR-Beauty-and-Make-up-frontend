@@ -6,7 +6,6 @@ import Turn from '../turn/Turn'
 import './homepage.scss'
 
 
-
 const useTurns = () => {
     
     const [turns, setTurns] = useState([])
@@ -15,7 +14,8 @@ const useTurns = () => {
 
 }
 
-const HomePage = () => {
+const HomePage = (props) => {
+
 
     const {turns, setTurns} = useTurns()
 
@@ -40,6 +40,7 @@ const HomePage = () => {
         <div className="home-page">
              {NavbarAR()}
              {Turn()}
+
         </div>
     )
 
