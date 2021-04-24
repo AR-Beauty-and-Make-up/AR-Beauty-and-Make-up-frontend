@@ -10,9 +10,15 @@ const TurnService = () => {
         return axios.get(`${SERVICE_URL}/turns`)
     }
     
+    const postTurn = (turn) => {
+        var turnToSend = {...turn}
+        turnToSend.date = turnToSend.date.toISOString().slice(0, -2)
+        axios.post(`${SERVICE_URL}/turn`, turnToSend).then((response) => console.log(response))
+    }
 
     return {
-        getTurns: getTurns
+        getTurns: getTurns,
+        postTurn: postTurn
     }
 
 }

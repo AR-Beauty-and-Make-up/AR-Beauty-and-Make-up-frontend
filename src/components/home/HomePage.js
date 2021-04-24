@@ -2,9 +2,8 @@ import React from 'react'
 import {useState, useEffect} from 'react'
 import TurnService from '../../services/TurnService'
 import NavbarAR from '../navbar/Navbar'
+import Turn from '../turn/Turn'
 import './homepage.scss'
-import '../navbar/navbar.scss'
-import { useHistory } from 'history'
 
 
 const useTurns = () => {
@@ -39,7 +38,9 @@ const HomePage = (props) => {
 
     return(
         <div className="home-page">
-            <NavbarAR/>
+             {NavbarAR()}
+             {Turn()}
+
         </div>
     )
 
