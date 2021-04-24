@@ -4,6 +4,7 @@ import TurnService from '../../services/TurnService'
 import NavbarAR from '../navbar/Navbar'
 import './homepage.scss'
 import '../navbar/navbar.scss'
+import { useHistory } from 'history'
 
 
 const useTurns = () => {
@@ -14,7 +15,8 @@ const useTurns = () => {
 
 }
 
-const HomePage = () => {
+const HomePage = (props) => {
+
 
     const {turns, setTurns} = useTurns()
 
@@ -37,7 +39,7 @@ const HomePage = () => {
 
     return(
         <div className="home-page">
-             {NavbarAR()}
+            <NavbarAR/>
         </div>
     )
 
