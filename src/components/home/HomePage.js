@@ -37,10 +37,12 @@ const HomePage = (props) => {
     }
 
     return(
-        <div className="home-page">
-             {NavbarAR()}
-             {Turn()}
+        <div className="App">
+            <div className="home-page">
+                {NavbarAR()}
+                {Turn()}
 
+            </div>
         </div>
     )
 

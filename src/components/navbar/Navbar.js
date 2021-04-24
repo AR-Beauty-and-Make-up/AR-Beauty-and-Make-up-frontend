@@ -2,7 +2,7 @@ import React from 'react';
 import {Navbar, Form, Nav, FormControl, Button} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './navbar.scss'
-import {withRouter} from "react-router-dom";
+
 
 const NavbarAR = () => {
 
@@ -25,4 +25,4 @@ const NavbarAR = () => {
 }
 
 
-export default withRouter(NavbarAR)
+export default NavbarAR
