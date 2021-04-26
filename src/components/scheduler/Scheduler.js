@@ -4,6 +4,7 @@ import {withRouter} from "react-router-dom";
 import NavbarAR from "../navbar/Navbar";
 import TurnService from "../../services/TurnService";
 import moment from 'moment';
+import './scheduler.scss'
 
 
 require('moment/locale/es.js');
@@ -151,6 +152,7 @@ class Scheduler extends React.Component {
     return (
       <div>
         <NavbarAR/>
+
         <div className="content-expanded ">
           <div className="control-buttons">
             <button  className="button-control" onClick={this.zoomIn}><i className="bi bi-plus-circle"></i> </button>
