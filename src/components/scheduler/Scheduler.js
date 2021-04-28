@@ -3,8 +3,11 @@ import {ReactAgenda, ReactAgendaCtrl, guid, getUnique, getLast, getFirst, Modal}
 import {withRouter} from "react-router-dom";
 import NavbarAR from "../navbar/Navbar";
 import TurnService from "../../services/TurnService";
-import moment from 'moment';
-import './scheduler.scss'
+import moment from 'moment-timezone';
+import './scheduler.scss';
+import ModalAgenda from "./ModalAgenda";
+import EntitiesValidator from "../../helpers/EntitiesValidator";
+
 
 
 require('moment/locale/es.js');
@@ -27,7 +30,7 @@ class Scheduler extends React.Component {
       showModal: false,
       locale: "es",
       rowsPerHour: 2,
-      numberOfDays: 4,
+      numberOfDays: 7,
       startDate: new Date()
     }
     this.handleCellSelection = this.handleCellSelection.bind(this)
@@ -50,6 +53,7 @@ class Scheduler extends React.Component {
       })
   }
 
+
   componentWillReceiveProps(next, last) {
     if (next.items) {
       TurnService().getTurns()
@@ -65,7 +69,9 @@ class Scheduler extends React.Component {
 
     return {
       _id: turn.id,
-      name: turn.clientName + " Servicio: " + turn.service,
+      name: turn.clientName,
+      service: turn.service,
+      contactNumber: turn.contactNumber,
       startDateTime: startDate,
       endDateTime: endDate,
       classes: 'color-2 color-3'
@@ -86,10 +92,10 @@ class Scheduler extends React.Component {
     this.setState({selected: [turn]})
   }
 
-  handleItemEdit(item, openModal) {
+  handleItemEdit(turn, openModal) {
 
-    if (item && openModal) {
-      this.setState({selected: [item]})
+    if (turn && openModal) {
+      this.setState({selected: [turn]})
       return this._openModal();
     }
   }
@@ -122,10 +128,29 @@ class Scheduler extends React.Component {
     this._closeModal();
   }
 
-  editEvent(items, item) {
-
-    this.setState({showModal: true, selected: [], items: items});
+  editEvent(turn) {
+    debugger
+    this.setState({showModal: true, selected: []});
+    if(this.validateTurn(turn)){
+      TurnService().updateTurn(this.buildTurn(turn))
+    }
     this._closeModal();
+  }
+
+  validateTurn(turn) {
+    const turnValid = EntitiesValidator().validateTurn(turn);
+    this.setState({turnValid: turnValid})
+    return turnValid
+  }
+
+  buildTurn(turn) {
+    return {
+      id: turn.id,
+      clientName: turn.clientName,
+      service: turn.service,
+      contactNumber: turn.contactNumber,
+      date: moment(turn.startDateTime.toString()).tz( "America/Argentina/Buenos_Aires").format("YYYY-MM-DDTHH:mm:ss.SS")
+    }
   }
 
   changeView(days, event) {
@@ -136,6 +161,7 @@ class Scheduler extends React.Component {
     const num = this.state.cellHeight + 15
     this.setState({cellHeight:num})
   }
+
   zoomOut(){
     const num = this.state.cellHeight - 15
     this.setState({cellHeight:num})
@@ -157,7 +183,6 @@ class Scheduler extends React.Component {
           <div className="control-buttons">
             <button  className="button-control" onClick={this.zoomIn}><i className="bi bi-plus-circle"></i> </button>
             <button  className="button-control" onClick={this.zoomOut}><i className="bi bi-dash-circle"></i> </button>
-            <button className="button-control" onClick={this._openModal}><i className="bi bi-alarm"></i></button>
             <button className="button-control"
                     onClick={this.changeView.bind(null, 7)}> {moment.duration(7, "days").humanize()}  </button>
             <button className="button-control"
@@ -197,11 +222,12 @@ class Scheduler extends React.Component {
 
           {this.state.showModal ? <Modal clickOutside={this._closeModal}>
             <div className="modal-content">
-              <ReactAgendaCtrl items={this.state.turns}
+              <ModalAgenda     items={this.state.turns}
                                itemColors={colors}
                                selectedCells={this.state.selected}
                                Addnew={this.addNewEvent}
                                edit={this.editEvent}/>
+
 
             </div>
           </Modal> : ''
@@ -212,7 +238,6 @@ class Scheduler extends React.Component {
     );
 
   }
-
 }
 
 export default withRouter(Scheduler)

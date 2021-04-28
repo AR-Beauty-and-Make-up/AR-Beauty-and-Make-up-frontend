@@ -16,9 +16,15 @@ const TurnService = () => {
         axios.post(`${SERVICE_URL}/turn`, turnToSend).then((response) => console.log(response))
     }
 
+    const updateTurn = (turn) => {
+        debugger
+        axios.put(`${SERVICE_URL}/turns/` + turn.id , turn).then((response) => console.log(response))
+    }
+
     return {
         getTurns: getTurns,
-        postTurn: postTurn
+        postTurn: postTurn,
+        updateTurn: updateTurn
     }
 
 }
