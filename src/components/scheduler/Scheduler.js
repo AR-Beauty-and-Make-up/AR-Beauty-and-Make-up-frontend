@@ -25,7 +25,7 @@ class Scheduler extends React.Component {
       showModal:false,
       locale:"es",
       rowsPerHour:2,
-      numberOfDays:4,
+      numberOfDays:7,
       startDate: new Date()
     }
     this.handleCellSelection = this.handleCellSelection.bind(this)
@@ -36,9 +36,11 @@ class Scheduler extends React.Component {
   componentDidMount = () => {
     TurnService().getTurns()
       .then(result =>{this.setState({turns: result.data})})
+
   }
 
   renderTurns = (turn) => {
+    console.log()
     let startDate = new Date(turn.date)
     let endDate = new Date(turn.date).setHours(startDate.getHours() +1, startDate.getMinutes() +30)
 
@@ -68,10 +70,9 @@ class Scheduler extends React.Component {
   render() {
     return (
       <div>
-        <NavbarAR/>
         <ReactAgenda
           minDate={this.lastMonth()}
-          maxDate={new Date(now.getFullYear(), now.getMonth()+3)}
+          maxDate={new Date(now.getFullYear(), now.getMonth()+2)}
           disablePrevButton={false}
           startDate={this.state.startDate}
           cellHeight={this.state.cellHeight}
