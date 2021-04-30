@@ -17,14 +17,18 @@ const TurnService = () => {
     }
 
     const updateTurn = (turn) => {
-        debugger
         axios.put(`${SERVICE_URL}/turns/` + turn.id , turn).then((response) => console.log(response))
     }
 
+    const deleteTurn = (turnId) => {
+        debugger
+        axios.delete(`${SERVICE_URL}/turns/delete/` + turnId).then((response) => console.log(response))
+    }
     return {
         getTurns: getTurns,
         postTurn: postTurn,
-        updateTurn: updateTurn
+        updateTurn: updateTurn,
+        deleteTurn: deleteTurn
     }
 
 }

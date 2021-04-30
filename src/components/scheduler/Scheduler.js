@@ -7,6 +7,7 @@ import moment from 'moment-timezone';
 import './scheduler.scss';
 import ModalAgenda from "./ModalAgenda";
 import EntitiesValidator from "../../helpers/EntitiesValidator";
+import RemoveModalConfirmation from "./RemoveModalConfirmation";
 
 
 
@@ -31,7 +32,9 @@ class Scheduler extends React.Component {
       locale: "es",
       rowsPerHour: 2,
       numberOfDays: 7,
-      startDate: new Date()
+      startDate: new Date(),
+      removeModalConfirmationOpen: false,
+      removeConfirmModal: false
     }
     this.handleCellSelection = this.handleCellSelection.bind(this)
     this.handleItemEdit = this.handleItemEdit.bind(this)
@@ -100,6 +103,10 @@ class Scheduler extends React.Component {
     }
   }
 
+  handleRemoveEvent = (turn) => {
+    this.setState({selected: [turn], removeModalConfirmationOpen: true})
+  }
+
   handleRangeSelection(item) {
     this.setState({selected: item, showCtrl: true})
     this._openModal();
@@ -117,9 +124,14 @@ class Scheduler extends React.Component {
     this.setState({showModal: false})
   }
 
-  removeEvent(items, turn) {
+  removeEvent(turn) {
+    debugger
+    TurnService().deleteTurn(turn._id)
+    this.setState({removeConfirmModal: true})
+  }
 
-    this.setState({items: items});
+  closeModalConfirmation = () => {
+    this.setState({removeModalConfirmationOpen: false})
   }
 
   addNewEvent(items, newItems) {
@@ -144,9 +156,10 @@ class Scheduler extends React.Component {
   }
 
   buildTurn(turn) {
+    debugger
     return {
-      id: turn.id,
-      clientName: turn.clientName,
+      id: turn._id,
+      clientName: turn.name,
       service: turn.service,
       contactNumber: turn.contactNumber,
       date: moment(turn.startDateTime.toString()).tz( "America/Argentina/Buenos_Aires").format("YYYY-MM-DDTHH:mm:ss.SS")
@@ -213,12 +226,12 @@ class Scheduler extends React.Component {
 
 
             startAtTime={8}
-            endAtTime={23}
+            endAtTime={20}
             headFormat={"ddd DD MMM"}
             helper={true}
             //itemComponent={AgendaItem}
             view="calendar"
-            onItemRemove={this.removeEvent.bind(this)}/>
+            onItemRemove={this.handleRemoveEvent.bind(this)}/>
 
           {this.state.showModal ? <Modal clickOutside={this._closeModal}>
             <div className="modal-content">
@@ -226,7 +239,8 @@ class Scheduler extends React.Component {
                                itemColors={colors}
                                selectedCells={this.state.selected}
                                Addnew={this.addNewEvent}
-                               edit={this.editEvent}/>
+                               edit={this.editEvent}
+                               remove={this.removeEvent}/>
 
 
             </div>
