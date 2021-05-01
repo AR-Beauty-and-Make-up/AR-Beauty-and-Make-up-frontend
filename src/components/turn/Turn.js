@@ -1,14 +1,71 @@
-import React from 'react'
-import {useState} from 'react'
-import {Button, Alert, Form} from 'react-bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './turn.scss';
+import React, {useState} from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import IconButton from '@material-ui/core/IconButton';
+import Fade from '@material-ui/core/Fade';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from '@material-ui/core/Backdrop';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+
 import 'react-datepicker/dist/react-datepicker-min.module.css'
 import DatePicker from 'react-datepicker'
 import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
-import TurnService from '../../services/TurnService'
 
+
+
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'left',
+    color: theme.palette.text.secondary,
+    backgroundColor: '#c8adab',
+    '&:hover': {
+        color: '#FFFFFF'
+    }
+  },
+  selectedService: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    backgroundColor: '#c8adab',
+    fontSize: '130%',
+  },
+  icon: {
+    textAlign: 'right',
+    
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: '25ch',
+  },
+  notificationStyle: {
+    textAlign: 'left'
+}
+}));
+
+const servicesAR = [
+    "Masaje reductor",
+    "Mesoterapia",
+    "Maquillaje",
+    "Depilacion",
+    "Radio Frecuencia",
+    "Ultracavitación"
+]
 
 const excludedTimes = [
     setHours(setMinutes(new Date(), 0), 0),
@@ -22,331 +79,407 @@ const excludedTimes = [
     setHours(setMinutes(new Date(), 30), 22)
 ]
 
-const servicesAR = [
-    "Masaje reductor",
-    "Mesoterapia",
-    "Maquillaje",
-    "Depilacion",
-    "Radio Frecuencia",
-    "Ultracavitación"
-]
 
 const Turn = () => {
-    const [showSteps, setShowSteps] = useState({
-        showButton: true,
-        showReservation: false,
-        showDate: false,
-        showPersonalInfo: false,
-        showInputs: false,
-        acepptTerms: false,
-        acepptTermsAge: false,
-        notification: false,
-    })
+  const classes = useStyles();
 
-    const [turn, setTurn] = useState({
-        service: "",
-        date: null,
-        name: "",
-        tel: ""
-        
-    })
+  const [showSteps, setShowSteps] = useState({
+    showServices: true,
+    showDate: false,
+    showCheckedTurn: false,
+    acepptTermsCovid: false,
+    showPersonalInfo: false,
+    notification: false,
+    showFade: true,
+})
 
-
-    const header = () => {
-        if(showSteps.showButton) {
-            return (
-                <div>
-                    <h1>Reserva tu turno para poder visitarnos</h1>
-                    <Button className="btn" variant="secondary" onClick={() => setreservation()}> Reservar</Button>
-                </div>
-            )
-        }
-        
-    }
-
-    const reservation = () => {
-        
-        if(showSteps.showReservation) {
-            return (
-                <div>
-                    <h1>Seleccionar servicio</h1>
-                    {services()}
-                </div>
-            )
-        }
-   
-    }
-
-    const dates = () => {
-        if(showSteps.showDate){
-
-            return(
-                <div>
-                    <div className="container">
-                        <Alert id="1" key={1} variant={'warning'} className="service">
-                                <h3><span value={"Lunes 15"}>{turn.service}</span></h3>
-                        </Alert>
-                    </div>
-                    <h1>Selecionar fecha</h1>
-                        {calender()}
-                        <br/>
-                        <Button className="btn" variant="secondary" onClick={() => setDate()} disabled={!turn.date}>Aceptar</Button>    
-                </div>
-            )
-        }
-    }
-
-    const calender = () => {
-
-        const filterTimes = dateAndtime => {
-            
-            const filterPassedTime = time => {
-                const currentDate = new Date();
-                const selectedDate = new Date(time);
-        
-                return currentDate.getTime() < selectedDate.getTime();
-            }
-
-            const allowedSatudaysTimes = time => {
-                const selectedDate =  new Date(time)
-             
-                return  selectedDate.getHours() < 13
-            }
-
-            const filterPassedTimesAndSaturdayTimes = date => {
-                if(date.getDay() !== 6){
-                    return filterPassedTime(date)
-                }
-                else {
-                    return filterPassedTime(date) && allowedSatudaysTimes(date)
-                }
-            }
-
-            return filterPassedTimesAndSaturdayTimes(dateAndtime)
-            
-        }
-
-        const isSunday = date => {
-            return date.getDay() !== 0
-          };
-        
-        return (
-          <DatePicker selected={turn.date} onChange={(date) => selectedDate(date)} 
-          showTimeSelect
-            excludeTimes={excludedTimes}
-            filterTime={filterTimes}
-            minDate={new Date()}
-            maxDate={new Date().setMonth(new Date().getMonth() + 1 )}
-            
-            locale='pt-br'
-            timeFormat="HH:mm"
-            dateFormat="dd/MM/yyyy HH:mm"
-            timeIntervals={90}
-            filterDate={isSunday}
-            placeholderText="Elegir fecha"
-          />
-          
-        );
-    };
-
-    const setCheckbox = () => {
-        var newShowSteps = {...showSteps}
-        newShowSteps.acepptTerms = !newShowSteps.acepptTerms
-        setShowSteps(newShowSteps)
-    }
-
-    const setPersonalInformation = () => {
-        var newShowSteps = {...showSteps}
-        newShowSteps.showPersonalInfo = !newShowSteps.showPersonalInfo
-        newShowSteps.showInputs = !newShowSteps.showInputs
-        setShowSteps(newShowSteps)
-    }
-
-    const personalInformation = () => {
-        if(showSteps.showPersonalInfo){
-
-            return(
-                <div>
-                    <h1>Estás solicitando la siguiente reserva</h1>
-                    <div className="container">
-                        <Alert  variant={'warning'} className="service">
-                                <h3><span>{turn.service}</span></h3>
-                        </Alert>
-                        <Alert  variant={'warning'} className="service">
-                                <h3><span>{turn.date.toLocaleString().slice(0, -3) + " HS"}</span></h3>
-                        </Alert>
-                    </div>
-                        <Form>
-                            <Form.Group controlId="formBasicCheckbox">
-                                <Form.Check type="checkbox" 
-                                label="Declaro no tener fiebre ni haber estado en contacto con personas 
-                                con diagnostico positivo de COVID-1" 
-                                onClick={() => setCheckbox()}/>
-                            </Form.Group>
-
-                        </Form>
-                    <br/>
-                    <div className="container">
-                    <Button className="btn" variant="secondary"  
-                        onClick={() => setPersonalInformation()} disabled={!showSteps.acepptTerms}
-                        block
-                        >Completar mi datos</Button>
-                    </div>
-                </div>
-            )
-        }
-    }
+const [turn, setTurn] = useState({
+    service: "",
+    date: null,
+    email: "",
+    name: "",
+    lastname: "",
+    clientContact: ""
     
+})
 
+const [errors, setErrors] = useState({
+    email: true,
+    clientContact: true
+})
+
+
+
+  const ChooseService = () => {
+    if(showSteps.showServices) {
     
-    const services = () => {
-
-        return( servicesAR.map((ser) => {
-            return (
-                <div className="container">
-            <Alert id="1" key={1} variant={'warning'} onClick={(event) => selectedService(event)}>
-                <h3><span value={"Masajes"}>{ser}</span></h3>
-            </Alert>
+        return(
+            <Fade in={showSteps.showServices} timeout={500}>
+            <div className={classes.root}>
+            <h2>Elegir Servicio</h2>
+            <Grid container spacing={1}>
+                {servicesAR.map((service) => {
+                    return(
+                        <Grid key={service} item xs={12}>
+                            <Paper className={classes.paper} onClick={(event) => {
+                                setService(service)
+                                setSteps(['showServices', 'showDate'])
+                                }}>
+                                <Grid container spacing={1}>
+                                <Grid item xs={6}>
+                                    {service}
+                                </Grid>
+                                <Grid item xs={6} className={classes.icon}>
+                                    <IconButton aria-label="delete" className={classes.margin} size="small">
+                                        <ArrowForwardIosIcon fontSize="inherit" />
+                                    </IconButton>
+                                </Grid>
+                                </Grid>
+                            </Paper>
+                        </Grid>
+                    )
+                })}
+            </Grid>
         </div>
-            )
-        }
-    ))
+        </Fade>
+        )
     }
 
-    const setreservation = () => {
-
-        var newShowSteps = {...showSteps}
-        newShowSteps.showButton = !newShowSteps.showButton
-        newShowSteps.showReservation = ! newShowSteps.showReservation 
-        setShowSteps(newShowSteps)
-        
-    }
-
-    const selectedService = (e) => {
-        const service = e.target.outerText
-        var newTurn =  {...turn}
-        newTurn.service = service
-        setTurn(newTurn)
-
-        var newShowSteps = {...showSteps}
-        newShowSteps.showReservation = ! newShowSteps.showReservation
-        newShowSteps.showDate = !newShowSteps.showDate
-        setShowSteps(newShowSteps)
-        
-    }
-
-    const  selectedDate = (date) => {
-        
-            var newTurn =  {...turn}
-            newTurn.date = date
-            setTurn(newTurn)
-
-        
-    }
-
-    const setDate = () => {
-
-        var newShowSteps = {...showSteps}
-        newShowSteps.showDate = !newShowSteps.showDate
-        newShowSteps.showPersonalInfo = ! newShowSteps.showPersonalInfo
-        setShowSteps(newShowSteps)
-        
-    }
-
-    const setName = (name) => {
-        var newTurn =  {...turn}
-        newTurn.name = name
-        setTurn(newTurn)
-    }
-
-    const setTel = (tel) => {
-
-        var newTurn =  {...turn}
-        newTurn.tel = tel
-        setTurn(newTurn)
-
-    }
-
-    const setCheckboxAge = () => {
-        var newShowSteps = {...showSteps}
-        newShowSteps.acepptTermsAge = !newShowSteps.acepptTermsAge
-        setShowSteps(newShowSteps)
-    }
-
-    const completePersonalInformation = () => {
-
-        if(showSteps.showInputs){
-
-        
-            return(
-                <div className="container">
-                    <Form>
-                        <Form.Group 
-                        
-                        onChange={(event) => setName(event.target.value)}
-
-                        >
-                            <Form.Label>Nombre completo</Form.Label>
-                            <Form.Control type="text" placeholder="Ingresar nombre completo" />
-                            <Form.Text className="text-muted">
-                           
-                            </Form.Text>
-                        </Form.Group>
-
-                        <Form.Group 
-                            onChange={(event) => setTel(event.target.value)}
-                        >
-                            <Form.Label>Numero de telefono</Form.Label>
-                            <Form.Control type="text" placeholder="Ingresar numero de telefono" />
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Check type="checkbox"
-                            onClick={() => setCheckboxAge()}
-                            label="Soy mayor de 19 años" />
-                        </Form.Group>
-                        <Button className="btn" variant="secondary"  
-                        disabled={!turn.name || !turn.tel || !showSteps.acepptTermsAge} 
-                        block
-                        onClick={() => {
-
-                            var newShowSteps = {...showSteps}
-                            newShowSteps.showInputs = !newShowSteps.showInputs
-                            newShowSteps.notification = !newShowSteps.notification
-                            setShowSteps(newShowSteps)
-
-                            TurnService().postTurn(turn)
-                        }}
-                        >Enviar</Button>
-                    </Form>
-                </div>
-            )
-        }
-    }
-
-    const sendNotification = () => {
-        if(showSteps.notification) {
-            return(
-                <h3>Se ha enviado su solicitud de turno.</h3>
-            )
-        }
-    }
-
-    return(
-        <div>
-            {header()}
-            {reservation()}
-            {dates()}
-            {personalInformation()}
-            {completePersonalInformation()}
-            {sendNotification()}
-        </div>
-    )
-
+    return <div></div>
 }
 
- 
 
+const setService = (service) => {
+    var newTurn = {...turn}
+    newTurn.service = service
+    setTurn(newTurn)
+}
+
+
+const setSteps = (steps) => {
+    
+    var newShowSteps = {...showSteps}
+    steps.forEach((step) => {
+        newShowSteps[step] = !newShowSteps[step]
+    })
+    
+    setShowSteps(newShowSteps)
+}
+
+const ChooseDate = () => {
+    if(showSteps.showDate){
+        return(
+            
+                <Grid container spacing={2}>         
+                    <Grid item xs={12}>
+                    {showSteps.showFade?
+                    <Fade in={showSteps.showDate} timeout={1000}>
+                        <Paper className={classes.selectedService} onClick={(event) => {
+                            setSteps(['showDate', 'showServices'])
+                            }}>
+                            <b>{turn.service}</b>
+                        </Paper>
+                    </Fade>
+                    :
+                    <Paper className={classes.selectedService} onClick={(event) => {
+                        setSteps(['showDate', 'showServices'])
+                        }}>
+                        <b>{turn.service}</b>
+                    </Paper>
+                    }
+                    </Grid>
+                    <Grid item xs={12}>
+                        <h2>Selecionar fecha</h2>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Calender />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button style={{background: '#100d0d', color: '#f4f1f1'}} 
+                        onClick={() => {
+                            setSteps(['showDate', 'showCheckedTurn'])
+                            
+                        }}
+                        >Aceptar</Button>
+                    </Grid>
+                </Grid>
+                
+            
+        )
+    }
+    return <div></div>
+}
+
+
+
+const Calender = () => {
+
+    const filterTimes = dateAndtime => {
+        
+        const filterPassedTime = time => {
+            const currentDate = new Date();
+            const selectedDate = new Date(time);
+    
+            return currentDate.getTime() < selectedDate.getTime();
+        }
+
+        const allowedSatudaysTimes = time => {
+            const selectedDate =  new Date(time)
+         
+            return  selectedDate.getHours() < 13
+        }
+
+        const filterPassedTimesAndSaturdayTimes = date => {
+            if(date.getDay() !== 6){
+                return filterPassedTime(date)
+            }
+            else {
+                return filterPassedTime(date) && allowedSatudaysTimes(date)
+            }
+        }
+
+        return filterPassedTimesAndSaturdayTimes(dateAndtime)
+        
+    }
+
+    const isSunday = date => {
+        return date.getDay() !== 0
+      };
+    
+    return (
+      <DatePicker selected={turn.date} onChange={(date) => {
+            if(showSteps.showFade) {
+                setSteps(['showFade'])
+            }
+            setDate(date)
+        }} 
+      showTimeSelect
+        excludeTimes={excludedTimes}
+        filterTime={filterTimes}
+        minDate={new Date()}
+        maxDate={new Date().setMonth(new Date().getMonth() + 1 )}
+        
+        locale='pt-br'
+        timeFormat="HH:mm"
+        dateFormat="dd/MM/yyyy HH:mm"
+        timeIntervals={90}
+        filterDate={isSunday}
+        placeholderText="Elegir fecha"
+        shouldCloseOnSelect={false}
+      />
+      
+    );
+};
+
+const setDate = (date) => {
+    var newTurn =  {...turn}
+    newTurn.date = date
+    setTurn(newTurn)
+}
+
+
+const CheckTurn = () => {
+    if(showSteps.showCheckedTurn){
+        return(
+            
+                <Grid container spacing={2}>         
+                    <Grid item xs={12}>
+                    <Fade in={showSteps.showCheckedTurn} timeout={1000}>
+                        <Paper className={classes.selectedService} onClick={(event) => {
+                            setSteps(['showCheckedTurn', 'showServices'])
+                            }}>
+                            <b>{turn.service}</b>
+                        </Paper>
+                    </Fade>
+                    </Grid>
+                    <Grid item xs={12}>
+                    <Fade in={showSteps.showCheckedTurn} timeout={1000}>
+                        <Paper className={classes.selectedService} onClick={(event) => {
+                                setSteps(['showDate', 'showCheckedTurn'])
+                                }}>
+                                <b>{turn.date.toLocaleString().slice(0, -3) + " HS"}</b>
+                        </Paper>
+                    </Fade>
+                    </Grid>
+                    <Grid item xs={12}>
+                    <FormControlLabel control={<Checkbox color="default" check={showSteps.acepptTermsCovid} />} label="Declaro no tener fiebre ni haber estado en contacto con personas 
+                                con diagnostico positivo de COVID-19" />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button style={{background: '#100d0d', color: '#f4f1f1'}} 
+                        onClick={() => {
+                            setSteps(['showCheckedTurn', 'showPersonalInfo'])
+
+                        }}
+                        >Completar mis datos</Button>
+                    </Grid>
+                </Grid>
+        )
+    }
+    return <div></div>
+}
+
+
+
+const PersonalInfo = () => {
+
+    if(showSteps.showPersonalInfo){
+        return <Fade in={showSteps.showPersonalInfo} timeout={1000}><FormTurn /></Fade>
+    }
+    return <div></div>
+}
+
+const validationSchema = yup.object({
+    email: yup
+      .string('Ingrese un correo electronico')
+      .email('Ingrese un correo electronico valido')
+      .required('Correo electronico es requerido'),
+    contact: yup
+      .string('Ingrese un numero de contacto')
+      .length(11, 'Numero de contacto debe incluir prefijo 011')
+      .required('Numero de contacto es requerido'),
+    firstName: yup
+      .string('Ingrese primer nombre')
+      .required('Primer nombre es requerido'),
+    lastName: yup
+      .string('Ingrese apellido')
+      .required('Apellido es requerido'),
+  });
   
+  const FormTurn = () => {
+    const formik = useFormik({
+      initialValues: {
+        email: '',
+        contact: '',
+        firstName: '',
+        lastName: ''
+      },
+      validationSchema: validationSchema,
+      onSubmit: (values) => {
+        
+      },
+    });
+  
+    return (
+
+        <form onSubmit={formik.handleSubmit}>
+
+        <Grid container spacing={2}>         
+          <Grid item xs={12}>
+          <TextField
+            fullWidth
+            id="email"
+            name="email"
+            label="Correo electronico"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          </Grid>
+          <Grid item xs={6}>
+          <TextField
+            
+            id="firstName"
+            name="firstName"
+            label="Nombre"
+            value={formik.values.firstName}
+            onChange={formik.handleChange}
+            error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            helperText={formik.touched.firstName && formik.errors.firstName}
+            fullWidth
+          />
+          </Grid>
+          <Grid item xs={6}>
+          <TextField
+            
+            id="lastName"
+            name="lastName"
+            label="Apellido"
+            value={formik.values.lastName}
+            onChange={formik.handleChange}
+            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+            helperText={formik.touched.lastName && formik.errors.lastName}
+            fullWidth
+          />
+          </Grid>
+          <Grid item xs={6}>
+          <TextField
+            
+            id="contact"
+            name="contact"
+            label="Numero de contacto"
+            value={formik.values.contact}
+            onChange={formik.handleChange}
+            error={formik.touched.contact && Boolean(formik.errors.contact)}
+            helperText={formik.touched.contact && formik.errors.contact}
+            fullWidth
+          />
+          </Grid>
+          <Grid item xs={12}>
+          <Button onClick={() => {
+            const {email, firstName, lastName, contact} = formik.values
+            debugger
+            var newTurn = {...turn}
+            newTurn.email = email
+            newTurn.name = firstName
+            newTurn.lastname = lastName
+            newTurn.clientContact = contact
+            
+            setTurn(newTurn)
+            setSteps(['showPersonalInfo', 'notification'])
+
+            
+          }} style={{background: '#100d0d', color: '#f4f1f1'}} variant="contained" fullWidth type="submit">
+            Completar datos
+          </Button>
+          </Grid>
+        </Grid>
+        </form>
+
+    );
+  };
+
+
+const Notification = () => {
+
+    if(showSteps.notification) {
+        return(
+            <div className={classes.notificationStyle}>
+                <h3 style={{color: 'purple'}}>Revisa tu correo</h3>
+                <h4>Enviamos un mail de confimacion a <b>{turn.email}</b></h4>
+                <br/>
+                <br/>
+                <h6>
+                    Deberás confirmar tu reserva dentro de los próximos 15 minutos.
+                </h6>
+                <h6>
+                    De lo contrario, será cancelada automaticamente.
+                </h6>
+            </div>
+        )
+    }
+    return <></>
+}
+
+const [open, setOpen] = React.useState(true);
+const handleClose = () => {
+  setOpen(false);
+};
+const handleToggle = () => {
+  setOpen(!open);
+};
+
+return (
+    <Container maxWidth="sm">
+        <ChooseService />
+        <ChooseDate />
+        <CheckTurn />
+        <PersonalInfo />
+        <Notification />
+    </Container>
+  );
+}
+
 
 export default Turn

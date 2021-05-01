@@ -34,8 +34,8 @@ class Scheduler extends React.Component {
       rowsPerHour: 2,
       numberOfDays: 7,
       startDate: new Date(),
-      removeModalConfirmationOpen: false,
       removeConfirmModal: false
+
     }
     this.handleCellSelection = this.handleCellSelection.bind(this)
     this.handleItemEdit = this.handleItemEdit.bind(this)
@@ -65,9 +65,12 @@ class Scheduler extends React.Component {
           this.setState({turns: result.data})
         })
     }
+
+      .then(result =>{this.setState({turns: result.data})})
   }
 
   renderTurns = (turn) => {
+    console.log()
     let startDate = new Date(turn.date)
     let endDate = new Date(turn.date).setHours(startDate.getHours() + 1, startDate.getMinutes() + 30)
 
@@ -190,8 +193,6 @@ class Scheduler extends React.Component {
 
     return (
       <div>
-        <NavbarAR/>
-
         <div className="content-expanded ">
           <div className="control-buttons">
             <button  className="button-control" onClick={this.zoomIn}><i className="bi bi-plus-circle"></i> </button>

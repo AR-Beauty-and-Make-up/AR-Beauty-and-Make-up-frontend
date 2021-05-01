@@ -15,16 +15,21 @@
     "hookrouter": "^1.2.5",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
+    "formik": "^2.2.6",
+    "hookrouter": "^1.2.5",
+    "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-agenda": "0.0.8",
     "react-bootstrap": "^1.5.2",
     "react-bootstrap-icons": "^1.4.0",
     "react-datepicker": "^3.8.0",
     "react-dom": "^17.0.2",
+    "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "sass": "^1.32.11",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",
