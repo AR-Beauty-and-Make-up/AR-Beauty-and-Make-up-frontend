@@ -27,7 +27,6 @@ class ModalAgenda extends Component {
     this.dispatchEvent = this.dispatchEvent.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
-    this.handleDelete = this.handleDelete.bind(this)
   }
 
   componentDidMount() {
@@ -180,11 +179,11 @@ class ModalAgenda extends Component {
 
   }
 
-  removeTurn = (e) => {
+  /*removeTurn = (e) => {
     debugger
-   // this.setState({turnSelected: this.props.selectedCells[0],removeModalConfirmationOpen: true})
+    this.setState({removeModalConfirmationOpen: true})
     this.props.remove(this.props.selectedCells[0]);
-  }
+  }*/
 
 
   handleSubmit(e) {
@@ -197,10 +196,10 @@ class ModalAgenda extends Component {
     this.updateEvent(e);
   }
 
-  handleDelete(e){
+/*  handleDelete(e){
     e.preventDefault()
     this.removeTurn(e)
-  }
+  }*/
 
   render() {
     var itc = Object.keys(this.props.itemColors)
@@ -249,7 +248,6 @@ class ModalAgenda extends Component {
             </div>
 
             <input type="submit" value="Save"/>
-            <button onClick={this.handleDelete}>Borrar Turno</button>
           </form>
         </div>
       );

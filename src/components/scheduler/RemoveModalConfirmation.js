@@ -7,6 +7,12 @@ class RemoveModalConfirmation extends React.Component {
     super(props);
   }
 
+  remove = () =>{
+    debugger
+    this.props.remove(this.props.turn)
+    this.props.onClose()
+  }
+
   render() {
     return (
       <div className="agendCtrls-wrapper">
@@ -17,7 +23,7 @@ class RemoveModalConfirmation extends React.Component {
               Está seguro de borrar este turno?
             </div>
             <div className="remove-confirmation-buttons">
-              <button className="remove-confirmation-button" onClick={this.props.remove}>Aceptar</button>
+              <button className="remove-confirmation-button" onClick={this.remove}>Aceptar</button>
               <button className="remove-confirmation-button" onClick={this.props.onClose}>Cancelar</button>
             </div>
           </div>

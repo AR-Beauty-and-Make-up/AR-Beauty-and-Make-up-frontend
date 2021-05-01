@@ -96,18 +96,20 @@ class Scheduler extends React.Component {
   }
 
   handleItemEdit(turn, openModal) {
-
+debugger
     if (turn && openModal) {
       this.setState({selected: [turn]})
       return this._openModal();
     }
   }
 
-  handleRemoveEvent = (turn) => {
-    this.setState({selected: [turn], removeModalConfirmationOpen: true})
-  }
+  /*handleRemoveEvent = (turn) => {
+    debugger
+    this.setState({selected: [turn], removeConfirmModal: true})
+  }*/
 
   handleRangeSelection(item) {
+    debugger
     this.setState({selected: item, showCtrl: true})
     this._openModal();
   }
@@ -124,14 +126,18 @@ class Scheduler extends React.Component {
     this.setState({showModal: false})
   }
 
-  removeEvent(turn) {
+  removeTurn(turn) {
     debugger
     TurnService().deleteTurn(turn._id)
-    this.setState({removeConfirmModal: true})
+  }
+
+  removeEvent(items , item){
+    debugger
+    this.setState({ itemToRemove: item, removeConfirmModal: true});
   }
 
   closeModalConfirmation = () => {
-    this.setState({removeModalConfirmationOpen: false})
+    this.setState({removeConfirmModal: false})
   }
 
   addNewEvent(items, newItems) {
@@ -231,7 +237,7 @@ class Scheduler extends React.Component {
             helper={true}
             //itemComponent={AgendaItem}
             view="calendar"
-            onItemRemove={this.handleRemoveEvent.bind(this)}/>
+            onItemRemove={this.removeEvent.bind(this)}/>
 
           {this.state.showModal ? <Modal clickOutside={this._closeModal}>
             <div className="modal-content">
@@ -239,8 +245,19 @@ class Scheduler extends React.Component {
                                itemColors={colors}
                                selectedCells={this.state.selected}
                                Addnew={this.addNewEvent}
-                               edit={this.editEvent}
-                               remove={this.removeEvent}/>
+                               edit={this.editEvent}/>
+
+
+            </div>
+          </Modal> : ''
+          }
+
+          {this.state.removeConfirmModal ? <Modal clickOutside={this._closeModal}>
+            <div className="modal-content">
+              <RemoveModalConfirmation onClose={this.closeModalConfirmation}
+                                       itemColors={colors}
+                                       turn={this.state.itemToRemove}
+                                       remove={this.removeTurn}/>
 
 
             </div>
