@@ -5,6 +5,7 @@ import NavbarAR from "../navbar/Navbar";
 import TurnService from "../../services/TurnService";
 import moment from 'moment-timezone';
 import './scheduler.scss';
+import './modalAgenda.scss';
 import ModalAgenda from "./ModalAgenda";
 import EntitiesValidator from "../../helpers/EntitiesValidator";
 import RemoveModalConfirmation from "./RemoveModalConfirmation";
@@ -96,20 +97,14 @@ class Scheduler extends React.Component {
   }
 
   handleItemEdit(turn, openModal) {
-debugger
+    debugger
     if (turn && openModal) {
       this.setState({selected: [turn]})
       return this._openModal();
     }
   }
 
-  /*handleRemoveEvent = (turn) => {
-    debugger
-    this.setState({selected: [turn], removeConfirmModal: true})
-  }*/
-
   handleRangeSelection(item) {
-    debugger
     this.setState({selected: item, showCtrl: true})
     this._openModal();
   }
@@ -132,7 +127,6 @@ debugger
   }
 
   removeEvent(items , item){
-    debugger
     this.setState({ itemToRemove: item, removeConfirmModal: true});
   }
 
@@ -156,13 +150,13 @@ debugger
   }
 
   validateTurn(turn) {
+    debugger
     const turnValid = EntitiesValidator().validateTurn(turn);
     this.setState({turnValid: turnValid})
     return turnValid
   }
 
   buildTurn(turn) {
-    debugger
     return {
       id: turn._id,
       clientName: turn.name,
@@ -257,7 +251,8 @@ debugger
               <RemoveModalConfirmation onClose={this.closeModalConfirmation}
                                        itemColors={colors}
                                        turn={this.state.itemToRemove}
-                                       remove={this.removeTurn}/>
+                                       remove={this.removeTurn}
+                                       renderTurns={this.setTurns}/>
 
 
             </div>

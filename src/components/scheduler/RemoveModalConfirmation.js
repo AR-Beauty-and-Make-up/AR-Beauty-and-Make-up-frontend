@@ -7,7 +7,7 @@ class RemoveModalConfirmation extends React.Component {
     super(props);
   }
 
-  remove = () =>{
+  remove = () => {
     debugger
     this.props.remove(this.props.turn)
     this.props.onClose()
@@ -15,10 +15,9 @@ class RemoveModalConfirmation extends React.Component {
 
   render() {
     return (
-      <div className="agendCtrls-wrapper">
-        <div className="modal-background"/>
+
         <div className="modal-content">
-          <div className="remove-product-confirmation-card">
+          <div className="remove-confirmation-card">
             <div className="remove-confirmation-title">
               Está seguro de borrar este turno?
             </div>
@@ -28,7 +27,6 @@ class RemoveModalConfirmation extends React.Component {
             </div>
           </div>
         </div>
-      </div>
 
     )
   }

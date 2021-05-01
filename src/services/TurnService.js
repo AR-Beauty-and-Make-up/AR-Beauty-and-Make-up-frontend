@@ -17,6 +17,7 @@ const TurnService = () => {
     }
 
     const updateTurn = (turn) => {
+        debugger
         axios.put(`${SERVICE_URL}/turns/` + turn.id , turn).then((response) => console.log(response))
     }
 

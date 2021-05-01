@@ -2,7 +2,7 @@
 const EntitiesValidator = () => {
 
   const validateTurn = (turn) => {
-    return !!turn.clientName && !!turn.service && !! turn.startDateTime && !!turn.contactNumber
+    return !!turn.name && !!turn.service && !!turn.startDateTime && !!turn.contactNumber
   }
 
   return{
