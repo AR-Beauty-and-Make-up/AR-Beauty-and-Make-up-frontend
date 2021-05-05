@@ -219,6 +219,7 @@ class Scheduler extends React.Component {
               <ModalAgenda     items={this.state.turns}
                                itemColors={colors}
                                selectedCells={this.state.selected}
+                               isValidTurn={this.validateTurn}
                                Addnew={this.addNewEvent}
                                edit={this.editEvent}/>
 
