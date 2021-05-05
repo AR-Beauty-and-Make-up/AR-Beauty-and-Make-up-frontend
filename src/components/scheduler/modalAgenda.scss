@@ -26,6 +26,7 @@
 .agendCtrls-label-wrapper{
   display: flex;
 }
+
 .agendCtrls-radio-buttons {
   width: 30px;
   height: 30px;
@@ -87,6 +88,19 @@
   padding: 8px;
 }
 
+.modal {
+  z-index: 102;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.agenda-item-description small {
+  color: #000000;
+  font-size: 12px;
+}
 
 
 @media screen and (max-width: 639px) {
@@ -128,7 +142,7 @@
     justify-content: center;
 
     .remove-confirmation-button {
-      background-color: #e273d7;
+      background-color: #de8bd6;
       border: none;
       border-radius: 5px;
       color: black;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import {guid , getUnique , getLast , getFirst } from "react-agenda/src/helpers";
+import {guid , getUnique , getLast , getFirst,  } from "react-agenda/src/helpers";
 import Rdate from 'react-datetime';
 import './modalAgenda.scss';
 

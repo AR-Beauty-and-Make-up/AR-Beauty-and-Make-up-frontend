@@ -57,18 +57,6 @@ class Scheduler extends React.Component {
       })
   }
 
-
-  componentWillReceiveProps(next, last) {
-    if (next.items) {
-      TurnService().getTurns()
-        .then(result => {
-          this.setState({turns: result.data})
-        })
-    }
-
-      .then(result =>{this.setState({turns: result.data})})
-  }
-
   renderTurns = (turn) => {
     console.log()
     let startDate = new Date(turn.date)
@@ -100,7 +88,6 @@ class Scheduler extends React.Component {
   }
 
   handleItemEdit(turn, openModal) {
-    debugger
     if (turn && openModal) {
       this.setState({selected: [turn]})
       return this._openModal();
@@ -125,7 +112,6 @@ class Scheduler extends React.Component {
   }
 
   removeTurn(turn) {
-    debugger
     TurnService().deleteTurn(turn._id)
   }
 
@@ -138,13 +124,11 @@ class Scheduler extends React.Component {
   }
 
   addNewEvent(items, newItems) {
-
     this.setState({showModal: false, selected: [], items: items});
     this._closeModal();
   }
 
   editEvent(turn) {
-    debugger
     this.setState({showModal: true, selected: []});
     if(this.validateTurn(turn)){
       TurnService().updateTurn(this.buildTurn(turn))
@@ -153,7 +137,6 @@ class Scheduler extends React.Component {
   }
 
   validateTurn(turn) {
-    debugger
     const turnValid = EntitiesValidator().validateTurn(turn);
     this.setState({turnValid: turnValid})
     return turnValid
@@ -184,12 +167,12 @@ class Scheduler extends React.Component {
   }
 
   render() {
-    var AgendaItem = function (props) {
+    /*var AgendaItem = function (props) {
       console.log(' item component props', props)
       return <div style={{display: 'block', position: 'absolute', background: '#FFF'}}>{props.item.name}
         <button onClick={() => props.edit(props.item)}>Edit</button>
       </div>
-    }
+    }*/
 
     return (
       <div>
@@ -224,13 +207,10 @@ class Scheduler extends React.Component {
             onItemEdit={this.handleItemEdit.bind(this)}
             onCellSelect={this.handleCellSelection.bind(this)}
             onRangeSelection={this.handleRangeSelection.bind(this)}
-
-
             startAtTime={8}
             endAtTime={20}
             headFormat={"ddd DD MMM"}
             helper={true}
-            //itemComponent={AgendaItem}
             view="calendar"
             onItemRemove={this.removeEvent.bind(this)}/>
 
