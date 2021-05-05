@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import {guid , getUnique , getLast , getFirst } from "react-agenda/src/helpers";
+import {guid , getUnique , getLast , getFirst,  } from "react-agenda/src/helpers";
 import Rdate from 'react-datetime';
 import './modalAgenda.scss';
 
@@ -179,12 +179,10 @@ class ModalAgenda extends Component {
 
   }
 
-  /*removeTurn = (e) => {
+  isValidTurn = () => {
     debugger
-    this.setState({removeModalConfirmationOpen: true})
-    this.props.remove(this.props.selectedCells[0]);
-  }*/
-
+    return !!this.state.name && !!this.state.service && !!this.state.contactNumber
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -195,11 +193,6 @@ class ModalAgenda extends Component {
     e.preventDefault();
     this.updateEvent(e);
   }
-
-/*  handleDelete(e){
-    e.preventDefault()
-    this.removeTurn(e)
-  }*/
 
   render() {
     var itc = Object.keys(this.props.itemColors)
@@ -235,6 +228,7 @@ class ModalAgenda extends Component {
                 <label>Email</label>
                 <input type="text" name="email" autoFocus ref="email" className="agendCtrls-event-input" value="aca va el mail cuando lo tengamos" onChange={this.handleChange.bind(this)} placeholder="E-mail"/>
               </div>
+
             </div>
             <div className="agendCtrls-timePicker-wrapper">
               <div className="agendCtrls-time-picker">
@@ -246,8 +240,13 @@ class ModalAgenda extends Component {
                 <Rdate value={this.state.endDateTime} onChange={this.handleDateChange.bind(null, 'endDateTime')} input={false} viewMode="time" ></Rdate>
               </div>
             </div>
+            {!this.isValidTurn() &&
+            <div className="date-error">
+              <i className="bi bi-exclamation-triangle-fill"></i>
+              Debe completar todos los campos.
+            </div>}
 
-            <input type="submit" value="Save"/>
+            <input disabled={!this.isValidTurn()} type="submit" value="Save"/>
           </form>
         </div>
       );
