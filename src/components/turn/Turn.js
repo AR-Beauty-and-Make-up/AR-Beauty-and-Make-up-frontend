@@ -69,6 +69,52 @@ const servicesAR = [
     "Ultracavitación"
 ]
 
+
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'left',
+    color: theme.palette.text.secondary,
+    backgroundColor: '#c8adab',
+    '&:hover': {
+        color: '#FFFFFF'
+    }
+  },
+  selectedService: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    backgroundColor: '#c8adab',
+    fontSize: '130%',
+  },
+  icon: {
+    textAlign: 'right',
+    
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: '25ch',
+  },
+  notificationStyle: {
+    textAlign: 'left'
+}
+}));
+
+const servicesAR = [
+    "Masaje reductor",
+    "Mesoterapia",
+    "Maquillaje",
+    "Depilacion",
+    "Radio Frecuencia",
+    "Ultracavitación"
+]
+
 const excludedTimes = [
     setHours(setMinutes(new Date(), 0), 0),
     setHours(setMinutes(new Date(), 30), 1),
