@@ -3,12 +3,14 @@ import './App.css';
 import HomePage from './components/home/HomePage'
 import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import Scheduler from './components/scheduler/Scheduler'
+import NavbarAR from './components/navbar/Navbar'
+import Turn from './components/turn/Turn'
 
 function App() {
   return (
 
-    <BrowserRouter>
-
+    <div className='App'>
+      <NavbarAR />
       <Switch>
         <Route
           exact
@@ -20,10 +22,14 @@ function App() {
           exact
           path="/scheduler"
           render={() => <Scheduler/>}/>
+        
+        <Route
+          exact
+          path="/services"
+          render={() => <Turn />}/>
 
       </Switch>
-    </BrowserRouter>
-
+    </div>
 
   );
 }
