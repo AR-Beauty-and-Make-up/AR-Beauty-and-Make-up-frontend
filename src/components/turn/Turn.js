@@ -245,23 +245,7 @@ const Calender = () => {
             }
         }
 
-        const filterDatesAlreadyTaken = __date => {
-
-            const date = new Date(__date)
-
-            console.log(date)
-            const filteredYear = datesAlreadyTaken.filter((_date) => _date.getFullYear() === date.getFullYear())
-            console.log(filteredYear)
-            const filteredDay = filteredYear.filter((_date) => _date.getDay() === date.getDay())
-            console.log(filteredDay)
-            const filteredMonth = filteredDay.filter((_date) => _date.getMonth() === date.getMonth())
-            console.log(filteredMonth)
-            
-            //return filteredMonth?filteredMonth.some((_date) => _date.getTime() === date.getTime()):true
-            return true
-        }
-
-        return filterPassedTimesAndSaturdayTimes(dateAndtime)// && filterDatesAlreadyTaken(dateAndtime)
+        return filterPassedTimesAndSaturdayTimes(dateAndtime) 
         
     }
 
@@ -269,16 +253,10 @@ const Calender = () => {
         return date.getDay() !== 0
       };
     
-    const handleColor = time => {
-        //return time.getHours() === 12 ? "disabled-date" : "text-error";
-    };
-
     
     return (
       <DatePicker selected={turn.date} onChange={(date) => {
-            if(date.getHours() !== 0) {
                 setDate(date)
-            }    
         }} 
         showTimeSelect
         timeCaption="time"
@@ -295,7 +273,6 @@ const Calender = () => {
         withPortal
         required={true}
         locale="es"
-        timeClassName={handleColor}
       />
       
     );
