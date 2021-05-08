@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -11,16 +11,18 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Backdrop from '@material-ui/core/Backdrop';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
+import './turn.scss';
 import 'react-datepicker/dist/react-datepicker-min.module.css'
 import DatePicker from 'react-datepicker'
 import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
+import TurnService from '../../services/TurnService';
 
-
+import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import es from 'date-fns/locale/es';
+registerLocale('es', es)
 
 
 
@@ -67,6 +69,9 @@ const servicesAR = [
     "Ultracavitación"
 ]
 
+
+
+
 const excludedTimes = [
     setHours(setMinutes(new Date(), 0), 0),
     setHours(setMinutes(new Date(), 30), 1),
@@ -79,9 +84,13 @@ const excludedTimes = [
     setHours(setMinutes(new Date(), 30), 22)
 ]
 
-
 const Turn = () => {
+
+  const turnService = TurnService()
   const classes = useStyles();
+
+  const [datesAlreadyTaken, setDatesAlreadyTaken] = useState([])
+
 
   const [showSteps, setShowSteps] = useState({
     showServices: true,
@@ -99,16 +108,23 @@ const [turn, setTurn] = useState({
     email: "",
     name: "",
     lastname: "",
-    clientContact: ""
+    clientNumber: ""
     
 })
 
-const [errors, setErrors] = useState({
-    email: true,
-    clientContact: true
-})
 
+useEffect(() => { 
+     turnService.getDates().then((response) => {
+    
+        let newStringDates = response.data
+        
+        let newDates = newStringDates.map((stringDate) => new Date(stringDate))
 
+        setDatesAlreadyTaken(newDates.concat(datesAlreadyTaken))
+    
+     })
+    
+}, [])
 
   const ChooseService = () => {
     if(showSteps.showServices) {
@@ -121,7 +137,7 @@ const [errors, setErrors] = useState({
                 {servicesAR.map((service) => {
                     return(
                         <Grid key={service} item xs={12}>
-                            <Paper className={classes.paper} onClick={(event) => {
+                            <Paper className={classes.paper} onClick={() => {
                                 setService(service)
                                 setSteps(['showServices', 'showDate'])
                                 }}>
@@ -172,21 +188,11 @@ const ChooseDate = () => {
             
                 <Grid container spacing={2}>         
                     <Grid item xs={12}>
-                    {showSteps.showFade?
-                    <Fade in={showSteps.showDate} timeout={1000}>
-                        <Paper className={classes.selectedService} onClick={(event) => {
+                        <Paper className={classes.selectedService} onClick={() => {
                             setSteps(['showDate', 'showServices'])
                             }}>
                             <b>{turn.service}</b>
                         </Paper>
-                    </Fade>
-                    :
-                    <Paper className={classes.selectedService} onClick={(event) => {
-                        setSteps(['showDate', 'showServices'])
-                        }}>
-                        <b>{turn.service}</b>
-                    </Paper>
-                    }
                     </Grid>
                     <Grid item xs={12}>
                         <h2>Selecionar fecha</h2>
@@ -200,6 +206,7 @@ const ChooseDate = () => {
                             setSteps(['showDate', 'showCheckedTurn'])
                             
                         }}
+                        disabled={!turn.date}
                         >Aceptar</Button>
                     </Grid>
                 </Grid>
@@ -238,7 +245,7 @@ const Calender = () => {
             }
         }
 
-        return filterPassedTimesAndSaturdayTimes(dateAndtime)
+        return filterPassedTimesAndSaturdayTimes(dateAndtime) 
         
     }
 
@@ -246,26 +253,26 @@ const Calender = () => {
         return date.getDay() !== 0
       };
     
+    
     return (
       <DatePicker selected={turn.date} onChange={(date) => {
-            if(showSteps.showFade) {
-                setSteps(['showFade'])
-            }
-            setDate(date)
+                setDate(date)
         }} 
-      showTimeSelect
+        showTimeSelect
+        timeCaption="time"
         excludeTimes={excludedTimes}
         filterTime={filterTimes}
         minDate={new Date()}
         maxDate={new Date().setMonth(new Date().getMonth() + 1 )}
-        
         locale='pt-br'
         timeFormat="HH:mm"
         dateFormat="dd/MM/yyyy HH:mm"
         timeIntervals={90}
         filterDate={isSunday}
         placeholderText="Elegir fecha"
-        shouldCloseOnSelect={false}
+        withPortal
+        required={true}
+        locale="es"
       />
       
     );
@@ -284,26 +291,26 @@ const CheckTurn = () => {
             
                 <Grid container spacing={2}>         
                     <Grid item xs={12}>
-                    <Fade in={showSteps.showCheckedTurn} timeout={1000}>
                         <Paper className={classes.selectedService} onClick={(event) => {
                             setSteps(['showCheckedTurn', 'showServices'])
                             }}>
                             <b>{turn.service}</b>
                         </Paper>
-                    </Fade>
                     </Grid>
                     <Grid item xs={12}>
-                    <Fade in={showSteps.showCheckedTurn} timeout={1000}>
                         <Paper className={classes.selectedService} onClick={(event) => {
                                 setSteps(['showDate', 'showCheckedTurn'])
                                 }}>
                                 <b>{turn.date.toLocaleString().slice(0, -3) + " HS"}</b>
                         </Paper>
-                    </Fade>
                     </Grid>
                     <Grid item xs={12}>
-                    <FormControlLabel control={<Checkbox color="default" check={showSteps.acepptTermsCovid} />} label="Declaro no tener fiebre ni haber estado en contacto con personas 
-                                con diagnostico positivo de COVID-19" />
+                    <FormControlLabel control={<Checkbox color="default" 
+                    checked={showSteps.acepptTermsCovid}
+                    onChange={(e) => setSteps(['acepptTermsCovid'])}
+                    />} 
+                    label="Declaro no tener fiebre ni haber estado en contacto con personas con diagnostico positivo de COVID-19" 
+                    />
                     </Grid>
                     <Grid item xs={12}>
                         <Button style={{background: '#100d0d', color: '#f4f1f1'}} 
@@ -311,6 +318,7 @@ const CheckTurn = () => {
                             setSteps(['showCheckedTurn', 'showPersonalInfo'])
 
                         }}
+                        disabled={!showSteps.acepptTermsCovid}
                         >Completar mis datos</Button>
                     </Grid>
                 </Grid>
@@ -318,8 +326,6 @@ const CheckTurn = () => {
     }
     return <div></div>
 }
-
-
 
 const PersonalInfo = () => {
 
@@ -356,7 +362,17 @@ const validationSchema = yup.object({
       },
       validationSchema: validationSchema,
       onSubmit: (values) => {
+        const {email, firstName, lastName, contact} = values
+        var newTurn = {...turn}
+        newTurn.email = email
+        newTurn.name = firstName
+        newTurn.lastname = lastName
+        newTurn.clientNumber = contact
         
+        setTurn(newTurn)
+        turnService.postTurn(newTurn)
+        console.log(newTurn)
+        setSteps(['showPersonalInfo', 'notification'])
       },
     });
   
@@ -417,20 +433,7 @@ const validationSchema = yup.object({
           />
           </Grid>
           <Grid item xs={12}>
-          <Button onClick={() => {
-            const {email, firstName, lastName, contact} = formik.values
-            debugger
-            var newTurn = {...turn}
-            newTurn.email = email
-            newTurn.name = firstName
-            newTurn.lastname = lastName
-            newTurn.clientContact = contact
-            
-            setTurn(newTurn)
-            setSteps(['showPersonalInfo', 'notification'])
-
-            
-          }} style={{background: '#100d0d', color: '#f4f1f1'}} variant="contained" fullWidth type="submit">
+          <Button style={{background: '#100d0d', color: '#f4f1f1'}} variant="contained" fullWidth type="submit">
             Completar datos
           </Button>
           </Grid>
@@ -461,14 +464,6 @@ const Notification = () => {
     }
     return <></>
 }
-
-const [open, setOpen] = React.useState(true);
-const handleClose = () => {
-  setOpen(false);
-};
-const handleToggle = () => {
-  setOpen(!open);
-};
 
 return (
     <Container maxWidth="sm">
