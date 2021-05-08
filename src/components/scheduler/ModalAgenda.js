@@ -145,7 +145,6 @@ class ModalAgenda extends Component {
   }
 
   isValidTurn = () => {
-    debugger
     return !!this.state.name && !!this.state.service && !!this.state.contactNumber
   }
 

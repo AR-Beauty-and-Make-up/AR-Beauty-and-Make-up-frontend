@@ -9,6 +9,7 @@ import './modalAgenda.scss';
 import ModalAgenda from "./ModalAgenda";
 import EntitiesValidator from "../../helpers/EntitiesValidator";
 import RemoveModalConfirmation from "./RemoveModalConfirmation";
+import UpdateSucceed from "./UpdateSucceed";
 
 
 
@@ -34,9 +35,10 @@ class Scheduler extends React.Component {
       rowsPerHour: 2,
       numberOfDays: 7,
       startDate: new Date(),
-      removeConfirmModal: false
-
+      removeConfirmModal: false,
+      isUpdated: false
     }
+
     this.handleItemEdit = this.handleItemEdit.bind(this)
     this.handleRangeSelection = this.handleRangeSelection.bind(this)
     this._openModal = this._openModal.bind(this)
@@ -49,10 +51,7 @@ class Scheduler extends React.Component {
   }
 
   componentDidMount = () => {
-    TurnService().getTurns()
-      .then(result => {
-        this.setState({turns: result.data})
-      })
+    this.getAllTurns()
   }
 
   renderTurns = (turn) => {
@@ -103,7 +102,9 @@ class Scheduler extends React.Component {
   }
 
   removeTurn(turn) {
+    debugger
     TurnService().deleteTurn(turn._id)
+    //this.setState({updatedSucceed: true})
   }
 
   removeEvent(items , item){
@@ -114,12 +115,26 @@ class Scheduler extends React.Component {
     this.setState({removeConfirmModal: false})
   }
 
+  closeUpdateSucceedModal = () => {
+    this.getAllTurns();
+    this.setState({updatedSucceed: false})
+  }
+
+  getAllTurns() {
+    TurnService().getTurns()
+      .then(result => {
+        this.setState({turns: result.data})
+      })
+  }
+
   editEvent(turn) {
-    this.setState({showModal: true, selected: []});
+    this.setState({showModal: true, selected: turn});
     if(this.validateTurn(turn)){
       TurnService().updateTurn(this.buildTurn(turn))
     }
+    debugger
     this._closeModal();
+    this.setState({isUpdated: true, updatedSucceed: true})
   }
 
   validateTurn(turn) {
@@ -217,6 +232,17 @@ class Scheduler extends React.Component {
 
             </div>
            : ''
+          }
+
+          {this.state.updatedSucceed ?
+            <div className="modal-content">
+              <UpdateSucceed onClose={this.closeUpdateSucceedModal}
+                                       itemColors={colors}
+                                       isEdit={this.state.isUpdated}/>
+
+
+            </div>
+            : ''
           }
 
         </div>
