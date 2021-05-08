@@ -16,8 +16,6 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "formik": "^2.2.6",
-    "hookrouter": "^1.2.5",
-    "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-agenda": "0.0.8",
     "react-bootstrap": "^1.5.2",
