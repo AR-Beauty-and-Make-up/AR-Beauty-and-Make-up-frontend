@@ -37,7 +37,6 @@ class Scheduler extends React.Component {
       removeConfirmModal: false
 
     }
-    this.handleCellSelection = this.handleCellSelection.bind(this)
     this.handleItemEdit = this.handleItemEdit.bind(this)
     this.handleRangeSelection = this.handleRangeSelection.bind(this)
     this._openModal = this._openModal.bind(this)
@@ -77,13 +76,6 @@ class Scheduler extends React.Component {
       return now
     }
     return new Date(now.getFullYear(), now.getMonth() - 1)
-  }
-
-  handleCellSelection(turn) {
-    if (this.state.selected && this.state.selected[0] === turn) {
-      return this._openModal();
-    }
-    this.setState({selected: [turn]})
   }
 
   handleItemEdit(turn, openModal) {
@@ -215,17 +207,16 @@ class Scheduler extends React.Component {
           </Modal> : ''
           }
 
-          {this.state.removeConfirmModal ? <Modal clickOutside={this._closeModal}>
+          {this.state.removeConfirmModal ?
             <div className="modal-content">
               <RemoveModalConfirmation onClose={this.closeModalConfirmation}
                                        itemColors={colors}
                                        turn={this.state.itemToRemove}
-                                       remove={this.removeTurn}
-                                       renderTurns={this.setTurns}/>
+                                       remove={this.removeTurn}/>
 
 
             </div>
-          </Modal> : ''
+           : ''
           }
 
         </div>

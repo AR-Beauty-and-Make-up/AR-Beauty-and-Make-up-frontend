@@ -16,6 +16,7 @@ class RemoveModalConfirmation extends React.Component {
   render() {
     return (
 
+      <div className="modal box-card">
         <div className="modal-content">
           <div className="remove-confirmation-card">
             <div className="remove-confirmation-title">
@@ -27,6 +28,7 @@ class RemoveModalConfirmation extends React.Component {
             </div>
           </div>
         </div>
+      </div>
 
     )
   }
