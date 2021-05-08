@@ -209,7 +209,7 @@ class ModalAgenda extends Component {
 
     if (this.state.editMode) {
 
-      var select = this.props.selectedCells[0];
+      //var select = this.props.selectedCells[0];
 
       return (
         <div className="agendCtrls-wrapper" style={divStyle}>
@@ -232,11 +232,11 @@ class ModalAgenda extends Component {
             </div>
             <div className="agendCtrls-timePicker-wrapper">
               <div className="agendCtrls-time-picker">
-                <label >Start Date</label>
+                <label >Desde</label>
                 <Rdate value={this.state.startDateTime} onChange={this.handleDateChange.bind(null, 'startDateTime')} input={false} viewMode="time" ></Rdate>
               </div>
               <div className="agendCtrls-time-picker">
-                <label >End Date</label>
+                <label >Hasta</label>
                 <Rdate value={this.state.endDateTime} onChange={this.handleDateChange.bind(null, 'endDateTime')} input={false} viewMode="time" ></Rdate>
               </div>
             </div>
@@ -246,7 +246,7 @@ class ModalAgenda extends Component {
               Debe completar todos los campos.
             </div>}
 
-            <input disabled={!this.isValidTurn()} type="submit" value="Save"/>
+            <input disabled={!this.isValidTurn()} type="submit" value="Guardar"/>
           </form>
         </div>
       );
