@@ -42,7 +42,6 @@ class Scheduler extends React.Component {
     this.handleRangeSelection = this.handleRangeSelection.bind(this)
     this._openModal = this._openModal.bind(this)
     this._closeModal = this._closeModal.bind(this)
-    this.addNewEvent = this.addNewEvent.bind(this)
     this.removeEvent = this.removeEvent.bind(this)
     this.editEvent = this.editEvent.bind(this)
     this.changeView = this.changeView.bind(this)
@@ -123,11 +122,6 @@ class Scheduler extends React.Component {
     this.setState({removeConfirmModal: false})
   }
 
-  addNewEvent(items, newItems) {
-    this.setState({showModal: false, selected: [], items: items});
-    this._closeModal();
-  }
-
   editEvent(turn) {
     this.setState({showModal: true, selected: []});
     if(this.validateTurn(turn)){
@@ -167,12 +161,6 @@ class Scheduler extends React.Component {
   }
 
   render() {
-    /*var AgendaItem = function (props) {
-      console.log(' item component props', props)
-      return <div style={{display: 'block', position: 'absolute', background: '#FFF'}}>{props.item.name}
-        <button onClick={() => props.edit(props.item)}>Edit</button>
-      </div>
-    }*/
 
     return (
       <div>
@@ -205,7 +193,6 @@ class Scheduler extends React.Component {
             autoScale={false}
             fixedHeader={true}
             onItemEdit={this.handleItemEdit.bind(this)}
-            onCellSelect={this.handleCellSelection.bind(this)}
             onRangeSelection={this.handleRangeSelection.bind(this)}
             startAtTime={8}
             endAtTime={20}
