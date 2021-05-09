@@ -9,6 +9,7 @@ import './modalAgenda.scss';
 import ModalAgenda from "./ModalAgenda";
 import EntitiesValidator from "../../helpers/EntitiesValidator";
 import RemoveModalConfirmation from "./RemoveModalConfirmation";
+import UpdateSucceed from "./UpdateSucceed";
 
 
 
@@ -34,15 +35,14 @@ class Scheduler extends React.Component {
       rowsPerHour: 2,
       numberOfDays: 7,
       startDate: new Date(),
-      removeConfirmModal: false
-
+      removeConfirmModal: false,
+      isUpdated: false
     }
-    this.handleCellSelection = this.handleCellSelection.bind(this)
+
     this.handleItemEdit = this.handleItemEdit.bind(this)
     this.handleRangeSelection = this.handleRangeSelection.bind(this)
     this._openModal = this._openModal.bind(this)
     this._closeModal = this._closeModal.bind(this)
-    this.addNewEvent = this.addNewEvent.bind(this)
     this.removeEvent = this.removeEvent.bind(this)
     this.editEvent = this.editEvent.bind(this)
     this.changeView = this.changeView.bind(this)
@@ -51,10 +51,7 @@ class Scheduler extends React.Component {
   }
 
   componentDidMount = () => {
-    TurnService().getTurns()
-      .then(result => {
-        this.setState({turns: result.data})
-      })
+    this.getAllTurns()
   }
 
   renderTurns = (turn) => {
@@ -78,13 +75,6 @@ class Scheduler extends React.Component {
       return now
     }
     return new Date(now.getFullYear(), now.getMonth() - 1)
-  }
-
-  handleCellSelection(turn) {
-    if (this.state.selected && this.state.selected[0] === turn) {
-      return this._openModal();
-    }
-    this.setState({selected: [turn]})
   }
 
   handleItemEdit(turn, openModal) {
@@ -116,24 +106,32 @@ class Scheduler extends React.Component {
   }
 
   removeEvent(items , item){
-    this.setState({ itemToRemove: item, removeConfirmModal: true});
+    this.setState({ itemToRemove: item, removeConfirmModal: true, isUpdated: false});
   }
 
   closeModalConfirmation = () => {
-    this.setState({removeConfirmModal: false})
+    this.setState({removeConfirmModal: false, updatedSucceed: true})
   }
 
-  addNewEvent(items, newItems) {
-    this.setState({showModal: false, selected: [], items: items});
-    this._closeModal();
+  closeUpdateSucceedModal = () => {
+    this.getAllTurns();
+    this.setState({updatedSucceed: false})
+  }
+
+  getAllTurns() {
+    TurnService().getTurns()
+      .then(result => {
+        this.setState({turns: result.data})
+      })
   }
 
   editEvent(turn) {
-    this.setState({showModal: true, selected: []});
+    this.setState({showModal: true, selected: turn});
     if(this.validateTurn(turn)){
       TurnService().updateTurn(this.buildTurn(turn))
     }
     this._closeModal();
+    this.setState({isUpdated: true, updatedSucceed: true})
   }
 
   validateTurn(turn) {
@@ -167,12 +165,6 @@ class Scheduler extends React.Component {
   }
 
   render() {
-    /*var AgendaItem = function (props) {
-      console.log(' item component props', props)
-      return <div style={{display: 'block', position: 'absolute', background: '#FFF'}}>{props.item.name}
-        <button onClick={() => props.edit(props.item)}>Edit</button>
-      </div>
-    }*/
 
     return (
       <div>
@@ -205,7 +197,6 @@ class Scheduler extends React.Component {
             autoScale={false}
             fixedHeader={true}
             onItemEdit={this.handleItemEdit.bind(this)}
-            onCellSelect={this.handleCellSelection.bind(this)}
             onRangeSelection={this.handleRangeSelection.bind(this)}
             startAtTime={8}
             endAtTime={20}
@@ -228,17 +219,27 @@ class Scheduler extends React.Component {
           </Modal> : ''
           }
 
-          {this.state.removeConfirmModal ? <Modal clickOutside={this._closeModal}>
+          {this.state.removeConfirmModal ?
             <div className="modal-content">
               <RemoveModalConfirmation onClose={this.closeModalConfirmation}
                                        itemColors={colors}
                                        turn={this.state.itemToRemove}
-                                       remove={this.removeTurn}
-                                       renderTurns={this.setTurns}/>
+                                       remove={this.removeTurn}/>
 
 
             </div>
-          </Modal> : ''
+           : ''
+          }
+
+          {this.state.updatedSucceed ?
+            <div className="modal-content">
+              <UpdateSucceed onClose={this.closeUpdateSucceedModal}
+                                       itemColors={colors}
+                                       isEdit={this.state.isUpdated}/>
+
+
+            </div>
+            : ''
           }
 
         </div>
