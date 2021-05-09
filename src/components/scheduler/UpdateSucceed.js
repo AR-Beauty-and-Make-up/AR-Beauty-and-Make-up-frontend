@@ -16,11 +16,11 @@ class UpdateSucceed extends React.Component {
           <div className="remove-confirmation-card">
             {this.props.isEdit &&
             <div className="remove-confirmation-title">
-              El turno fue editado con éxito !
+              El turno fue editado con éxito <i className="bi bi-check2"></i>
             </div>}
             {!this.props.isEdit &&
             <div className="remove-confirmation-title">
-              El turno fue eliminado con éxito !
+              El turno fue eliminado con éxito <i className="bi bi-check2"></i>
             </div>}
             <div className="remove-confirmation-buttons">
               <button className="remove-confirmation-button" onClick={this.props.onClose}>Aceptar</button>

@@ -102,17 +102,15 @@ class Scheduler extends React.Component {
   }
 
   removeTurn(turn) {
-    debugger
     TurnService().deleteTurn(turn._id)
-    //this.setState({updatedSucceed: true})
   }
 
   removeEvent(items , item){
-    this.setState({ itemToRemove: item, removeConfirmModal: true});
+    this.setState({ itemToRemove: item, removeConfirmModal: true, isUpdated: false});
   }
 
   closeModalConfirmation = () => {
-    this.setState({removeConfirmModal: false})
+    this.setState({removeConfirmModal: false, updatedSucceed: true})
   }
 
   closeUpdateSucceedModal = () => {
@@ -132,7 +130,6 @@ class Scheduler extends React.Component {
     if(this.validateTurn(turn)){
       TurnService().updateTurn(this.buildTurn(turn))
     }
-    debugger
     this._closeModal();
     this.setState({isUpdated: true, updatedSucceed: true})
   }
