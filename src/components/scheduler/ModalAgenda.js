@@ -22,7 +22,6 @@ class ModalAgenda extends Component {
       endDateTime: now
     }
     this.handleDateChange = this.handleDateChange.bind(this)
-    this.addEvent = this.addEvent.bind(this)
     this.updateEvent = this.updateEvent.bind(this)
     this.dispatchEvent = this.dispatchEvent.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -129,40 +128,6 @@ class ModalAgenda extends Component {
     this.props.Addnew(items, obj)
   }
 
-  addEvent(e) {
-    if (this.state.name.length < 1) {
-      return;
-    }
-
-    if(this.props.selectedCells && this.props.selectedCells.length > 0){
-
-      var obj = this.props.selectedCells.reduce((r, v, i, a, k = v.substring(0, 10)) => ((r[k] = r[k] || []).push(v), r), {});
-
-      if (Object.values(obj).length > 1) {
-        var newObj = {
-          name: this.state.name,
-          startDateTime: new Date(this.state.startDateTime),
-          endDateTime: new Date(this.state.endDateTime),
-          classes: this.state.classes,
-          multiple: obj
-        }
-
-        return this.dispatchEvent(newObj);
-
-      }
-
-    }
-
-    var newObj = {
-      name: this.state.name,
-      startDateTime: new Date(this.state.startDateTime),
-      endDateTime: new Date(this.state.endDateTime),
-      classes: this.state.classes
-    }
-
-    this.dispatchEvent(newObj);
-  }
-
   updateEvent(e) {
     if (this.props.selectedCells[0]._id) {
 
@@ -180,7 +145,6 @@ class ModalAgenda extends Component {
   }
 
   isValidTurn = () => {
-    debugger
     return !!this.state.name && !!this.state.service && !!this.state.contactNumber
   }
 
@@ -209,7 +173,7 @@ class ModalAgenda extends Component {
 
     if (this.state.editMode) {
 
-      var select = this.props.selectedCells[0];
+      //var select = this.props.selectedCells[0];
 
       return (
         <div className="agendCtrls-wrapper" style={divStyle}>
@@ -232,11 +196,11 @@ class ModalAgenda extends Component {
             </div>
             <div className="agendCtrls-timePicker-wrapper">
               <div className="agendCtrls-time-picker">
-                <label >Start Date</label>
+                <label >Desde</label>
                 <Rdate value={this.state.startDateTime} onChange={this.handleDateChange.bind(null, 'startDateTime')} input={false} viewMode="time" ></Rdate>
               </div>
               <div className="agendCtrls-time-picker">
-                <label >End Date</label>
+                <label >Hasta</label>
                 <Rdate value={this.state.endDateTime} onChange={this.handleDateChange.bind(null, 'endDateTime')} input={false} viewMode="time" ></Rdate>
               </div>
             </div>
@@ -246,7 +210,7 @@ class ModalAgenda extends Component {
               Debe completar todos los campos.
             </div>}
 
-            <input disabled={!this.isValidTurn()} type="submit" value="Save"/>
+            <input disabled={!this.isValidTurn()} type="submit" value="Guardar"/>
           </form>
         </div>
       );
