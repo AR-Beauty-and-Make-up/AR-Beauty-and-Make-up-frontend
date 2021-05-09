@@ -24,6 +24,7 @@ const TurnService = () => {
     const deleteTurn = (turnId) => {
         axios.delete(`${SERVICE_URL}/turns/delete/` + turnId)
     }
+    
 
     const getDates = () => {
         return axios.get(`${SERVICE_URL}/dates/`)
