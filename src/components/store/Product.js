@@ -10,6 +10,8 @@ const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 300,
       minHeight: 300,
+      padding: theme.spacing(2),
+      
     },
     media: {
       height: 200,

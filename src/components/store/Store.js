@@ -7,10 +7,17 @@ import Fade from '@material-ui/core/Fade';
 import TurnService from '../../services/TurnService';
 import Product from './Product'
 
-
+const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+    item: {
+        paddingBottom: '10px',
+    }
+  }));
 
 const Store = () => {
-    
+    const classes = useStyles();
     const [products, setProducts] = useState([])
     
     useEffect(() => {
@@ -21,13 +28,20 @@ const Store = () => {
 
 
     const Products = () => {
-        return [...products,...products].map((prod, index) => <Grid item key={index}><Product prod={prod}/></Grid> )
+        return [...products,...products,...products,...products].map((prod, index) => <Grid className={classes.item} item key={index}><Product prod={prod}/></Grid> )
     }
 
     return(
-        <Grid container justify="center" spacing={3}>
-            <Products />
-        </Grid>
+        <div className={classes.root}>
+            <Grid
+                container
+                direction="row"
+                justify="space-evenly"
+                alignItems="center"
+                >
+                <Products />
+            </Grid>
+        </div>
     )
 }
 
