@@ -16,7 +16,7 @@ import UpdateSucceed from "./UpdateSucceed";
 require('moment/locale/es.js');
 
 var colors = {
-  "color-2": "rgba(190, 148, 147, 1)",
+  "color-2": "rgb(190,148,147)",
   "color-3": "#efd6d7"
 }
 

@@ -25,7 +25,7 @@
 .remove-confirmation-card {
   width: 100%;
   height: 200px;
-  background-color: white;
+  background-color: #BE9493;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -35,6 +35,9 @@
 
   .remove-confirmation-title {
     font-size: x-large;
+    margin: 25px;
+    padding: 25px;
+    color: white;
   }
 
   .remove-confirmation-buttons {
@@ -43,10 +46,10 @@
     justify-content: center;
 
     .remove-confirmation-button {
-      background-color: #000000;
+      background-color: #ffffff ;
       border: none;
       border-radius: 5px;
-      color: #ffffff;
+      color: #000000;
       padding: 15px 5px;
       text-align: center;
       display: inline-block;
