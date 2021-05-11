@@ -16,7 +16,7 @@ import UpdateSucceed from "./UpdateSucceed";
 require('moment/locale/es.js');
 
 var colors = {
-  "color-2": "rgba(190, 148, 147, 1)",
+  "color-2": "rgb(190,148,147)",
   "color-3": "#efd6d7"
 }
 
@@ -113,6 +113,9 @@ class Scheduler extends React.Component {
     this.setState({removeConfirmModal: false, updatedSucceed: true})
   }
 
+  cancelModal = () => {
+    this.setState({removeConfirmModal: false})
+  }
   closeUpdateSucceedModal = () => {
     this.getAllTurns();
     this.setState({updatedSucceed: false})
@@ -222,6 +225,7 @@ class Scheduler extends React.Component {
           {this.state.removeConfirmModal ?
             <div className="modal-content">
               <RemoveModalConfirmation onClose={this.closeModalConfirmation}
+                                       cancel={this.cancelModal}
                                        itemColors={colors}
                                        turn={this.state.itemToRemove}
                                        remove={this.removeTurn}/>

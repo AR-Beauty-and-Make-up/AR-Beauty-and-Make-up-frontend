@@ -1,5 +1,5 @@
 import * as React from "react";
-import './modalAgenda.scss';
+import './modalConfirmation.scss';
 
 class UpdateSucceed extends React.Component {
 
@@ -11,8 +11,8 @@ class UpdateSucceed extends React.Component {
   render() {
     return (
 
-      <div className="modal box-card">
-        <div className="modal-content">
+      <div className="modal-confirmation-content">
+        <div className="confirmation-modal">
           <div className="remove-confirmation-card">
             {this.props.isEdit &&
             <div className="remove-confirmation-title">

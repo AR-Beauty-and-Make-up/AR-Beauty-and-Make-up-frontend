@@ -33,8 +33,7 @@ const Navbar = () =>  {
   const classes = useStyles();
   const history = useHistory();
 
- 
-    history.push('/')
+
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.menu}>
