@@ -33,7 +33,6 @@ const Navbar = () =>  {
   const classes = useStyles();
   const history = useHistory();
 
- 
 
   return (
     <div className={classes.root}>
