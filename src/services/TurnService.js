@@ -31,16 +31,11 @@ const TurnService = () => {
     }
 
 
-    const getProducts = () => {
-        return axios.get(`${SERVICE_URL}/products`)
-    }
-
     return {
         getTurns: getTurns,
         postTurn: postTurn,
         updateTurn: updateTurn,
         deleteTurn: deleteTurn,
-        getProducts: getProducts,
         getDates: getDates
     }
 
