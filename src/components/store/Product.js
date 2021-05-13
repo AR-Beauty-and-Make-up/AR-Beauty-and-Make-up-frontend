@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { Button, CardActionArea, CardActions } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     expandOpen: {
       transform: 'rotate(180deg)',
     },
+    icon: {
+      paddingLeft: '5px'
+    }
   }));
 
 const Product = (props) => {
@@ -51,8 +55,8 @@ const Product = (props) => {
             </CardActionArea>
             <CardActions>
                 <Grid container justify="center" spacing={1}>
-                    <Button size="medium" color="primary">
-                    Agregar al carrito
+                    <Button size="medium" >
+                    Agregar al carrito <AddShoppingCartIcon className={classes.icon} />
                     </Button>
                 </Grid>
             </CardActions>
