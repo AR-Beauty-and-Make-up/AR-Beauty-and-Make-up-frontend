@@ -1,109 +1,114 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import {guid , getUnique , getLast , getFirst,  } from "react-agenda/src/helpers";
 import Rdate from 'react-datetime';
 import './modalAgenda.scss';
 
-var now = new Date();
+var now = new Date()
 
 
-class ModalAgenda extends Component {
-  constructor() {
-    super();
-    this.state = {
-      editMode: false,
-      showCtrl: false,
-      multiple: {},
-      name: '',
-      service: '',
-      contactNumber: '',
-      classes: 'priority-1',
-      startDateTime: now,
-      endDateTime: now
-    }
-    this.handleDateChange = this.handleDateChange.bind(this)
-    this.updateEvent = this.updateEvent.bind(this)
-    this.dispatchEvent = this.dispatchEvent.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleEdit = this.handleEdit.bind(this)
-  }
-
-  componentDidMount() {
-
-    if (this.props.itemColors) {
-      this.setState({
-        classes: Object.keys(this.props.itemColors)[0]
+const ModalAgenda = (props) => {
+  debugger
+  const [state, setState]  = useState({
+        editMode: false,
+        showCtrl: false,
+        multiple: {},
+        name: '',
+        service: '',
+        contactNumber: '',
+        classes: 'priority-1',
+        startDateTime: now,
+        endDateTime: now
       })
 
+    useEffect(() => {
+
+    if (props.itemColors) {
+      setState((prevState) => ({...prevState, classes: Object.keys(this.props.itemColors)[0] }))
+
     }
-    setTimeout(function() {
-      if(this.refs.eventName){
-        this.refs.eventName.focus()
+    setTimeout((refs) => {
+      if(refs.eventName){
+        refs.eventName.focus()
       }
 
-    }.bind(this), 50);
+    }, 50);
 
-    if (!this.props.selectedCells) {
+    if (!props.selectedCells) {
       let start = now
       let endT = moment(now).add(15, 'Minutes');
-      return this.setState({editMode: false, name: '', startDateTime: start, endDateTime: endT});
+      return setState((prevState) => ({...prevState, editMode: false, 
+                                                      name: '', 
+                                                      startDateTime: start, 
+                                                      endDateTime: endT}));
     }
 
-    if (this.props.selectedCells && this.props.selectedCells[0] && this.props.selectedCells[0]._id) {
+    if (props.selectedCells && props.selectedCells[0] && props.selectedCells[0]._id) {
 
-      let start = moment(this.props.selectedCells[0].startDateTime);
-      let endT = moment(this.props.selectedCells[0].endDateTime);
+      let start = moment(props.selectedCells[0].startDateTime);
+      let endT = moment(props.selectedCells[0].endDateTime);
 
-      return this.setState({editMode: true, name: this.props.selectedCells[0].name, service: this.props.selectedCells[0].service, contactNumber: this.props.selectedCells[0].contactNumber, classes: this.props.selectedCells[0].classes, startDateTime: start, endDateTime: endT});
+      return setState((prevState) => ({...prevState, editMode: true, 
+                                          name: props.selectedCells[0].name, 
+                                          service: props.selectedCells[0].service, 
+                                          contactNumber: props.selectedCells[0].contactNumber, 
+                                          classes: props.selectedCells[0].classes, 
+                                          startDateTime: start, 
+                                          endDateTime: endT}))
 
     }
 
-    if (this.props.selectedCells && this.props.selectedCells.length === 1) {
-      let start = moment(getFirst(this.props.selectedCells));
-      let endT = moment(getLast(this.props.selectedCells)).add(15, 'Minutes');
-      return this.setState({editMode: false, name: '', startDateTime: start, endDateTime: endT});
+    if (props.selectedCells && props.selectedCells.length === 1) {
+      let start = moment(getFirst(props.selectedCells));
+      let endT = moment(getLast(props.selectedCells)).add(15, 'Minutes');
+      return setState((prevState) => ({...prevState, editMode: false, 
+                                                      name: '', 
+                                                      startDateTime: start, 
+                                                      endDateTime: endT}))
     }
 
-    if (this.props.selectedCells && this.props.selectedCells.length > 0) {
-      let start = moment(getFirst(this.props.selectedCells));
-      let endT = moment(getLast(this.props.selectedCells)) || now;
-      this.setState({editMode: false, name: '', startDateTime: start, endDateTime: endT});
+    if (props.selectedCells && props.selectedCells.length > 0) {
+      let start = moment(getFirst(props.selectedCells));
+      let endT = moment(getLast(props.selectedCells)) || now;
+      setState((prevState) => ({...prevState, editMode: false, 
+                                              name: '', 
+                                              startDateTime: start, 
+                                              endDateTime: endT}))
     }
 
-  }
-
-  handleChange(event) {
+  }, [])
+  const handleChange = (event) => {
     if(event.target.tagName === 'BUTTON'){
       event.preventDefault();
     }
 
-    var data = this.state;
+    var data = {...state};
     data[event.target.name] = event.target.value;
 
-    this.setState(data);
+    setState(data);
   }
 
-  handleDateChange(ev, date) {
-    var endD = moment(this.state.endDateTime)
-    var data = this.state;
-    data[ev] = date;
+  const handleDateChange = (ev, date) => {
+    var endD = moment(state.endDateTime)
+    var data = {...state}
+    data[ev] = date
 
     if(ev === 'startDateTime' && endD.diff(date)< 0 ){
       data['endDateTime'] = moment(date).add(15 , 'minutes');
     }
 
-    this.setState(data);
+    setState(data);
 
   }
 
 
-  dispatchEvent(obj) {
+  const dispatchEvent = (obj) => {
     var newAdded = []
-    var items = this.props.items;
+    var items = props.items;
     if (obj['multiple']) {
       var array = obj['multiple']
-      Object.keys(array).forEach(function(key) {
-        var newAr = array[key].filter(function(val, ind) {
+      Object.keys(array).forEach((key) => {
+        var newAr = array[key].filter((val, ind) =>{
           return array[key].indexOf(val) == ind;
         })
         var start = newAr[0];
@@ -119,98 +124,119 @@ class ModalAgenda extends Component {
         }
         items.push(lasobj)
         newAdded.push(lasobj)
-      }.bind(this));
-      return this.props.Addnew(items, newAdded)
+      });
+      return props.Addnew(items, newAdded)
     }
 
     obj._id = guid();
     items.push(obj)
-    this.props.Addnew(items, obj)
+    props.Addnew(items, obj)
   }
 
-  updateEvent(e) {
-    if (this.props.selectedCells[0]._id) {
+  const updateEvent = (e) => {
+    if (props.selectedCells[0]._id) {
 
       var newObj = {
-        _id: this.props.selectedCells[0]._id,
-        name: this.state.name,
-        service: this.state.service,
-        contactNumber: this.state.contactNumber,
-        startDateTime: new Date(this.state.startDateTime),
-        classes: this.state.classes
+        _id: props.selectedCells[0]._id,
+        name: state.name,
+        service: state.service,
+        contactNumber: state.contactNumber,
+        startDateTime: new Date(state.startDateTime),
+        classes: state.classes
       }
-        this.props.edit(newObj);
+        props.edit(newObj);
     }
 
   }
 
-  isValidTurn = () => {
-    return !!this.state.name && !!this.state.service && !!this.state.contactNumber
+  const isValidTurn = () => {
+    return !!state.name && !!state.service && !!state.contactNumber
   }
 
-  handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    this.addEvent(e);
+    //addEvent(e);
   }
 
-  handleEdit(e) {
+  const handleEdit = (e) => {
     e.preventDefault();
-    this.updateEvent(e);
+    updateEvent(e);
   }
 
-  render() {
-    var itc = Object.keys(this.props.itemColors)
-    var colors = itc.map(function(item, idx) {
+ 
+    var itc = Object.keys(props.itemColors)
+    var colors = itc.map((item, idx) => {
 
-      return <div style={{
-        background: this.props.itemColors[item]
-      }} className="agendCtrls-radio-buttons" key={item}>
-        <button name="classes"  value={item} className={this.state.classes === item?'agendCtrls-radio-button--checked':'agendCtrls-radio-button'} onClick={this.handleChange.bind(this)}/>
-      </div>
-    }.bind(this))
+    return <div style={{background: props.itemColors[item]}} 
+                className="agendCtrls-radio-buttons" key={item}>
+                      <button 
+                      name="classes"  value={item} 
+                      className={state.classes === item?'agendCtrls-radio-button--checked':'agendCtrls-radio-button'} 
+                      onClick={(event) => handleChange(event)}/>
+            </div>
+    })
 
     const divStyle = {};
 
-    if (this.state.editMode) {
-
-      //var select = this.props.selectedCells[0];
+    if (state.editMode) {
 
       return (
         <div className="agendCtrls-wrapper" style={divStyle}>
-          <form onSubmit={this.handleEdit}>
+          <form onSubmit={(event) => handleEdit(event)}>
             <div className="agendCtrls-label-wrapper">
               <div className="agendCtrls-label-inline">
                 <label>Nombre del Cliente</label>
-                <input type="text" name="name" autoFocus ref="eventName" className="agendCtrls-event-input" value={this.state.name} onChange={this.handleChange.bind(this)} placeholder="Nombre del Cliente"/>
+                <input type="text" name="name" autoFocus ref="eventName" 
+                      className="agendCtrls-event-input" 
+                      value={state.name} 
+                      onChange={(event) => handleChange(event)} 
+                      placeholder="Nombre del Cliente"/>
 
                 <label>Servicio</label>
-                <input type="text" name="service" autoFocus ref="serviceName" className="agendCtrls-event-input" value={this.state.service} onChange={this.handleChange.bind(this)} placeholder="Servicio"/>
+                <input type="text" name="service" autoFocus ref="serviceName" 
+                      className="agendCtrls-event-input" 
+                      value={state.service} 
+                      onChange={(event) => handleChange(event)} 
+                      placeholder="Servicio"/>
               </div>
               <div className="agendCtrls-label-inline ">
                 <label>Teléfono</label>
-                <input type="text" name="contactNumber" autoFocus ref="contactNumber" className="agendCtrls-event-input" value={this.state.contactNumber} onChange={this.handleChange.bind(this)} placeholder="Telefono"/>
+                <input type="text" name="contactNumber" autoFocus ref="contactNumber" 
+                        className="agendCtrls-event-input" 
+                        value={state.contactNumber} 
+                        onChange={(event) => handleChange(event)} 
+                        placeholder="Telefono"/>
                 <label>Email</label>
-                <input type="text" name="email" autoFocus ref="email" className="agendCtrls-event-input" value="aca va el mail cuando lo tengamos" onChange={this.handleChange.bind(this)} placeholder="E-mail"/>
+                <input type="text" name="email" autoFocus ref="email" 
+                      className="agendCtrls-event-input" 
+                      value="aca va el mail cuando lo tengamos" 
+                      onChange={(event) => handleChange(event)}
+                      placeholder="E-mail"/>
               </div>
 
             </div>
             <div className="agendCtrls-timePicker-wrapper">
               <div className="agendCtrls-time-picker">
                 <label >Desde</label>
-                <Rdate value={this.state.startDateTime} onChange={this.handleDateChange.bind(null, 'startDateTime')} input={false} viewMode="time" ></Rdate>
+                <Rdate value={state.startDateTime} 
+                      onChange={(event) => handleDateChange(null, 'startDateTime')} 
+                      input={false} 
+                      viewMode="time" ></Rdate>
               </div>
               <div className="agendCtrls-time-picker">
                 <label >Hasta</label>
-                <Rdate value={this.state.endDateTime} onChange={this.handleDateChange.bind(null, 'endDateTime')} input={false} viewMode="time" ></Rdate>
+                <Rdate value={state.endDateTime} 
+                      onChange={() => handleDateChange(null, 'endDateTime')} 
+                      input={false} viewMode="time" ></Rdate>
               </div>
             </div>
-            {!this.isValidTurn() &&
+            {!isValidTurn() &&
             <div className="date-error">
               <i className="bi bi-exclamation-triangle-fill"></i>
               Debe completar todos los campos.
             </div>}
 
-            <input disabled={!this.isValidTurn()} type="submit" value="Guardar"/>
+            <input disabled={!isValidTurn()} type="submit" value="Guardar"/>
           </form>
         </div>
       );
@@ -219,11 +245,15 @@ class ModalAgenda extends Component {
 
     return (
       <div className="agendCtrls-wrapper" style={divStyle}>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={(event) => handleSubmit(event)}>
           <div className="agendCtrls-label-wrapper">
             <div className="agendCtrls-label-inline">
               <label>Event name</label>
-              <input type="text" ref="eventName" autoFocus name="name" className="agendCtrls-event-input" value={this.state.name} onChange={this.handleChange.bind(this)} placeholder="Event Name"/>
+              <input type="text" ref="eventName" autoFocus name="name" 
+                    className="agendCtrls-event-input" 
+                    value={state.name} 
+                    onChange={(event) => handleChange(event)} 
+                    placeholder="Event Name"/>
             </div>
             <div className="agendCtrls-label-inline">
               <label>Color</label>
@@ -234,19 +264,23 @@ class ModalAgenda extends Component {
           <div className="agendCtrls-timePicker-wrapper">
             <div className="agendCtrls-time-picker">
               <label >Start Date</label>
-              <Rdate value={this.state.startDateTime} onChange={this.handleDateChange.bind(null, 'startDateTime')} input={false} viewMode="time" ></Rdate>
+              <Rdate value={state.startDateTime} 
+                    onChange={() => handleDateChange(null, 'startDateTime')} 
+                    input={false} viewMode="time" ></Rdate>
             </div>
             <div className="agendCtrls-time-picker">
               <label >End Date</label>
-              <Rdate value={this.state.endDateTime} onChange={this.handleDateChange.bind(null, 'endDateTime')} input={false} viewMode="time" ></Rdate>
+              <Rdate value={state.endDateTime} 
+                    onChange={() => handleDateChange(null, 'endDateTime')} 
+                    input={false} viewMode="time" ></Rdate>
             </div>
           </div>
 
           <input type="submit" value="Save"/>
         </form>
       </div>
-    );
-  }
+    )
+  
 }
 
-export default ModalAgenda;
+export default ModalAgenda

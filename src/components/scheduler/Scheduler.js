@@ -1,4 +1,4 @@
-import React from 'react'
+import {useState, useEffect} from 'react'
 import {ReactAgenda, ReactAgendaCtrl, guid, getUnique, getLast, getFirst, Modal} from 'react-agenda';
 import {withRouter} from "react-router-dom";
 import NavbarAR from "../navbar/Navbar";
@@ -16,17 +16,16 @@ import UpdateSucceed from "./UpdateSucceed";
 require('moment/locale/es.js');
 
 var colors = {
-  "color-2": "rgb(190,148,147)",
+  "color-2": "rgba(190, 148, 147, 1)",
   "color-3": "#efd6d7"
 }
 
 var now = new Date();
 
 
-class Scheduler extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+const Scheduler = () => {
+
+  const [state, setState] = useState({
       turns: [],
       selected: [],
       cellHeight: 30,
@@ -37,25 +36,13 @@ class Scheduler extends React.Component {
       startDate: new Date(),
       removeConfirmModal: false,
       isUpdated: false
-    }
+    })
 
-    this.handleItemEdit = this.handleItemEdit.bind(this)
-    this.handleRangeSelection = this.handleRangeSelection.bind(this)
-    this._openModal = this._openModal.bind(this)
-    this._closeModal = this._closeModal.bind(this)
-    this.removeEvent = this.removeEvent.bind(this)
-    this.editEvent = this.editEvent.bind(this)
-    this.changeView = this.changeView.bind(this)
-    this.zoomIn = this.zoomIn.bind(this)
-    this.zoomOut = this.zoomOut.bind(this)
-  }
 
-  componentDidMount = () => {
-    this.getAllTurns()
-  }
 
-  renderTurns = (turn) => {
-    console.log()
+    useEffect(() => getAllTurns(), [])
+
+  const renderTurns = (turn) => {
     let startDate = new Date(turn.date)
     let endDate = new Date(turn.date).setHours(startDate.getHours() + 1, startDate.getMinutes() + 30)
 
@@ -70,80 +57,83 @@ class Scheduler extends React.Component {
     }
   }
 
-  lastMonth = () => {
+  const lastMonth = () => {
     if (now.getMonth() / 2 < 1) {
       return now
     }
     return new Date(now.getFullYear(), now.getMonth() - 1)
   }
 
-  handleItemEdit(turn, openModal) {
+  const handleItemEdit = (turn, openModal) => {
+    debugger
     if (turn && openModal) {
-      this.setState({selected: [turn]})
-      return this._openModal();
+      setState( (prevState) => ({...prevState, selected: [turn]}))
+      return _openModal()
     }
   }
 
-  handleRangeSelection(item) {
-    this.setState({selected: item, showCtrl: true})
-    this._openModal();
+  const handleRangeSelection = (item) => {
+    setState((prevState) => ({...prevState, selected: item, showCtrl: true}))
+    _openModal();
   }
 
-  _openModal() {
-    this.setState({showModal: true})
+  const _openModal = () => {
+    debugger
+    setState((prevState) => ({...prevState, showModal: true}))
   }
 
-  _closeModal(e) {
+  const _closeModal = (e) => {
     if (e) {
       e.stopPropagation();
       e.preventDefault();
     }
-    this.setState({showModal: false})
+    setState((prevState) => ({...prevState, showModal: false}))
   }
 
-  removeTurn(turn) {
+  const removeTurn = (turn) => {
     TurnService().deleteTurn(turn._id)
   }
 
-  removeEvent(items , item){
-    this.setState({ itemToRemove: item, removeConfirmModal: true, isUpdated: false});
+  const removeEvent = (items , item) => {
+    setState((prevState) => ({...prevState, 
+                              itemToRemove: item, 
+                              removeConfirmModal: true, 
+                              isUpdated: false}));
   }
 
-  closeModalConfirmation = () => {
-    this.setState({removeConfirmModal: false, updatedSucceed: true})
+  const closeModalConfirmation = () => {
+    setState((prevState) => ({...prevState, removeConfirmModal: false, updatedSucceed: true}))
   }
 
-  cancelModal = () => {
-    this.setState({removeConfirmModal: false})
-  }
-  closeUpdateSucceedModal = () => {
-    this.getAllTurns();
-    this.setState({updatedSucceed: false})
+  const closeUpdateSucceedModal = () => {
+    getAllTurns()
+    setState((prevState) => ({...prevState, updatedSucceed: false}))
   }
 
-  getAllTurns() {
+  const getAllTurns = () => {
     TurnService().getTurns()
       .then(result => {
-        this.setState({turns: result.data})
+        setState((prevState) => ({...prevState, turns: result.data}))
       })
   }
 
-  editEvent(turn) {
-    this.setState({showModal: true, selected: turn});
-    if(this.validateTurn(turn)){
-      TurnService().updateTurn(this.buildTurn(turn))
+  const editEvent = (turn) => {
+    debugger
+    setState((prevState) => ({...prevState, showModal: true, selected: turn}))
+    if(validateTurn(turn)){
+      TurnService().updateTurn(buildTurn(turn))
     }
-    this._closeModal();
-    this.setState({isUpdated: true, updatedSucceed: true})
+    _closeModal()
+    setState((prevState) => ({...prevState, isUpdated: true, updatedSucceed: true}))
   }
 
-  validateTurn(turn) {
+  const validateTurn = (turn) => {
     const turnValid = EntitiesValidator().validateTurn(turn);
-    this.setState({turnValid: turnValid})
+    setState((prevState) => ({...prevState, turnValid: turnValid}))
     return turnValid
   }
 
-  buildTurn(turn) {
+  const buildTurn = (turn) => {
     return {
       id: turn._id,
       clientName: turn.name,
@@ -153,93 +143,93 @@ class Scheduler extends React.Component {
     }
   }
 
-  changeView(days, event) {
-    this.setState({numberOfDays: days})
+  const changeView = (days, event) => {
+    setState((prevState) => ({...prevState, numberOfDays: days}))
   }
 
-  zoomIn(){
-    const num = this.state.cellHeight + 15
-    this.setState({cellHeight:num})
+  const zoomIn = () => {
+    const num = state.cellHeight + 15
+    setState((prevState) => ({...prevState, cellHeight:num}))
   }
 
-  zoomOut(){
-    const num = this.state.cellHeight - 15
-    this.setState({cellHeight:num})
+  const zoomOut = () =>{
+    const num = state.cellHeight - 15
+    setState((prevState) => ({...prevState, cellHeight:num}))
   }
 
-  render() {
+
 
     return (
       <div>
         <div className="content-expanded ">
           <div className="control-buttons">
-            <button  className="button-control" onClick={this.zoomIn}><i className="bi bi-plus-circle"></i> </button>
-            <button  className="button-control" onClick={this.zoomOut}><i className="bi bi-dash-circle"></i> </button>
+            <button  className="button-control" onClick={() => zoomIn()}><i className="bi bi-plus-circle"></i> </button>
+            <button  className="button-control" onClick={() => zoomOut()}><i className="bi bi-dash-circle"></i> </button>
             <button className="button-control"
-                    onClick={this.changeView.bind(null, 7)}> {moment.duration(7, "days").humanize()}  </button>
+                    onClick={() => changeView(null, 7)}> {moment.duration(7, "days").humanize()}  </button>
             <button className="button-control"
-                    onClick={this.changeView.bind(null, 4)}> {moment.duration(4, "days").humanize()}  </button>
+                    onClick={() => changeView(null, 4)}> {moment.duration(4, "days").humanize()}  </button>
             <button className="button-control"
-                    onClick={this.changeView.bind(null, 3)}> {moment.duration(3, "days").humanize()}  </button>
+                    onClick={() => changeView(null, 3)}> {moment.duration(3, "days").humanize()}  </button>
             <button className="button-control"
-                    onClick={this.changeView.bind(null, 1)}> {moment.duration(1, "day").humanize()} </button>
+                    onClick={() => changeView(null, 1)}> {moment.duration(1, "day").humanize()} </button>
           </div>
 
 
           <ReactAgenda
-            minDate={this.lastMonth()}
+            minDate={lastMonth()}
             maxDate={new Date(now.getFullYear(), now.getMonth() + 3)}
             disablePrevButton={false}
-            startDate={this.state.startDate}
-            cellHeight={this.state.cellHeight}
-            locale={this.state.locale}
-            items={this.state.turns.map(turn => this.renderTurns(turn))}
-            numberOfDays={this.state.numberOfDays}
-            rowsPerHour={this.state.rowsPerHour}
+            startDate={state.startDate}
+            cellHeight={state.cellHeight}
+            locale={state.locale}
+            items={state.turns.map(turn => renderTurns(turn))}
+            numberOfDays={state.numberOfDays}
+            rowsPerHour={state.rowsPerHour}
             itemColors={colors}
             autoScale={false}
             fixedHeader={true}
-            onItemEdit={this.handleItemEdit.bind(this)}
-            onRangeSelection={this.handleRangeSelection.bind(this)}
+            onItemEdit={(turn, modal) => handleItemEdit(turn, modal)}
+            onRangeSelection={(turn) => handleRangeSelection(turn)}
             startAtTime={8}
             endAtTime={20}
             headFormat={"ddd DD MMM"}
             helper={true}
             view="calendar"
-            onItemRemove={this.removeEvent.bind(this)}/>
+            onItemRemove={(turns, turn) => removeEvent(turns, turn)}/>
 
-          {this.state.showModal ? <Modal clickOutside={this._closeModal}>
+          {state.showModal ?
+          
+          <Modal clickOutside={(event) => _closeModal(event)}>
             <div className="modal-content">
-              <ModalAgenda     items={this.state.turns}
+              <ModalAgenda     items={state.turns}
                                itemColors={colors}
-                               selectedCells={this.state.selected}
-                               isValidTurn={this.validateTurn}
-                               Addnew={this.addNewEvent}
-                               edit={this.editEvent}/>
+                               selectedCells={state.selected}
+                               isValidTurn={(turn) => validateTurn(turn)}
+                               edit={(turn) => editEvent(turn)}/>
 
 
             </div>
           </Modal> : ''
           }
 
-          {this.state.removeConfirmModal ?
+          {state.removeConfirmModal ?
             <div className="modal-content">
-              <RemoveModalConfirmation onClose={this.closeModalConfirmation}
-                                       cancel={this.cancelModal}
+              <RemoveModalConfirmation onClose={() => closeModalConfirmation()}
                                        itemColors={colors}
-                                       turn={this.state.itemToRemove}
-                                       remove={this.removeTurn}/>
+                                       turn={state.itemToRemove}
+                                       remove={removeTurn}/>
 
 
             </div>
            : ''
           }
 
-          {this.state.updatedSucceed ?
+          {state.updatedSucceed ?
             <div className="modal-content">
-              <UpdateSucceed onClose={this.closeUpdateSucceedModal}
+              <UpdateSucceed onClose={() => closeUpdateSucceedModal()}
                                        itemColors={colors}
-                                       isEdit={this.state.isUpdated}/>
+                                       isEdit={state.isUpdated}/>
 
 
             </div>
@@ -250,7 +240,7 @@ class Scheduler extends React.Component {
       </div>
     );
 
-  }
+  
 }
 
-export default withRouter(Scheduler)
+export default Scheduler
