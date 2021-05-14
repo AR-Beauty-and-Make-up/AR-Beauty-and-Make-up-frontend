@@ -236,15 +236,24 @@ const Calender = () => {
             return  selectedDate.getHours() < 13
         }
 
+        const notEqualDates = (d1, d2) => {
+            return d1 > d2 || d1 < d2
+        }
+        
+        const filterDatesAlreadyTaken = (date) => {
+            return !datesAlreadyTaken.some((dateAlreadyTaken) => !notEqualDates(dateAlreadyTaken, date) )
+        }
+
         const filterPassedTimesAndSaturdayTimes = date => {
             if(date.getDay() !== 6){
-                return filterPassedTime(date)
+                return filterPassedTime(date) && filterDatesAlreadyTaken(date)
             }
             else {
-                return filterPassedTime(date) && allowedSatudaysTimes(date)
+                return filterPassedTime(date) && filterDatesAlreadyTaken(date) && allowedSatudaysTimes(date)
             }
         }
 
+    
         return filterPassedTimesAndSaturdayTimes(dateAndtime) 
         
     }
