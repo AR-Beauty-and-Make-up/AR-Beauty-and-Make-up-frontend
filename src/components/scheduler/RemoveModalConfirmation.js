@@ -8,7 +8,6 @@ class RemoveModalConfirmation extends React.Component {
   }
 
   remove = () => {
-    debugger
     this.props.remove(this.props.turn)
     this.props.onClose()
   }
