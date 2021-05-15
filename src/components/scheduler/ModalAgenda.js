@@ -17,6 +17,7 @@ class ModalAgenda extends Component {
       name: '',
       service: '',
       contactNumber: '',
+      email: '',
       classes: 'priority-1',
       startDateTime: now,
       endDateTime: now
@@ -54,7 +55,7 @@ class ModalAgenda extends Component {
       let start = moment(this.props.selectedCells[0].startDateTime);
       let endT = moment(this.props.selectedCells[0].endDateTime);
 
-      return this.setState({editMode: true, name: this.props.selectedCells[0].name, service: this.props.selectedCells[0].service, contactNumber: this.props.selectedCells[0].contactNumber, classes: this.props.selectedCells[0].classes, startDateTime: start, endDateTime: endT});
+      return this.setState({editMode: true, name: this.props.selectedCells[0].name, service: this.props.selectedCells[0].service, contactNumber: this.props.selectedCells[0].contactNumber, email: this.props.selectedCells[0].email, classes: this.props.selectedCells[0].classes, startDateTime: start, endDateTime: endT});
 
     }
 
@@ -113,6 +114,7 @@ class ModalAgenda extends Component {
           clientName: obj.name,
           service: obj.service,
           contactNumber: obj.contactNumber,
+          email: obj.email,
           startDateTime: new Date(start),
           endDateTime: new Date(endT),
           classes: obj.classes
@@ -136,6 +138,7 @@ class ModalAgenda extends Component {
         name: this.state.name,
         service: this.state.service,
         contactNumber: this.state.contactNumber,
+        email: this.state.email,
         startDateTime: new Date(this.state.startDateTime),
         classes: this.state.classes
       }
@@ -145,7 +148,7 @@ class ModalAgenda extends Component {
   }
 
   isValidTurn = () => {
-    return !!this.state.name && !!this.state.service && !!this.state.contactNumber
+    return !!this.state.name && !!this.state.service && !!this.state.contactNumber && !! this.state.email
   }
 
   handleSubmit(e) {
@@ -189,7 +192,7 @@ class ModalAgenda extends Component {
                 <label>Teléfono</label>
                 <input type="text" name="contactNumber" autoFocus ref="contactNumber" className="agendCtrls-event-input" value={this.state.contactNumber} onChange={this.handleChange.bind(this)} placeholder="Telefono"/>
                 <label>Email</label>
-                <input type="text" name="email" autoFocus ref="email" className="agendCtrls-event-input" value="email" onChange={this.handleChange.bind(this)} placeholder="E-mail"/>
+                <input type="text" name="email" autoFocus ref="email" className="agendCtrls-event-input" value={this.state.email} onChange={this.handleChange.bind(this)} placeholder="E-mail"/>
               </div>
 
             </div>

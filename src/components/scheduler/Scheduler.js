@@ -64,6 +64,7 @@ class Scheduler extends React.Component {
       name: turn.clientName,
       service: turn.service,
       contactNumber: turn.contactNumber,
+      email: turn.email,
       startDateTime: startDate,
       endDateTime: endDate,
       classes: 'color-2 color-3'
@@ -149,6 +150,7 @@ class Scheduler extends React.Component {
       clientName: turn.name,
       service: turn.service,
       contactNumber: turn.contactNumber,
+      email: turn.email,
       date: moment(turn.startDateTime.toString()).tz( "America/Argentina/Buenos_Aires").format("YYYY-MM-DDTHH:mm:ss.SS")
     }
   }
