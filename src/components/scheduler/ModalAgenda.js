@@ -208,7 +208,7 @@ class ModalAgenda extends Component {
               Debe completar todos los campos.
             </div>}
 
-            <input disabled={!this.isValidTurn()} type="submit" value="Guardar"/>
+            <input className="save-changes-button" disabled={!this.isValidTurn()} type="submit" value="Guardar"/>
           </form>
         </div>
       );
