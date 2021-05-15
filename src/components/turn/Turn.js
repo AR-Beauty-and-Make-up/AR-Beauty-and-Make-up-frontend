@@ -108,7 +108,7 @@ const [turn, setTurn] = useState({
     email: "",
     name: "",
     lastname: "",
-    clientNumber: ""
+    contactNumber: ""
     
 })
 
@@ -376,7 +376,7 @@ const validationSchema = yup.object({
         newTurn.email = email
         newTurn.name = firstName
         newTurn.lastname = lastName
-        newTurn.clientNumber = contact
+        newTurn.contactNumber = contact
         
         setTurn(newTurn)
         turnService.postTurn(newTurn)

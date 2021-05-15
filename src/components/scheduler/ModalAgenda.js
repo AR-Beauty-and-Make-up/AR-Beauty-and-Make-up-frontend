@@ -173,7 +173,6 @@ class ModalAgenda extends Component {
 
     if (this.state.editMode) {
 
-      //var select = this.props.selectedCells[0];
 
       return (
         <div className="agendCtrls-wrapper" style={divStyle}>
@@ -190,18 +189,14 @@ class ModalAgenda extends Component {
                 <label>Teléfono</label>
                 <input type="text" name="contactNumber" autoFocus ref="contactNumber" className="agendCtrls-event-input" value={this.state.contactNumber} onChange={this.handleChange.bind(this)} placeholder="Telefono"/>
                 <label>Email</label>
-                <input type="text" name="email" autoFocus ref="email" className="agendCtrls-event-input" value="aca va el mail cuando lo tengamos" onChange={this.handleChange.bind(this)} placeholder="E-mail"/>
+                <input type="text" name="email" autoFocus ref="email" className="agendCtrls-event-input" value="email" onChange={this.handleChange.bind(this)} placeholder="E-mail"/>
               </div>
 
             </div>
             <div className="agendCtrls-timePicker-wrapper">
               <div className="agendCtrls-time-picker">
-                <label >Desde</label>
+                <label >Fecha y Hora</label>
                 <Rdate value={this.state.startDateTime} onChange={this.handleDateChange.bind(null, 'startDateTime')} input={false} viewMode="time" ></Rdate>
-              </div>
-              <div className="agendCtrls-time-picker">
-                <label >Hasta</label>
-                <Rdate value={this.state.endDateTime} onChange={this.handleDateChange.bind(null, 'endDateTime')} input={false} viewMode="time" ></Rdate>
               </div>
             </div>
             {!this.isValidTurn() &&
