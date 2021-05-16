@@ -107,6 +107,23 @@
   color: #dc143c;
 }
 
+.save-changes-button {
+  background-color: #000000;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  padding: 10px;
+  width: 100px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  margin: 10px 40px;
+}
+input[type=submit]:disabled{
+  background-color: #8a8c91;
+}
+
 
 @media screen and (max-width: 639px) {
   .agendCtrls-timePicker-wrapper {
