@@ -1,15 +1,10 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Link from '@material-ui/core/Link';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
+import logo from '../../static/images/logo.jpg'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,8 +19,14 @@ const useStyles = makeStyles((theme) => ({
   },
   items: {
     color: "white",
-    paddingRight: 5 
-  }
+    paddingRight: 5,
+    cursor: 'pointer' 
+  },
+  logo: {
+    maxWidth: 50,
+    borderRadius: '50%',
+    marginRight: '10px',
+  },
   
 }));
 
@@ -38,9 +39,10 @@ const Navbar = () =>  {
     <div className={classes.root}>
       <AppBar position="static" className={classes.menu}>
         <Toolbar>
+        <img src={logo} alt="logo" className={classes.logo} />
           <Typography className={classes.title} variant="h6">
             <div onClick={() => history.push('/')}>
-              AR Beauty & make up
+              AR Beauty & Make up
             </div>
           </Typography>
               <Typography className={classes.items} 
@@ -61,6 +63,7 @@ const Navbar = () =>  {
             >
               Servicios
             </Typography>
+            
         </Toolbar>
       </AppBar>
     </div>
