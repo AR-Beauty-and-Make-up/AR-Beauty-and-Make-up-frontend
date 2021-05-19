@@ -3,7 +3,9 @@ import moment from 'moment';
 import {guid, getUnique, getLast, getFirst,} from "react-agenda/src/helpers";
 import Rdate from 'react-datetime';
 import './modalAgenda.scss';
-import {servicesAR} from "../turn/Turn";
+import {servicesAR} from '../../helpers/Constants.js';
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 
 var now = new Date();
@@ -201,9 +203,9 @@ class ModalAgenda extends Component {
                 <label>Servicio</label>
                 <select name="service" autoFocus ref="serviceName"
                         className="form-select form-select-sm agendCtrls-event-input"
+                        value={this.state.service}
                         onChange={this.handleChange.bind(this)} aria-label=".form-select-sm example">
-                  <option selected>{this.state.service}</option>
-                  {servicesAR.map(service => <option>{service}</option>)}
+                  {servicesAR.map(service => <option value={service.value}>{service.label}</option>)}
 
                 </select>
               </div>
