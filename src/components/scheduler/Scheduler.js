@@ -55,7 +55,6 @@ class Scheduler extends React.Component {
   }
 
   renderTurns = (turn) => {
-    console.log()
     let startDate = new Date(turn.date)
     let endDate = new Date(turn.date).setHours(startDate.getHours() + 1, startDate.getMinutes() + 30)
 
@@ -145,6 +144,7 @@ class Scheduler extends React.Component {
   }
 
   buildTurn(turn) {
+    debugger
     return {
       id: turn._id,
       clientName: turn.name,
