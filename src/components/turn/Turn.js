@@ -22,6 +22,7 @@ import TurnService from '../../services/TurnService';
 
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
+import {servicesAR} from "../../helpers/Constants";
 registerLocale('es', es)
 
 
@@ -59,16 +60,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left'
 }
 }));
-
-const servicesAR = [
-    "Masaje reductor",
-    "Mesoterapia",
-    "Maquillaje",
-    "Depilacion",
-    "Radio Frecuencia",
-    "Ultracavitación"
-]
-
 
 
 
@@ -138,12 +129,12 @@ useEffect(() => {
                     return(
                         <Grid key={service} item xs={12}>
                             <Paper className={classes.paper} onClick={() => {
-                                setService(service)
+                                setService(service.value)
                                 setSteps(['showServices', 'showDate'])
                                 }}>
                                 <Grid container spacing={1}>
                                 <Grid item xs={6}>
-                                    {service}
+                                    {service.label}
                                 </Grid>
                                 <Grid item xs={6} className={classes.icon}>
                                     <IconButton aria-label="delete" className={classes.margin} size="small">
