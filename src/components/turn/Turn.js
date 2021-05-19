@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }
 }));
 
-const servicesAR = [
+export const servicesAR = [
     "Masaje reductor",
     "Mesoterapia",
     "Maquillaje",

@@ -3,6 +3,8 @@ import moment from 'moment';
 import {guid, getUnique, getLast, getFirst,} from "react-agenda/src/helpers";
 import Rdate from 'react-datetime';
 import './modalAgenda.scss';
+import {servicesAR} from "../turn/Turn";
+
 
 var now = new Date();
 
@@ -201,12 +203,8 @@ class ModalAgenda extends Component {
                         className="form-select form-select-sm agendCtrls-event-input"
                         onChange={this.handleChange.bind(this)} aria-label=".form-select-sm example">
                   <option selected>{this.state.service}</option>
-                  <option>Masaje Reductor</option>
-                  <option>Mesoterapia</option>
-                  <option>Maquillaje</option>
-                  <option>Depilación</option>
-                  <option>Radio Frecuencia</option>
-                  <option>Ultracavitación</option>
+                  {servicesAR.map(service => <option>{service}</option>)}
+
                 </select>
               </div>
               <div className="agendCtrls-label-inline ">
@@ -237,6 +235,7 @@ class ModalAgenda extends Component {
         </div>
       );
   }
+
 }
 
 export default ModalAgenda;
