@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     backgroundColor: '#c8adab',
     '&:hover': {
-        color: '#FFFFFF'
+        fontWeight: 'bold'
     }
   },
   selectedService: {
