@@ -1,11 +1,12 @@
 import React from "react";
 import './App.css';
 import HomePage from './components/home/HomePage'
-import {BrowserRouter, Switch, Route} from 'react-router-dom'
+import {Switch, Route} from 'react-router-dom'
 import Scheduler from './components/scheduler/Scheduler'
 import Navbar from './components/navbar/Navbar'
 import Turn from './components/turn/Turn'
 import Store from './components/store/Store'
+import Profile from './components/profile/Profile'
 
 
 function App() {
@@ -33,7 +34,12 @@ function App() {
         <Route
           exact
           path="/store"
-          render={() => <Store />}/> 
+          render={() => <Store />}/>
+
+        <Route
+          exact
+          path="/profile/"
+          render={() => <Profile />} />
 
       </Switch>
     </div>
