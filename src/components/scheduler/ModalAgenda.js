@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
-import moment from 'moment';
 import {guid, getUnique, getLast, getFirst,} from "react-agenda/src/helpers";
-import Rdate from 'react-datetime';
 import './modalAgenda.scss';
 import {servicesAR} from '../../helpers/Constants.js';
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import Calendar from '../turn/Calendar'
 
 
@@ -24,8 +20,7 @@ class ModalAgenda extends Component {
       contactNumber: '',
       email: '',
       classes: 'priority-1',
-      startDateTime: now,
-      endDateTime: now
+      startDateTime: now
     }
     this.handleDateChange = this.handleDateChange.bind(this)
     this.updateEvent = this.updateEvent.bind(this)
@@ -49,17 +44,6 @@ class ModalAgenda extends Component {
 
     }.bind(this), 50);
 
-   /* if (!this.props.selectedCells) {
-      let start = now
-      let endT = moment(now).add(15, 'Minutes');
-      return this.setState({editMode: false, name: '', startDateTime: start, endDateTime: endT});
-    }*/
-
-    if (this.props.selectedCells && this.props.selectedCells[0] && this.props.selectedCells[0]._id) {
-
-      let start = moment(this.props.selectedCells[0].startDateTime);
-      let endT = moment(this.props.selectedCells[0].endDateTime);
-      debugger
       return this.setState({
         editMode: true,
         name: this.props.selectedCells[0].name,
@@ -68,24 +52,7 @@ class ModalAgenda extends Component {
         email: this.props.selectedCells[0].email,
         classes: this.props.selectedCells[0].classes,
         startDateTime: this.props.selectedCells[0].startDateTime,
-        endDateTime: endT
       });
-
-    }
-
-    if (this.props.selectedCells && this.props.selectedCells.length === 1) {
-      debugger
-      let start = moment(getFirst(this.props.selectedCells));
-      let endT = moment(getLast(this.props.selectedCells)).add(15, 'Minutes');
-      return this.setState({editMode: false, name: '', startDateTime: start, endDateTime: endT});
-    }
-
-    if (this.props.selectedCells && this.props.selectedCells.length > 0) {
-      debugger
-      let start = moment(getFirst(this.props.selectedCells));
-      let endT = moment(getLast(this.props.selectedCells)) || now;
-      this.setState({editMode: false, name: '', startDateTime: start, endDateTime: endT});
-    }
 
   }
 
@@ -101,23 +68,11 @@ class ModalAgenda extends Component {
   }
 
   handleDateChange(ev, date) {
-    var endD = moment(this.state.endDateTime)
     var data = this.state;
     data[ev] = date;
-
-    if (ev === 'startDateTime' && endD.diff(date) < 0) {
-      data['endDateTime'] = moment(date).add(15, 'minutes');
-    }
-
     this.setState(data);
 
   }
-/*
-  setDate = (date) => {
-    debugger
-    const newDate = moment(date.toLocaleString())
-    this.setState({...this.state, startDateTime: newDate})
-  }*/
 
 
   dispatchEvent(obj) {
@@ -130,7 +85,6 @@ class ModalAgenda extends Component {
           return array[key].indexOf(val) == ind;
         })
         var start = newAr[0];
-        var endT = newAr[newAr.length - 1] || now;
         var lasobj = {
           id: guid(),
           clientName: obj.name,
@@ -138,7 +92,6 @@ class ModalAgenda extends Component {
           contactNumber: obj.contactNumber,
           email: obj.email,
           startDateTime: new Date(start),
-          endDateTime: new Date(endT),
           classes: obj.classes
         }
         items.push(lasobj)
@@ -236,7 +189,6 @@ class ModalAgenda extends Component {
             <div className="agendCtrls-timePicker-wrapper">
               <div className="agendCtrls-time-picker">
                 <label>Fecha y Hora</label>
-                {/*<Rdate value={this.state.startDateTime} onChange={this.handleDateChange.bind(null, 'startDateTime')} input={false} viewMode="time" />*/}
                 {this.notEqualDates(this.state.startDateTime, now) &&
                 <Calendar date={this.state.startDateTime} setDate={this.handleDateChange.bind(null, 'startDateTime')} />}
               </div>
