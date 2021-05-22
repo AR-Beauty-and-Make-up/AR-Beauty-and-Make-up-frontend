@@ -184,6 +184,10 @@ class ModalAgenda extends Component {
     this.updateEvent(e);
   }
 
+  notEqualDates = (d1, d2) => {
+  return d1 > d2 || d1 < d2
+}
+
   render() {
     var itc = Object.keys(this.props.itemColors)
     var colors = itc.map(function (item, idx) {
@@ -233,7 +237,8 @@ class ModalAgenda extends Component {
               <div className="agendCtrls-time-picker">
                 <label>Fecha y Hora</label>
                 {/*<Rdate value={this.state.startDateTime} onChange={this.handleDateChange.bind(null, 'startDateTime')} input={false} viewMode="time" />*/}
-                <Calendar date={this.state.startDateTime} setDate={this.handleDateChange.bind(null, 'startDateTime')} />
+                {this.notEqualDates(this.state.startDateTime, now) &&
+                <Calendar date={this.state.startDateTime} setDate={this.handleDateChange.bind(null, 'startDateTime')} />}
               </div>
             </div>
             {!this.isValidTurn() &&
