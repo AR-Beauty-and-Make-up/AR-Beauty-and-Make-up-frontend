@@ -49,17 +49,17 @@ class ModalAgenda extends Component {
 
     }.bind(this), 50);
 
-    if (!this.props.selectedCells) {
+   /* if (!this.props.selectedCells) {
       let start = now
       let endT = moment(now).add(15, 'Minutes');
       return this.setState({editMode: false, name: '', startDateTime: start, endDateTime: endT});
-    }
+    }*/
 
     if (this.props.selectedCells && this.props.selectedCells[0] && this.props.selectedCells[0]._id) {
 
       let start = moment(this.props.selectedCells[0].startDateTime);
       let endT = moment(this.props.selectedCells[0].endDateTime);
-
+      debugger
       return this.setState({
         editMode: true,
         name: this.props.selectedCells[0].name,
@@ -67,19 +67,21 @@ class ModalAgenda extends Component {
         contactNumber: this.props.selectedCells[0].contactNumber,
         email: this.props.selectedCells[0].email,
         classes: this.props.selectedCells[0].classes,
-        startDateTime: start,
+        startDateTime: this.props.selectedCells[0].startDateTime,
         endDateTime: endT
       });
 
     }
 
     if (this.props.selectedCells && this.props.selectedCells.length === 1) {
+      debugger
       let start = moment(getFirst(this.props.selectedCells));
       let endT = moment(getLast(this.props.selectedCells)).add(15, 'Minutes');
       return this.setState({editMode: false, name: '', startDateTime: start, endDateTime: endT});
     }
 
     if (this.props.selectedCells && this.props.selectedCells.length > 0) {
+      debugger
       let start = moment(getFirst(this.props.selectedCells));
       let endT = moment(getLast(this.props.selectedCells)) || now;
       this.setState({editMode: false, name: '', startDateTime: start, endDateTime: endT});
@@ -110,12 +112,12 @@ class ModalAgenda extends Component {
     this.setState(data);
 
   }
-
+/*
   setDate = (date) => {
     debugger
     const newDate = moment(date.toLocaleString())
     this.setState({...this.state, startDateTime: newDate})
-  }
+  }*/
 
 
   dispatchEvent(obj) {
@@ -162,6 +164,7 @@ class ModalAgenda extends Component {
         startDateTime: new Date(this.state.startDateTime),
         classes: this.state.classes
       }
+      debugger
       this.props.edit(newObj);
     }
 
@@ -229,7 +232,8 @@ class ModalAgenda extends Component {
             <div className="agendCtrls-timePicker-wrapper">
               <div className="agendCtrls-time-picker">
                 <label>Fecha y Hora</label>
-                <Calendar date={new Date(this.state.startDateTime)} setDate={this.setDate} />
+                {/*<Rdate value={this.state.startDateTime} onChange={this.handleDateChange.bind(null, 'startDateTime')} input={false} viewMode="time" />*/}
+                <Calendar date={this.state.startDateTime} setDate={this.handleDateChange.bind(null, 'startDateTime')} />
               </div>
             </div>
             {!this.isValidTurn() &&
