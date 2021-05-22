@@ -6,6 +6,7 @@ import './modalAgenda.scss';
 import {servicesAR} from '../../helpers/Constants.js';
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import Calendar from '../turn/Calendar'
 
 
 var now = new Date();
@@ -108,6 +109,12 @@ class ModalAgenda extends Component {
 
     this.setState(data);
 
+  }
+
+  setDate = (date) => {
+    debugger
+    const newDate = moment(date.toLocaleString())
+    this.setState({...this.state, startDateTime: newDate})
   }
 
 
@@ -222,8 +229,7 @@ class ModalAgenda extends Component {
             <div className="agendCtrls-timePicker-wrapper">
               <div className="agendCtrls-time-picker">
                 <label>Fecha y Hora</label>
-                <Rdate value={this.state.startDateTime} onChange={this.handleDateChange.bind(null, 'startDateTime')}
-                       input={false} viewMode="time"></Rdate>
+                <Calendar date={new Date(this.state.startDateTime)} setDate={this.setDate} />
               </div>
             </div>
             {!this.isValidTurn() &&
