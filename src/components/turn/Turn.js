@@ -14,16 +14,10 @@ import * as yup from 'yup';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 import './turn.scss';
-import 'react-datepicker/dist/react-datepicker-min.module.css'
-import DatePicker from 'react-datepicker'
-import setHours from 'date-fns/setHours'
-import setMinutes from 'date-fns/setMinutes'
 import TurnService from '../../services/TurnService';
+import {servicesAR} from "../../helpers/Constants";
 
-import { registerLocale, setDefaultLocale } from  "react-datepicker";
-import es from 'date-fns/locale/es';
-registerLocale('es', es)
-
+import Calendar from "./Calendar"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -60,71 +54,35 @@ const useStyles = makeStyles((theme) => ({
 }
 }));
 
-const servicesAR = [
-    "Masaje reductor",
-    "Mesoterapia",
-    "Maquillaje",
-    "Depilacion",
-    "Radio Frecuencia",
-    "Ultracavitación"
-]
 
 
-
-
-const excludedTimes = [
-    setHours(setMinutes(new Date(), 0), 0),
-    setHours(setMinutes(new Date(), 30), 1),
-    setHours(setMinutes(new Date(), 0), 3),
-    setHours(setMinutes(new Date(), 30), 4),
-    setHours(setMinutes(new Date(), 0), 6),
-    setHours(setMinutes(new Date(), 30), 7),
-    setHours(setMinutes(new Date(), 30), 19),
-    setHours(setMinutes(new Date(), 0), 21),
-    setHours(setMinutes(new Date(), 30), 22)
-]
 
 const Turn = () => {
-
-  const turnService = TurnService()
-  const classes = useStyles();
-
-  const [datesAlreadyTaken, setDatesAlreadyTaken] = useState([])
-
-
-  const [showSteps, setShowSteps] = useState({
-    showServices: true,
-    showDate: false,
-    showCheckedTurn: false,
-    acepptTermsCovid: false,
-    showPersonalInfo: false,
-    notification: false,
-    showFade: true,
-})
-
-const [turn, setTurn] = useState({
-    service: "",
-    date: null,
-    email: "",
-    name: "",
-    lastname: "",
-    contactNumber: ""
     
-})
+    const turnService = TurnService()
+    const classes = useStyles();
 
 
-useEffect(() => { 
-     turnService.getDates().then((response) => {
-    
-        let newStringDates = response.data
+    const [showSteps, setShowSteps] = useState({
+        showServices: true,
+        showDate: false,
+        showCheckedTurn: false,
+        acepptTermsCovid: false,
+        showPersonalInfo: false,
+        notification: false,
+        showFade: true,
+    })
+
+    const [turn, setTurn] = useState({
+        service: "",
+        date: null,
+        email: "",
+        name: "",
+        lastname: "",
+        contactNumber: ""
         
-        let newDates = newStringDates.map((stringDate) => new Date(stringDate))
+    })
 
-        setDatesAlreadyTaken(newDates.concat(datesAlreadyTaken))
-    
-     })
-    
-}, [])
 
   const ChooseService = () => {
     if(showSteps.showServices) {
@@ -138,12 +96,12 @@ useEffect(() => {
                     return(
                         <Grid key={service} item xs={12}>
                             <Paper className={classes.paper} onClick={() => {
-                                setService(service)
+                                setService(service.value)
                                 setSteps(['showServices', 'showDate'])
                                 }}>
                                 <Grid container spacing={1}>
                                 <Grid item xs={6}>
-                                    {service}
+                                    {service.label}
                                 </Grid>
                                 <Grid item xs={6} className={classes.icon}>
                                     <IconButton aria-label="delete" className={classes.margin} size="small">
@@ -198,7 +156,7 @@ const ChooseDate = () => {
                         <h2>Selecionar fecha</h2>
                     </Grid>
                     <Grid item xs={12}>
-                        <Calender />
+                        <Calendar date={turn.date} setDate={setDate} />
                     </Grid>
                     <Grid item xs={12}>
                         <Button style={{background: '#100d0d', color: '#f4f1f1'}} 
@@ -216,76 +174,6 @@ const ChooseDate = () => {
     }
     return <div></div>
 }
-
-
-
-const Calender = () => {
-
-    const filterTimes = dateAndtime => {
-        
-        const filterPassedTime = time => {
-            const currentDate = new Date();
-            const selectedDate = new Date(time);
-    
-            return currentDate.getTime() < selectedDate.getTime();
-        }
-
-        const allowedSatudaysTimes = time => {
-            const selectedDate =  new Date(time)
-         
-            return  selectedDate.getHours() < 13
-        }
-
-        const notEqualDates = (d1, d2) => {
-            return d1 > d2 || d1 < d2
-        }
-        
-        const filterDatesAlreadyTaken = (date) => {
-            return !datesAlreadyTaken.some((dateAlreadyTaken) => !notEqualDates(dateAlreadyTaken, date) )
-        }
-
-        const filterPassedTimesAndSaturdayTimes = date => {
-            if(date.getDay() !== 6){
-                return filterPassedTime(date) && filterDatesAlreadyTaken(date)
-            }
-            else {
-                return filterPassedTime(date) && filterDatesAlreadyTaken(date) && allowedSatudaysTimes(date)
-            }
-        }
-
-    
-        return filterPassedTimesAndSaturdayTimes(dateAndtime) 
-        
-    }
-
-    const isSunday = date => {
-        return date.getDay() !== 0
-      };
-    
-    
-    return (
-      <DatePicker selected={turn.date} onChange={(date) => {
-                setDate(date)
-        }} 
-        showTimeSelect
-        timeCaption="time"
-        excludeTimes={excludedTimes}
-        filterTime={filterTimes}
-        minDate={new Date()}
-        maxDate={new Date().setMonth(new Date().getMonth() + 1 )}
-        locale='pt-br'
-        timeFormat="HH:mm"
-        dateFormat="dd/MM/yyyy HH:mm"
-        timeIntervals={90}
-        filterDate={isSunday}
-        placeholderText="Elegir fecha"
-        withPortal
-        required={true}
-        locale="es"
-      />
-      
-    );
-};
 
 const setDate = (date) => {
     var newTurn =  {...turn}

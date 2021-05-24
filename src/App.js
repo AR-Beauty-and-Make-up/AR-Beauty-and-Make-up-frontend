@@ -1,7 +1,7 @@
 import React from "react";
 import './App.css';
 import HomePage from './components/home/HomePage'
-import {BrowserRouter, Switch, Route} from 'react-router-dom'
+import {Switch, Route} from 'react-router-dom'
 import Scheduler from './components/scheduler/Scheduler'
 import Navbar from './components/navbar/Navbar'
 import Turn from './components/turn/Turn'
@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Cart from './components/cart/CartShopping'
+import Profile from './components/profile/Profile'
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -61,6 +62,12 @@ function App() {
           exact
           path="/store"
           render={() => <Store  addProduct={addProduct} removeProduct={removeProduct} />}/> 
+
+
+        <Route
+          exact
+          path="/profile/"
+          render={() => <Profile />} />
 
       </Switch>
     </div>
