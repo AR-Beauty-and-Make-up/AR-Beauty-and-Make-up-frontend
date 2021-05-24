@@ -10,7 +10,7 @@ import Drawer from '@material-ui/core/Drawer'
 import useCart from './utils/useCart'
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Cart from './components/cart/CartShopping'
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,7 +20,7 @@ const useStyle = makeStyles((theme) => ({
     position: "fixed",
     zIndex: 100,
     right: "20px",
-    top: "70px"
+    top: "70px",
   }
 }))
 
@@ -32,11 +32,11 @@ function App() {
 
     <div className='App'>
       <Drawer anchor="right" open={openCart} onClose={() => setOpenCart(false)}>
-        <Cart products={products}/>
+        <Cart products={products} addProduct={addProduct} removeProduct={removeProduct} />
       </Drawer>
       <IconButton className={classes.cart} onClick={() => setOpenCart(true)}>
         <Badge badgeContent={products.length} color='error' onClick={()=>  console.log(products)}>
-          <AddShoppingCartIcon />
+          <ShoppingCartIcon  fontSize='large'/>
         </Badge> 
       </IconButton>
       <Navbar />

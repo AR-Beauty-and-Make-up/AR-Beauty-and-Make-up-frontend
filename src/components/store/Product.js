@@ -61,7 +61,7 @@ const Product = (props) => {
                       props.addProduct(props.prod)
                       
                       }}>
-                    Agregar al carrito <AddShoppingCartIcon className={classes.icon} />
+                    Agregar al carrito
                     </Button>
                 </Grid>
             </CardActions>

@@ -6,21 +6,33 @@ const useCart = () => {
     const [products, setProducts] = useState([]);
 
     const removeProduct = (item) => {
-        let newProducts = [...products]
-        let index = newProducts.indexOf(item)
+        debugger
+        
+        const selected = products.filter(({product, quantity}) => product.id == item.id)
+        if(selected.length > 0) {
 
-        if (index > -1) {
-            newProducts.splice(index, 1);
+            if (selected[0].quantity === 1) {
+                let newProducts = products.filter(({product, quantity}) => product.id != item.id)
+
+                setProducts(newProducts)
+            }
+            else {
+                selected[0].quantity -= 1
+            }  
+            
         }
-
-        setProducts(newProducts)
-
     }
 
     const addProduct = (item) => {
-        const exists = products.filter((product, quantity) => product.id == item.id)
-        if(exists) {
+        
+        const selected = products.filter(({product, quantity}) => product.id == item.id)
+        if(selected.length > 0) {
+            debugger
+            selected[0].quantity += 1  
             
+        }
+        else {
+            setProducts(prevProducts => [...prevProducts, {product:item, quantity: 1}])
         }
         
     }
