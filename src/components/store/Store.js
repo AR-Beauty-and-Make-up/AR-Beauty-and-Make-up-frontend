@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-const Store = () => {
+const Store = (props) => {
     const classes = useStyles();
     const [products, setProducts] = useState([]);
     const [pages, setPages] = useState(1);
@@ -36,7 +36,7 @@ const Store = () => {
 
 
     const Products = () => {
-        return products.map((prod, index) => <Grid className={classes.item} item key={index}><Product prod={prod}/></Grid> )
+        return products.map((prod, index) => <Grid className={classes.item} item key={index}><Product prod={prod} addProduct={props.addProduct} removeProduct={props.removeProduct} /></Grid> )
     }
 
     const paginated = (pageNumber, setPage) => {
