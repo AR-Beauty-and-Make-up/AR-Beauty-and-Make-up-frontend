@@ -9,9 +9,19 @@ const UserService = () => {
         return axios.get(`${SERVICE_URL}/user/${id}`)
     }
 
+    const postUser = (user) => {
+        return axios.post(`${SERVICE_URL}/users`, user)
+    }
+
+    const loginUser = (email, password) => {
+        return axios.post(`${SERVICE_URL}/validateUser`, {email: email, password: password}) 
+    }
+
 
     return {
         getUser: getUser,
+        postUser: postUser,
+        loginUser: loginUser
     }
 
 }

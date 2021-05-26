@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import './App.css';
 import HomePage from './components/home/HomePage'
 import {Switch, Route} from 'react-router-dom'
@@ -6,41 +6,33 @@ import Scheduler from './components/scheduler/Scheduler'
 import Navbar from './components/navbar/Navbar'
 import Turn from './components/turn/Turn'
 import Store from './components/store/Store'
-import Drawer from '@material-ui/core/Drawer'
+
 import useCart from './utils/useCart'
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import Cart from './components/cart/CartShopping'
+import Cart from './components/cart/Cart'
 import Profile from './components/profile/Profile'
+import Login from './components/login/Login'
+import SignUp from './components/login/SignUp'
 
-import { makeStyles } from '@material-ui/core/styles';
 
-const useStyle = makeStyles((theme) => ({
-  cart: {
-    position: "fixed",
-    zIndex: 100,
-    right: "20px",
-    top: "70px",
-  }
-}))
-
-function App() {
-
+const App = () => {
   const [{openCart, setOpenCart}, {products, removeProduct, addProduct}] = useCart()
-  const classes = useStyle()
+
+  const [notification, setNotication] = useState(null)
+
+  useEffect(() => {
+
+    const timer = setTimeout(() => {
+      setNotication(null)
+    }, 2200);
+
+    return () => clearTimeout(timer);
+  }, [notification])
+
   return (
 
     <div className='App'>
-      <Drawer anchor="right" open={openCart} onClose={() => setOpenCart(false)}>
-        <Cart products={products} addProduct={addProduct} removeProduct={removeProduct} />
-      </Drawer>
-      <IconButton className={classes.cart} onClick={() => setOpenCart(true)}>
-        <Badge badgeContent={products.length} color='error' onClick={()=>  console.log(products)}>
-          <ShoppingCartIcon  fontSize='large'/>
-        </Badge> 
-      </IconButton>
       <Navbar />
+      <Cart products={products} addProduct={addProduct} removeProduct={removeProduct} />
       <Switch>
         <Route
           exact
@@ -69,7 +61,18 @@ function App() {
           path="/profile/"
           render={() => <Profile />} />
 
+        <Route
+          exact
+          path="/login/"
+          render={() => <Login setNotication={setNotication} />} />
+        
+        <Route
+          exact
+          path="/sign-up/"
+          render={() => <SignUp setNotication={setNotication} />} />
+
       </Switch>
+      {notification}
     </div>
 
   );
