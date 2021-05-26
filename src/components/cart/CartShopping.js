@@ -1,5 +1,4 @@
 import { Badge, Container, Grid } from "@material-ui/core"
-import useCart from '../../utils/useCart'
 import CartItem from './CartItem'
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,7 +14,7 @@ const useStyle = makeStyles((theme) => ({
 }))
 
 
-const Cart = (props) => {
+const CartShopping = (props) => {
     
     const classes = useStyle()
 
@@ -29,7 +28,7 @@ const Cart = (props) => {
     }
 
     const [total, setTotal] =  useState(totalProducts(props.products))
-
+    debugger
     return (
         <Container>
             <Grid container>
@@ -67,4 +66,4 @@ const Cart = (props) => {
 }
 
 
-export default Cart
+export default CartShopping
