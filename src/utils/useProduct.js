@@ -1,8 +1,7 @@
-import {useState, useEffect} from "react";
+import {useState} from "react";
 
 
 const useCart = () => {
-    const [openCart, setOpenCart] = useState(false);
     const [products, setProducts] = useState([]);
 
     const removeProduct = (item) => {
@@ -37,7 +36,7 @@ const useCart = () => {
         
     }
 
-    return [{openCart, setOpenCart}, {products, removeProduct, addProduct}]
+    return [products, removeProduct, addProduct]
 }
 
 export default useCart

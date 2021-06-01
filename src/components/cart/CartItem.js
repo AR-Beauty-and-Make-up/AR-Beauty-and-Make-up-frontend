@@ -4,7 +4,8 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import Paper from '@material-ui/core/Paper';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { useState } from "react";
+import {useContext, useState} from 'react'
+import {ProductContext} from '../../providers/productProvider'
 
 const useStyle = makeStyles((theme) => ({
   total: {
@@ -18,7 +19,7 @@ const useStyle = makeStyles((theme) => ({
 const CartItem = (props) => {
 
     const classes = useStyle()
-
+    const [products, removeProduct, addProduct] = useContext(ProductContext)
     const [counter, setCounter] = useState(props.item.quantity)
 
 
@@ -43,7 +44,7 @@ const CartItem = (props) => {
                                     <AddIcon  onClick={() => 
                                         {   
                                             setCounter(prevCounter => prevCounter + 1)
-                                            props.addProduct(props.item.product)
+                                            addProduct(props.item.product)
                                             props.setTotal(prevTotal => prevTotal + props.item.product.price)
                                         }}/>
                                 </Grid>
@@ -54,7 +55,7 @@ const CartItem = (props) => {
                                     <RemoveIcon onClick={() => 
                                         {   
                                             setCounter(prevCounter => prevCounter - 1)
-                                            props.removeProduct(props.item.product)
+                                            removeProduct(props.item.product)
                                             props.setTotal(prevTotal => prevTotal - props.item.product.price)
                                         }}
                                     />

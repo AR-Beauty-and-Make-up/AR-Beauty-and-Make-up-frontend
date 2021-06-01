@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -6,7 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
 import logo from '../../static/images/logo.jpg'
 import Button from '@material-ui/core/Button';
-import { Grid } from '@material-ui/core';
+import { Avatar, Grid } from '@material-ui/core';
+import { UserContext } from '../../providers/userProvider';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,6 +46,16 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = () =>  {
   const classes = useStyles();
   const history = useHistory();
+  const [user, setUser] = useContext(UserContext)
+
+  const avatar = (user) => {
+    if(user.photo){
+      return <Avatar alt="Avatar" src={user.photo} />
+    }
+    else {
+      return <Avatar alt="Avatar" >{user.fullname[0].toUpperCase()}</Avatar>
+    }
+  }
 
 
   return (
@@ -79,12 +90,12 @@ const Navbar = () =>  {
               </Typography>
             </Grid>
             <Grid item xs={6} className={classes.login}>
-              <Button className={classes.items} 
+            {user?avatar(user):<Button className={classes.items} 
                 variant="h7"
                 onClick={() => history.push('/login')}
                 >
                   Iniciar sesion
-              </Button>
+              </Button>}
             </Grid>
           </Grid>
         </Toolbar>

@@ -1,13 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
 import Pagination from '@material-ui/lab/Pagination';
 import ProductService from '../../services/ProductService';
 import Product from './Product'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
       flexGrow: 1,
     },
@@ -26,9 +24,9 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-const Store = (props) => {
+const Store = () => {
     const classes = useStyles();
-    const [products, setProducts] = useState([]);
+    const [items, setItems] = useState([]);
     const [pages, setPages] = useState(1);
     const SERVICE = ProductService()
     
@@ -36,7 +34,7 @@ const Store = (props) => {
 
 
     const Products = () => {
-        return products.map((prod, index) => <Grid className={classes.item} item key={index}><Product prod={prod} addProduct={props.addProduct} removeProduct={props.removeProduct} /></Grid> )
+        return items.map((prod, index) => <Grid className={classes.item} item key={index}><Product prod={prod} /></Grid> )
     }
 
     const paginated = (pageNumber, setPage) => {
@@ -46,7 +44,7 @@ const Store = (props) => {
             if(setPage) {
                 setPages(response.data.totalPages)
             }
-            setProducts(response.data.content)})
+            setItems(response.data.content)})
         }
 
     return(
