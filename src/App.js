@@ -7,15 +7,17 @@ import Navbar from './components/navbar/Navbar'
 import Turn from './components/turn/Turn'
 import Store from './components/store/Store'
 
-import useCart from './utils/useCart'
 import Cart from './components/cart/Cart'
 import Profile from './components/profile/Profile'
 import Login from './components/login/Login'
 import SignUp from './components/login/SignUp'
 
 
+import {UserProvider} from './providers/userProvider'
+import {ProductProvider} from './providers/productProvider'
+
+
 const App = () => {
-  const [{openCart, setOpenCart}, {products, removeProduct, addProduct}] = useCart()
 
   const [notification, setNotication] = useState(null)
 
@@ -31,48 +33,53 @@ const App = () => {
   return (
 
     <div className='App'>
-      <Navbar />
-      <Cart products={products} addProduct={addProduct} removeProduct={removeProduct} />
-      <Switch>
-        <Route
-          exact
-          path="/"
-          render={props => <HomePage {...props}/>}>
-
-        </Route>
-        <Route
-          exact
-          path="/scheduler"
-          render={() => <Scheduler/>}/>
+      <UserProvider>
+      <ProductProvider>
+        <Navbar />
+        <Cart />
         
-        <Route
-          exact
-          path="/services"
-          render={() => <Turn />}/>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={() => <HomePage />}>
 
-        <Route
-          exact
-          path="/store"
-          render={() => <Store  addProduct={addProduct} removeProduct={removeProduct} />}/> 
+          </Route>
+          <Route
+            exact
+            path="/scheduler"
+            render={() => <Scheduler/>}/>
+          
+          <Route
+            exact
+            path="/services"
+            render={() => <Turn />}/>
+
+          <Route
+            exact
+            path="/store"
+            render={() => <Store />}/> 
 
 
-        <Route
-          exact
-          path="/profile/"
-          render={() => <Profile />} />
+          <Route
+            exact
+            path="/profile/"
+            render={() => <Profile />} />
 
-        <Route
-          exact
-          path="/login/"
-          render={() => <Login setNotication={setNotication} />} />
-        
-        <Route
-          exact
-          path="/sign-up/"
-          render={() => <SignUp setNotication={setNotication} />} />
+          <Route
+            exact
+            path="/login/"
+            render={() => <Login setNotication={setNotication} />} />
+          
+          <Route
+            exact
+            path="/sign-up/"
+            render={() => <SignUp setNotication={setNotication} />} />
 
-      </Switch>
-      {notification}
+        </Switch>
+        {notification}
+      </ProductProvider>
+      </UserProvider>
     </div>
 
   );

@@ -5,8 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import { Button, CardActionArea, CardActions } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import useCart from '../../utils/useCart'
+
+import {useContext} from 'react'
+import {ProductContext} from '../../providers/productProvider'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Product = (props) => {
     const classes = useStyles();
+    const [products, removeProduct, addProduct] = useContext(ProductContext)
 
     return (
         <Card className={classes.root}>
@@ -58,7 +60,7 @@ const Product = (props) => {
             <CardActions>
                 <Grid container justify="center" spacing={1}>
                     <Button size="medium"  onClick={() => {
-                      props.addProduct(props.prod)
+                      addProduct(props.prod)
                       
                       }}>
                     Agregar al carrito
