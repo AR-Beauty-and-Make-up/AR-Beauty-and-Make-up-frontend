@@ -10,6 +10,8 @@ import LockOutlined  from '@material-ui/icons/LockOutlined';
 import UserService from '../../services/UserService'
 
 import Notification from '../notification/Notification'
+import { useContext } from 'react';
+import { UserContext } from '../../providers/userProvider';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,8 +31,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = (props) => {
     const classes = useStyles()
-    const history = useHistory();
+    const history = useHistory()
     const SERVICE = UserService()
+    const [user, setUser] = useContext(UserContext)
 
     const initialValues = {
         email: '',
@@ -49,7 +52,10 @@ const Login = (props) => {
     }
 
     const login = ({email, password}, properties) => {
-        SERVICE.loginUser(email, password).then(() => properties.resetForm())
+        SERVICE.loginUser(email, password).then((response) => {
+            setUser(response.data)
+            properties.resetForm()
+        })
         .then(() => {
             props.setNotication(<Notification message="Se ha iniciado sesion exitosamente" />)
         }).then(() => {

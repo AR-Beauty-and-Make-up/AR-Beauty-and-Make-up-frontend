@@ -2,7 +2,8 @@ import { Badge, Container, Grid } from "@material-ui/core"
 import CartItem from './CartItem'
 
 import { makeStyles } from '@material-ui/core/styles';
-import { useState } from "react";
+import {useContext, useState} from 'react'
+import {ProductContext} from '../../providers/productProvider'
 
 const useStyle = makeStyles((theme) => ({
   item: {
@@ -16,9 +17,13 @@ const useStyle = makeStyles((theme) => ({
 
 const CartShopping = (props) => {
     
+    
     const classes = useStyle()
-
+    const [products, removeProduct, addProduct] = useContext(ProductContext)
+    
+    
     const totalProducts = (products) => {
+        debugger
         const reducer = (acc, curValue) => acc + curValue
 
         if(products.length == 0) {
@@ -27,8 +32,8 @@ const CartShopping = (props) => {
         return products.map(({product, quantity}) => product.price*quantity).reduce(reducer)
     }
 
-    const [total, setTotal] =  useState(totalProducts(props.products))
-    debugger
+    const [total, setTotal] =  useState(totalProducts(products))
+
     return (
         <Container>
             <Grid container>
@@ -36,14 +41,12 @@ const CartShopping = (props) => {
                     <h2>Tus compras</h2>
                 </Grid>
                 <Grid item xs={12}>
-                    {props.products.length == 0? <p>Aun no tienes compras</p>: null}
-                    {props.products.map((product) => {
+                    {products.length == 0? <p>Aun no tienes compras</p>: null}
+                    {products.map((product) => {
 
                         return (
                             <Grid item xs={12} className={classes.item}>
                                 <CartItem  item={product} 
-                                           addProduct={props.addProduct} 
-                                           removeProduct={props.removeProduct}
                                            setTotal={setTotal}
                                 />
                             </Grid>
@@ -51,7 +54,7 @@ const CartShopping = (props) => {
                     })}
                 </Grid>
                 <Grid item xs={12} className={classes.total}>
-                    {props.products.length !=0 &&
+                    {products.length !=0 &&
                     <div>
                         <h3>Total:</h3>
                         <p>{total.toFixed(2)}</p>

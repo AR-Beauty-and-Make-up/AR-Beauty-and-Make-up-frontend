@@ -12,6 +12,9 @@ import Notification from '../notification/Notification'
 
 import UserService from '../../services/UserService'
 
+import { useContext } from 'react';
+import { UserContext } from '../../providers/userProvider';
+
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -38,6 +41,7 @@ const SignUp = (props) => {
     const classes = useStyles()
     const history = useHistory();
     const SERVICE = UserService()
+    const [user, setUser] = useContext(UserContext)
     
 
     const initialValues = {
@@ -56,7 +60,10 @@ const SignUp = (props) => {
 
     const register = (values, properties) => {
 
-        SERVICE.postUser(values).then(() => properties.resetForm())
+        SERVICE.postUser({...values, fullname: values.name+" "+values.lastname}).then((response) => {
+            setUser(response.data)
+            properties.resetForm()
+        })
         .then(() => {
             props.setNotication(<Notification message="Se ha dado de alta usuario exitosamente" />)
         }).then(() => {

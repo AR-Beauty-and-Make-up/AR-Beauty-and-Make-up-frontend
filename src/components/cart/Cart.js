@@ -1,13 +1,12 @@
+import {useContext, useState} from 'react'
+import {ProductContext} from '../../providers/productProvider'
+
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import CartShopping from './CartShopping'
 import Drawer from '@material-ui/core/Drawer'
-
-import useCart from '../../utils/useCart'
-
 import { useLocation } from 'react-router-dom'
-
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyle = makeStyles((theme) => ({
@@ -21,11 +20,11 @@ const useStyle = makeStyles((theme) => ({
 
 
 
-const Cart = (props) => {
+const Cart = () => {
 
     const classes = useStyle()
-
-    const [{openCart, setOpenCart}] = useCart()
+    const [products, removeProduct, addProduct] = useContext(ProductContext)
+    const [openCart, setOpenCart] = useState(false)
     const {pathname} = useLocation()
 
     
@@ -43,10 +42,10 @@ const Cart = (props) => {
         return (
             <>
                 <Drawer anchor="right" open={openCart} onClose={() => setOpenCart(false)}>
-                    <CartShopping products={props.products} addProduct={props.addProduct} removeProduct={props.removeProduct} />
+                    <CartShopping />
                 </Drawer>
                 <IconButton className={classes.cart} onClick={() => setOpenCart(true)}>
-                <Badge badgeContent={props.products.length} color='error' onClick={()=>  console.log(props.products)}>
+                <Badge badgeContent={products.length} color='error' onClick={()=>  console.log(products)}>
                     <ShoppingCartIcon  fontSize='large'/>
                 </Badge> 
                 </IconButton>
