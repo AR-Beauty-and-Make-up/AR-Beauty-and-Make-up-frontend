@@ -12,13 +12,15 @@ const TurnService = () => {
     }
     
     const postTurn = (turn) => {
+        debugger
         var turnToSend = {...turn}
-        turnToSend.date = moment(turnToSend.date.toString()).tz( "America/Argentina/Buenos_Aires").format("YYYY-MM-DDTHH:mm:ss.SS")
+        turnToSend.date = moment(turnToSend.date.toString()).tz( "America/Argentina/Buenos_Aires").format("YYYY-MM-DDTHH:mm:ss")
         turnToSend.clientName = turn.name + " " + turn.lastname
         axios.post(`${SERVICE_URL}/turn`, turnToSend)
     }
 
     const updateTurn = (turn) => {
+        debugger
         axios.put(`${SERVICE_URL}/turns/` + turn.id , turn)
     }
 
