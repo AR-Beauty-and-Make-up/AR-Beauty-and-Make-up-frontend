@@ -144,7 +144,6 @@ class Scheduler extends React.Component {
   }
 
   buildTurn(turn) {
-    debugger
     return {
       id: turn._id,
       clientName: turn.name,

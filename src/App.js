@@ -19,13 +19,13 @@ import {ProductProvider} from './providers/productProvider'
 
 const App = () => {
 
-  const [notification, setNotication] = useState(null)
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
 
     const timer = setTimeout(() => {
-      setNotication(null)
-    }, 2200);
+      setNotification(null)
+    }, 6000);
 
     return () => clearTimeout(timer);
   }, [notification])
@@ -69,12 +69,12 @@ const App = () => {
           <Route
             exact
             path="/login/"
-            render={() => <Login setNotication={setNotication} />} />
+            render={() => <Login setNotication={setNotification} />} />
           
           <Route
             exact
             path="/sign-up/"
-            render={() => <SignUp setNotication={setNotication} />} />
+            render={() => <SignUp setNotication={setNotification} />} />
 
         </Switch>
         {notification}
