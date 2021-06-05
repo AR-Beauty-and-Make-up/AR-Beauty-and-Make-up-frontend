@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -14,17 +14,13 @@ import * as yup from 'yup';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 import './turn.scss';
-import 'react-datepicker/dist/react-datepicker-min.module.css'
-import DatePicker from 'react-datepicker'
-import setHours from 'date-fns/setHours'
-import setMinutes from 'date-fns/setMinutes'
 import TurnService from '../../services/TurnService';
+import {servicesAR} from "../../helpers/Constants";
 
-import { registerLocale, setDefaultLocale } from  "react-datepicker";
-import es from 'date-fns/locale/es';
-registerLocale('es', es)
+import Calendar from "./Calendar"
+import { LanguageContext } from '../../providers/languageProvider';
 
-
+import TEXT from '../../helpers/Languages'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     backgroundColor: '#c8adab',
     '&:hover': {
-        color: '#FFFFFF'
+        fontWeight: 'bold'
     }
   },
   selectedService: {
@@ -60,71 +56,35 @@ const useStyles = makeStyles((theme) => ({
 }
 }));
 
-const servicesAR = [
-    "Masaje reductor",
-    "Mesoterapia",
-    "Maquillaje",
-    "Depilacion",
-    "Radio Frecuencia",
-    "Ultracavitación"
-]
 
 
-
-
-const excludedTimes = [
-    setHours(setMinutes(new Date(), 0), 0),
-    setHours(setMinutes(new Date(), 30), 1),
-    setHours(setMinutes(new Date(), 0), 3),
-    setHours(setMinutes(new Date(), 30), 4),
-    setHours(setMinutes(new Date(), 0), 6),
-    setHours(setMinutes(new Date(), 30), 7),
-    setHours(setMinutes(new Date(), 30), 19),
-    setHours(setMinutes(new Date(), 0), 21),
-    setHours(setMinutes(new Date(), 30), 22)
-]
 
 const Turn = () => {
-
-  const turnService = TurnService()
-  const classes = useStyles();
-
-  const [datesAlreadyTaken, setDatesAlreadyTaken] = useState([])
-
-
-  const [showSteps, setShowSteps] = useState({
-    showServices: true,
-    showDate: false,
-    showCheckedTurn: false,
-    acepptTermsCovid: false,
-    showPersonalInfo: false,
-    notification: false,
-    showFade: true,
-})
-
-const [turn, setTurn] = useState({
-    service: "",
-    date: null,
-    email: "",
-    name: "",
-    lastname: "",
-    clientNumber: ""
     
-})
+    const turnService = TurnService()
+    const classes = useStyles();
+    const [language, setLanguage] = useContext(LanguageContext)
 
+    const [showSteps, setShowSteps] = useState({
+        showServices: true,
+        showDate: false,
+        showCheckedTurn: false,
+        acepptTermsCovid: false,
+        showPersonalInfo: false,
+        notification: false,
+        showFade: true,
+    })
 
-useEffect(() => { 
-     turnService.getDates().then((response) => {
-    
-        let newStringDates = response.data
+    const [turn, setTurn] = useState({
+        service: "",
+        date: null,
+        email: "",
+        name: "",
+        lastname: "",
+        contactNumber: ""
         
-        let newDates = newStringDates.map((stringDate) => new Date(stringDate))
+    })
 
-        setDatesAlreadyTaken(newDates.concat(datesAlreadyTaken))
-    
-     })
-    
-}, [])
 
   const ChooseService = () => {
     if(showSteps.showServices) {
@@ -132,18 +92,18 @@ useEffect(() => {
         return(
             <Fade in={showSteps.showServices} timeout={500}>
             <div className={classes.root}>
-            <h2>Elegir Servicio</h2>
+            <h2>{TEXT[language].turn.service}</h2>
             <Grid container spacing={1}>
                 {servicesAR.map((service) => {
                     return(
                         <Grid key={service} item xs={12}>
                             <Paper className={classes.paper} onClick={() => {
-                                setService(service)
+                                setService(service.value)
                                 setSteps(['showServices', 'showDate'])
                                 }}>
                                 <Grid container spacing={1}>
                                 <Grid item xs={6}>
-                                    {service}
+                                    {service.label}
                                 </Grid>
                                 <Grid item xs={6} className={classes.icon}>
                                     <IconButton aria-label="delete" className={classes.margin} size="small">
@@ -195,10 +155,10 @@ const ChooseDate = () => {
                         </Paper>
                     </Grid>
                     <Grid item xs={12}>
-                        <h2>Selecionar fecha</h2>
+                        <h2>{TEXT[language].turn.calendar.date}</h2>
                     </Grid>
                     <Grid item xs={12}>
-                        <Calender />
+                        <Calendar date={turn.date} setDate={setDate} />
                     </Grid>
                     <Grid item xs={12}>
                         <Button style={{background: '#100d0d', color: '#f4f1f1'}} 
@@ -207,7 +167,7 @@ const ChooseDate = () => {
                             
                         }}
                         disabled={!turn.date}
-                        >Aceptar</Button>
+                        >{TEXT[language].turn.calendar.buttom}</Button>
                     </Grid>
                 </Grid>
                 
@@ -216,67 +176,6 @@ const ChooseDate = () => {
     }
     return <div></div>
 }
-
-
-
-const Calender = () => {
-
-    const filterTimes = dateAndtime => {
-        
-        const filterPassedTime = time => {
-            const currentDate = new Date();
-            const selectedDate = new Date(time);
-    
-            return currentDate.getTime() < selectedDate.getTime();
-        }
-
-        const allowedSatudaysTimes = time => {
-            const selectedDate =  new Date(time)
-         
-            return  selectedDate.getHours() < 13
-        }
-
-        const filterPassedTimesAndSaturdayTimes = date => {
-            if(date.getDay() !== 6){
-                return filterPassedTime(date)
-            }
-            else {
-                return filterPassedTime(date) && allowedSatudaysTimes(date)
-            }
-        }
-
-        return filterPassedTimesAndSaturdayTimes(dateAndtime) 
-        
-    }
-
-    const isSunday = date => {
-        return date.getDay() !== 0
-      };
-    
-    
-    return (
-      <DatePicker selected={turn.date} onChange={(date) => {
-                setDate(date)
-        }} 
-        showTimeSelect
-        timeCaption="time"
-        excludeTimes={excludedTimes}
-        filterTime={filterTimes}
-        minDate={new Date()}
-        maxDate={new Date().setMonth(new Date().getMonth() + 1 )}
-        locale='pt-br'
-        timeFormat="HH:mm"
-        dateFormat="dd/MM/yyyy HH:mm"
-        timeIntervals={90}
-        filterDate={isSunday}
-        placeholderText="Elegir fecha"
-        withPortal
-        required={true}
-        locale="es"
-      />
-      
-    );
-};
 
 const setDate = (date) => {
     var newTurn =  {...turn}
@@ -309,7 +208,7 @@ const CheckTurn = () => {
                     checked={showSteps.acepptTermsCovid}
                     onChange={(e) => setSteps(['acepptTermsCovid'])}
                     />} 
-                    label="Declaro no tener fiebre ni haber estado en contacto con personas con diagnostico positivo de COVID-19" 
+                    label={TEXT[language].turn.check.disclaimer}
                     />
                     </Grid>
                     <Grid item xs={12}>
@@ -319,7 +218,7 @@ const CheckTurn = () => {
 
                         }}
                         disabled={!showSteps.acepptTermsCovid}
-                        >Completar mis datos</Button>
+                        >{TEXT[language].turn.check.buttom}</Button>
                     </Grid>
                 </Grid>
         )
@@ -337,19 +236,19 @@ const PersonalInfo = () => {
 
 const validationSchema = yup.object({
     email: yup
-      .string('Ingrese un correo electronico')
-      .email('Ingrese un correo electronico valido')
-      .required('Correo electronico es requerido'),
+      .string(TEXT[language].turn.validation.email.placeholder)
+      .email(TEXT[language].turn.validation.email.error)
+      .required(TEXT[language].turn.validation.email.required),
     contact: yup
-      .string('Ingrese un numero de contacto')
-      .length(11, 'Numero de contacto debe incluir prefijo 011')
-      .required('Numero de contacto es requerido'),
+      .string(TEXT[language].turn.validation.contact.placeholder)
+      .length(11, TEXT[language].turn.validation.contact.error)
+      .required(TEXT[language].turn.validation.contact.required),
     firstName: yup
-      .string('Ingrese primer nombre')
-      .required('Primer nombre es requerido'),
+      .string(TEXT[language].turn.validation.firstname.placeholder)
+      .required(TEXT[language].turn.validation.firstname.required),
     lastName: yup
-      .string('Ingrese apellido')
-      .required('Apellido es requerido'),
+      .string(TEXT[language].turn.validation.lastname.placeholder)
+      .required(TEXT[language].turn.validation.lastname.required),
   });
   
   const FormTurn = () => {
@@ -367,7 +266,7 @@ const validationSchema = yup.object({
         newTurn.email = email
         newTurn.name = firstName
         newTurn.lastname = lastName
-        newTurn.clientNumber = contact
+        newTurn.contactNumber = contact
         
         setTurn(newTurn)
         turnService.postTurn(newTurn)
@@ -386,7 +285,7 @@ const validationSchema = yup.object({
             fullWidth
             id="email"
             name="email"
-            label="Correo electronico"
+            label={TEXT[language].turn.label.email}
             value={formik.values.email}
             onChange={formik.handleChange}
             error={formik.touched.email && Boolean(formik.errors.email)}
@@ -398,7 +297,7 @@ const validationSchema = yup.object({
             
             id="firstName"
             name="firstName"
-            label="Nombre"
+            label={TEXT[language].turn.label.name}
             value={formik.values.firstName}
             onChange={formik.handleChange}
             error={formik.touched.firstName && Boolean(formik.errors.firstName)}
@@ -411,7 +310,7 @@ const validationSchema = yup.object({
             
             id="lastName"
             name="lastName"
-            label="Apellido"
+            label={TEXT[language].turn.label.lastname}
             value={formik.values.lastName}
             onChange={formik.handleChange}
             error={formik.touched.lastName && Boolean(formik.errors.lastName)}
@@ -424,7 +323,7 @@ const validationSchema = yup.object({
             
             id="contact"
             name="contact"
-            label="Numero de contacto"
+            label={TEXT[language].turn.label.contact}
             value={formik.values.contact}
             onChange={formik.handleChange}
             error={formik.touched.contact && Boolean(formik.errors.contact)}
@@ -434,7 +333,7 @@ const validationSchema = yup.object({
           </Grid>
           <Grid item xs={12}>
           <Button style={{background: '#100d0d', color: '#f4f1f1'}} variant="contained" fullWidth type="submit">
-            Completar datos
+            {TEXT[language].turn.buttom}
           </Button>
           </Grid>
         </Grid>
@@ -449,15 +348,15 @@ const Notification = () => {
     if(showSteps.notification) {
         return(
             <div className={classes.notificationStyle}>
-                <h3 style={{color: 'purple'}}>Revisa tu correo</h3>
-                <h4>Enviamos un mail de confimacion a <b>{turn.email}</b></h4>
+                <h3 style={{color: 'purple'}}>{TEXT[language].turn.notification.header}</h3>
+                <h4>{TEXT[language].turn.notification.body1}<b>{turn.email}</b></h4>
                 <br/>
                 <br/>
                 <h6>
-                    Deberás confirmar tu reserva dentro de los próximos 15 minutos.
+                    {TEXT[language].turn.notification.body2}
                 </h6>
                 <h6>
-                    De lo contrario, será cancelada automaticamente.
+                    {TEXT[language].turn.notification.body3}
                 </h6>
             </div>
         )

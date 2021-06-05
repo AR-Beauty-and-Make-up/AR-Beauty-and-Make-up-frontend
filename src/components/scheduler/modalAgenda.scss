@@ -21,6 +21,7 @@
   display: flex;
   flex-direction: row;
   padding-top: 8px;
+  justify-content: center;
 }
 
 .agendCtrls-label-wrapper{
@@ -94,16 +95,39 @@
   flex-direction: column;
   justify-content: center;
   padding: 15px;
-  background: rgba(0, 0, 0, 0.3);
 }
+
 
 .agenda-item-description small {
   color: #000000;
   font-size: 12px;
 }
 
+.agenda-item-description {
+  color: #000000;
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
 .date-error {
   color: #dc143c;
+}
+
+.save-changes-button {
+  background-color: #000000;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  padding: 10px;
+  width: 100px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  margin: 10px 40px;
+}
+input[type=submit]:disabled{
+  background-color: #8a8c91;
 }
 
 

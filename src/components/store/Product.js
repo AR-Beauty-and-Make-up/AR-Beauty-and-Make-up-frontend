@@ -6,10 +6,18 @@ import { Button, CardActionArea, CardActions } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
+import {useContext} from 'react'
+import {ProductContext} from '../../providers/productProvider'
+import { LanguageContext } from '../../providers/languageProvider';
+
+import TEXT from '../../helpers/Languages'
+
 const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 300,
       minHeight: 300,
+      padding: theme.spacing(2),
+      
     },
     media: {
       height: 200,
@@ -25,10 +33,16 @@ const useStyles = makeStyles((theme) => ({
     expandOpen: {
       transform: 'rotate(180deg)',
     },
+    icon: {
+      paddingLeft: '5px'
+    }
   }));
 
 const Product = (props) => {
     const classes = useStyles();
+    const [products, removeProduct, addProduct] = useContext(ProductContext)
+    const [language, setLanguage] = useContext(LanguageContext)
+
     return (
         <Card className={classes.root}>
             <CardActionArea>
@@ -49,8 +63,8 @@ const Product = (props) => {
             </CardActionArea>
             <CardActions>
                 <Grid container justify="center" spacing={1}>
-                    <Button size="medium" color="primary">
-                    Agregar al carrito
+                    <Button size="medium"  onClick={() => addProduct(props.prod)}>
+                    {TEXT[language].product.buttom}
                     </Button>
                 </Grid>
             </CardActions>

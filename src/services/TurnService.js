@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from "moment-timezone";
 
 
 const SERVICE_URL = 'http://localhost:8080'
@@ -11,13 +12,15 @@ const TurnService = () => {
     }
     
     const postTurn = (turn) => {
+        debugger
         var turnToSend = {...turn}
-        turnToSend.date = turnToSend.date.toISOString().slice(0, -2)
+        turnToSend.date = moment(turnToSend.date.toString()).tz( "America/Argentina/Buenos_Aires").format("YYYY-MM-DDTHH:mm:ss")
         turnToSend.clientName = turn.name + " " + turn.lastname
         axios.post(`${SERVICE_URL}/turn`, turnToSend)
     }
 
     const updateTurn = (turn) => {
+        debugger
         axios.put(`${SERVICE_URL}/turns/` + turn.id , turn)
     }
 
@@ -31,16 +34,11 @@ const TurnService = () => {
     }
 
 
-    const getProducts = () => {
-        return axios.get(`${SERVICE_URL}/products`)
-    }
-
     return {
         getTurns: getTurns,
         postTurn: postTurn,
         updateTurn: updateTurn,
         deleteTurn: deleteTurn,
-        getProducts: getProducts,
         getDates: getDates
     }
 

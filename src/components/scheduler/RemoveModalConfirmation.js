@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import './modalAgenda.scss';
+import './modalConfirmation.scss';
 
 class RemoveModalConfirmation extends React.Component {
   constructor(props) {
@@ -8,7 +8,6 @@ class RemoveModalConfirmation extends React.Component {
   }
 
   remove = () => {
-    debugger
     this.props.remove(this.props.turn)
     this.props.onClose()
   }
@@ -16,15 +15,15 @@ class RemoveModalConfirmation extends React.Component {
   render() {
     return (
 
-      <div className="modal box-card">
-        <div className="modal-content">
+      <div className="modal-confirmation-content">
+        <div className="confirmation-modal">
           <div className="remove-confirmation-card">
             <div className="remove-confirmation-title">
               Está seguro de borrar este turno?
             </div>
             <div className="remove-confirmation-buttons">
               <button className="remove-confirmation-button" onClick={this.remove}>Aceptar</button>
-              <button className="remove-confirmation-button" onClick={this.props.onClose}>Cancelar</button>
+              <button className="remove-confirmation-button" onClick={this.props.cancel}>Cancelar</button>
             </div>
           </div>
         </div>
