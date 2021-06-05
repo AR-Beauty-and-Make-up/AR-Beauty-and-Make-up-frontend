@@ -7,6 +7,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import {useContext, useState} from 'react'
 import {ProductContext} from '../../providers/productProvider'
 
+import { LanguageContext } from '../../providers/languageProvider';
+
+import TEXT from '../../helpers/Languages'
+
 const useStyle = makeStyles((theme) => ({
   total: {
     textAlign:"right"
@@ -20,6 +24,8 @@ const CartItem = (props) => {
 
     const classes = useStyle()
     const [products, removeProduct, addProduct] = useContext(ProductContext)
+    const [language, setLanguage] = useContext(LanguageContext)
+
     const [counter, setCounter] = useState(props.item.quantity)
 
 
@@ -32,10 +38,10 @@ const CartItem = (props) => {
                             <h2>{props.item.product.productName}</h2>
                         </Grid>
                         <Grid item xs={6}>
-                            {"Precio:" + props.item.product.price.toFixed(2)}
+                            {TEXT[language].cartitem.price + props.item.product.price.toFixed(2)}
                         </Grid>
                         <Grid item xs={6} className={classes.total}>
-                            {"Total:" + (props.item.product.price * counter).toFixed(2)}
+                            {TEXT[language].cartitem.subtotal + (props.item.product.price * counter).toFixed(2)}
                         </Grid>
                         <Grid item xs={12}>
                             <Paper>

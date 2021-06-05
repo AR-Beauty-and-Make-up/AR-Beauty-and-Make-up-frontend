@@ -8,6 +8,9 @@ import logo from '../../static/images/logo.jpg'
 import Button from '@material-ui/core/Button';
 import { Avatar, Grid } from '@material-ui/core';
 import { UserContext } from '../../providers/userProvider';
+import { LanguageContext } from '../../providers/languageProvider';
+
+import TEXT from '../../helpers/Languages'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +50,7 @@ const Navbar = () =>  {
   const classes = useStyles();
   const history = useHistory();
   const [user, setUser] = useContext(UserContext)
+  const [language, setLanguage] = useContext(LanguageContext)
 
   const avatar = (user) => {
     if(user.photo){
@@ -67,26 +71,26 @@ const Navbar = () =>  {
               <img src={logo} alt="logo" className={classes.logo} />
               <Typography className={classes.title} variant="h6">
                 <div onClick={() => history.push('/')}>
-                  AR Beauty & Make up
+                  {TEXT[language].navbar.title}
                 </div>
               </Typography>
                 <Typography className={classes.items} 
                   variant="h7"
                   onClick={() => history.push('/store')}
                   >
-                    Tienda
+                    {TEXT[language].navbar.subtitle1}
                 </Typography>
               <Typography className={classes.items} 
                 variant="h7"
                 onClick={() => history.push('/scheduler')}
                 >
-                  Turnos
+                  {TEXT[language].navbar.subtitle2}
               </Typography>
               <Typography className={classes.items} 
                 variant="h7"
                 onClick={() => history.push('/services')}
                 >
-                  Servicios
+                  {TEXT[language].navbar.subtitle3}
               </Typography>
             </Grid>
             <Grid item xs={6} className={classes.login}>
@@ -94,7 +98,7 @@ const Navbar = () =>  {
                 variant="h7"
                 onClick={() => history.push('/login')}
                 >
-                  Iniciar sesion
+                  {TEXT[language].navbar.login}
               </Button>}
             </Grid>
           </Grid>

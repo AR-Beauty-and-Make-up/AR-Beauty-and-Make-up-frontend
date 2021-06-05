@@ -5,6 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import {useContext, useState} from 'react'
 import {ProductContext} from '../../providers/productProvider'
 
+import { LanguageContext } from '../../providers/languageProvider';
+
+import TEXT from '../../helpers/Languages'
+
 const useStyle = makeStyles((theme) => ({
   item: {
     paddingBottom:"20px"
@@ -20,6 +24,7 @@ const CartShopping = (props) => {
     
     const classes = useStyle()
     const [products, removeProduct, addProduct] = useContext(ProductContext)
+    const [language, setLanguage] = useContext(LanguageContext)
     
     
     const totalProducts = (products) => {
@@ -38,10 +43,10 @@ const CartShopping = (props) => {
         <Container>
             <Grid container>
                 <Grid item xs={12}>
-                    <h2>Tus compras</h2>
+                    <h2>{TEXT[language].cartshopping.header}</h2>
                 </Grid>
                 <Grid item xs={12}>
-                    {products.length == 0? <p>Aun no tienes compras</p>: null}
+                    {products.length == 0? <p>{TEXT[language].cartshopping.body}</p>: null}
                     {products.map((product) => {
 
                         return (
@@ -56,7 +61,7 @@ const CartShopping = (props) => {
                 <Grid item xs={12} className={classes.total}>
                     {products.length !=0 &&
                     <div>
-                        <h3>Total:</h3>
+                        <h3>{TEXT[language].cartshopping.footer}</h3>
                         <p>{total.toFixed(2)}</p>
                     </div>
                     }

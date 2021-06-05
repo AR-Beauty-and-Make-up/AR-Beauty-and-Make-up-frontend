@@ -8,6 +8,9 @@ import Grid from '@material-ui/core/Grid';
 
 import {useContext} from 'react'
 import {ProductContext} from '../../providers/productProvider'
+import { LanguageContext } from '../../providers/languageProvider';
+
+import TEXT from '../../helpers/Languages'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 const Product = (props) => {
     const classes = useStyles();
     const [products, removeProduct, addProduct] = useContext(ProductContext)
+    const [language, setLanguage] = useContext(LanguageContext)
 
     return (
         <Card className={classes.root}>
@@ -59,11 +63,8 @@ const Product = (props) => {
             </CardActionArea>
             <CardActions>
                 <Grid container justify="center" spacing={1}>
-                    <Button size="medium"  onClick={() => {
-                      addProduct(props.prod)
-                      
-                      }}>
-                    Agregar al carrito
+                    <Button size="medium"  onClick={() => addProduct(props.prod)}>
+                    {TEXT[language].product.buttom}
                     </Button>
                 </Grid>
             </CardActions>

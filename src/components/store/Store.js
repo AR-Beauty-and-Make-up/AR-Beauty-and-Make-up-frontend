@@ -40,7 +40,6 @@ const Store = () => {
     const paginated = (pageNumber, setPage) => {
         SERVICE.getPageProducts(pageNumber - 1).then((response) => 
         {   
-            console.log(document.getElementById("pag").clientWidth)
             if(setPage) {
                 setPages(response.data.totalPages)
             }

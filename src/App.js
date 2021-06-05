@@ -15,7 +15,7 @@ import SignUp from './components/login/SignUp'
 
 import {UserProvider} from './providers/userProvider'
 import {ProductProvider} from './providers/productProvider'
-
+import {LanguageProvider} from './providers/languageProvider'
 
 const App = () => {
 
@@ -33,6 +33,7 @@ const App = () => {
   return (
 
     <div className='App'>
+      <LanguageProvider>
       <UserProvider>
       <ProductProvider>
         <Navbar />
@@ -80,6 +81,7 @@ const App = () => {
         {notification}
       </ProductProvider>
       </UserProvider>
+      </LanguageProvider>
     </div>
 
   );

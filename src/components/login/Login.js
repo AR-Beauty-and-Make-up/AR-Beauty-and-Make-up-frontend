@@ -13,7 +13,11 @@ import Notification from '../notification/Notification'
 import React, { useContext } from 'react';
 import { UserContext } from '../../providers/userProvider';
 
-const useStyles = makeStyles((theme) => ({
+import { LanguageContext } from '../../providers/languageProvider';
+
+import TEXT from '../../helpers/Languages'
+
+const useStyles = makeStyles(() => ({
     root: {
       flexGrow: 1,
     },
@@ -34,6 +38,7 @@ const Login = (props) => {
     const history = useHistory()
     const SERVICE = UserService()
     const [user, setUser] = useContext(UserContext)
+    const [language, setLanguage] = useContext(LanguageContext)
 
     const initialValues = {
         email: '',
@@ -41,8 +46,8 @@ const Login = (props) => {
     }
 
     const validationSchema = Yup.object().shape({
-        email: Yup.string().email('Correo electronico invalido').required('Debe completar este campo'),
-        password: Yup.string().min(8, 'Contraseña debe tener al menos 8 caracteres').required("Debe completar este campo") 
+        email: Yup.string().email(TEXT[language].login.validation.email.error).required(TEXT[language].login.validation.email.required),
+        password: Yup.string().min(8, TEXT[language].login.validation.password.error).required(TEXT[language].login.validation.password.required) 
     })
 
     const Error = (props) => {
@@ -57,7 +62,7 @@ const Login = (props) => {
             properties.resetForm()
         })
         .then(() => {
-            props.setNotication(<Notification message="Se ha iniciado sesion exitosamente" />)
+            props.setNotication(<Notification message={TEXT[language].login.notification} />)
         }).then(() => {
             history.push('/')
         }).catch((error) => {
@@ -73,7 +78,7 @@ const Login = (props) => {
                             <Avatar><LockOutlined /></Avatar>
                         </Grid>
                         <Grid item xs={12}>
-                            <h2>Iniciar sesión</h2>
+                            <h2>{TEXT[language].login.header}</h2>
                         </Grid>
                         <Formik initialValues={initialValues} 
                                 validationSchema={validationSchema}
@@ -81,7 +86,7 @@ const Login = (props) => {
                             {
                                 (props) => (
                                     <Form>
-                                        <Field as={TextField} label='Correo electronico' name='email' type='Email' fullWidth required
+                                        <Field as={TextField} label={TEXT[language].login.label.email} name='email' type='Email' fullWidth required
                                         value={props.values.email}
                                         error={props.errors.email&&props.touched.email}
                                         onChange={props.handleChange}
@@ -89,7 +94,7 @@ const Login = (props) => {
                                             {(error) => <Error error={error} />}
                                             </ErrorMessage>}/>
 
-                                        <Field as={TextField} label='Contraseña' name='password' type='password' fullWidth required
+                                        <Field as={TextField} label={TEXT[language].login.label.password} name='password' type='password' fullWidth required
                                         value={props.values.password}
                                         error={props.errors.password&&props.touched.password}
                                         onChange={props.handleChange}
@@ -99,16 +104,16 @@ const Login = (props) => {
 
                                         <div className={classes.button}>
                                             <Button  type='submit' color='primary' variant='contained' 
-                                            fullWidth>Iniciar sesion</Button>
+                                            fullWidth>{TEXT[language].login.buttom}</Button>
                                         </div>
                                     </Form>
                                 )
                             }
                         </Formik>
                         <Typography>
-                            Todavia no tienes una cuenta? 
+                                {TEXT[language].login.footer.span}
                             <Link href='sign-up'>
-                                Registate
+                                {TEXT[language].login.footer.link}
                             </Link> 
                         </Typography>
                     </Grid>
