@@ -24,7 +24,6 @@ const excludedTimes = [
 
 
 const Calendar = (props) => {
-    debugger
     const turnService = TurnService()
     const [datesAlreadyTaken, setDatesAlreadyTaken] = useState([])
 

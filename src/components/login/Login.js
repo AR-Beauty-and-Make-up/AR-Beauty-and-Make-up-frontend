@@ -10,7 +10,7 @@ import LockOutlined  from '@material-ui/icons/LockOutlined';
 import UserService from '../../services/UserService'
 
 import Notification from '../notification/Notification'
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { UserContext } from '../../providers/userProvider';
 
 const useStyles = makeStyles((theme) => ({
@@ -60,6 +60,8 @@ const Login = (props) => {
             props.setNotication(<Notification message="Se ha iniciado sesion exitosamente" />)
         }).then(() => {
             history.push('/')
+        }).catch((error) => {
+            props.setNotication(<Notification message="Los datos ingresados son incorrectos" />)
         })
     }
 
