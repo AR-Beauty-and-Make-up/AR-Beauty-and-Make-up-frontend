@@ -117,7 +117,6 @@ class ModalAgenda extends Component {
         startDateTime: new Date(this.state.startDateTime),
         classes: this.state.classes
       }
-      debugger
       this.props.edit(newObj);
     }
 

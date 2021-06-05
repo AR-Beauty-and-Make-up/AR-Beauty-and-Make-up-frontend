@@ -73,6 +73,9 @@ const SignUp = (props) => {
         }).then(() => {
             history.push('/')
         })
+          .catch((e) => {
+              props.setNotication(<Notification message="El mail ingresado ya se encuentra registrado."/>)
+          })
         
     }
 
