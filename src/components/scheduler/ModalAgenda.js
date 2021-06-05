@@ -180,7 +180,7 @@ class ModalAgenda extends Component {
                 <label>Teléfono</label>
                 <input type="text" name="contactNumber" autoFocus ref="contactNumber" className="agendCtrls-event-input"
                        value={this.state.contactNumber} onChange={this.handleChange.bind(this)} placeholder="Telefono"/>
-                <label>Email</label>
+                <label>Correo electronico</label>
                 <input type="text" name="email" autoFocus ref="email" className="agendCtrls-event-input"
                        value={this.state.email} onChange={this.handleChange.bind(this)} placeholder="E-mail"/>
               </div>

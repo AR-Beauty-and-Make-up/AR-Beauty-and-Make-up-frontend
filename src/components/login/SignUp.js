@@ -14,6 +14,9 @@ import UserService from '../../services/UserService'
 
 import { useContext } from 'react';
 import { UserContext } from '../../providers/userProvider';
+import { LanguageContext } from '../../providers/languageProvider';
+
+import TEXT from '../../helpers/Languages'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -42,6 +45,7 @@ const SignUp = (props) => {
     const history = useHistory();
     const SERVICE = UserService()
     const [user, setUser] = useContext(UserContext)
+    const [language, setLanguage] = useContext(LanguageContext)
     
 
     const initialValues = {
@@ -52,10 +56,10 @@ const SignUp = (props) => {
     }
 
     const validationSchema = Yup.object().shape({
-        name: Yup.string().required("Debe completar este campo"),
-        lastname: Yup.string().required("Debe completar este campo"),
-        email: Yup.string().email('Correo electronico invalido').required('Debe completar este campo'),
-        password: Yup.string().min(8, 'Contraseña debe tener al menos 8 caracteres').required("Debe completar este campo") 
+        name: Yup.string().required(TEXT[language].signup.name),
+        lastname: Yup.string().required(TEXT[language].signup.lastname),
+        email: Yup.string().email(TEXT[language].signup.email.error).required(TEXT[language].signup.email.required),
+        password: Yup.string().min(8, TEXT[language].signup.password.error).required(TEXT[language].signup.password.required) 
     })
 
     const register = (values, properties) => {
@@ -65,7 +69,7 @@ const SignUp = (props) => {
             properties.resetForm()
         })
         .then(() => {
-            props.setNotication(<Notification message="Se ha dado de alta usuario exitosamente" />)
+            props.setNotication(<Notification message={TEXT[language].signup.notification} />)
         }).then(() => {
             history.push('/')
         })
@@ -84,8 +88,8 @@ const SignUp = (props) => {
                 <Paper elevation={10} className={classes.paper}>
                     <Grid container>
                         <Grid item xs={12}>
-                            <Typography variant='h6'>Registrate</Typography>
-                            <Typography variant='caption'>Llena este formulario para crear tu cuenta</Typography>
+                            <Typography variant='h6'>{TEXT[language].signup.header}</Typography>
+                            <Typography variant='caption'>{TEXT[language].signup.title}</Typography>
                         </Grid>
                         <Formik initialValues={initialValues} 
                                 validationSchema={validationSchema}
@@ -93,7 +97,7 @@ const SignUp = (props) => {
                             {
                                 (props) => (
                                     <Form>
-                                        <Field as={TextField} label='Nombre' name='name' fullWidth required
+                                        <Field as={TextField} label={TEXT[language].signup.label.name} name='name' fullWidth required
                                         value={props.values.name}
                                         error={props.errors.name&&props.touched.name}
                                         onChange={props.handleChange}
@@ -101,7 +105,7 @@ const SignUp = (props) => {
                                             {(error) => <Error error={error} />}
                                             </ErrorMessage>}/>
 
-                                        <Field as={TextField} label='Apellido' name='lastname' fullWidth required
+                                        <Field as={TextField} label={TEXT[language].signup.label.lastname} name='lastname' fullWidth required
                                         value={props.values.lastname}
                                         error={props.errors.lastname&&props.touched.lastname}
                                         onChange={props.handleChange}
@@ -109,7 +113,7 @@ const SignUp = (props) => {
                                             {(error) => <Error error={error} />}
                                             </ErrorMessage>}/>
 
-                                        <Field as={TextField} label='Correo electronico' name='email' type='Email' fullWidth required
+                                        <Field as={TextField} label={TEXT[language].signup.label.email} name='email' type='Email' fullWidth required
                                         value={props.values.email}
                                         error={props.errors.email&&props.touched.email}
                                         onChange={props.handleChange}
@@ -117,7 +121,7 @@ const SignUp = (props) => {
                                             {(error) => <Error error={error} />}
                                             </ErrorMessage>}/>
 
-                                        <Field as={TextField} label='Contraseña' name='password' type='password' fullWidth required
+                                        <Field as={TextField} label={TEXT[language].signup.label.password} name='password' type='password' fullWidth required
                                         value={props.values.password}
                                         error={props.errors.password&&props.touched.password}
                                         onChange={props.handleChange}
@@ -127,7 +131,7 @@ const SignUp = (props) => {
 
                                         <div className={classes.button}>
                                             <Button  type='submit' color='primary' variant='contained' 
-                                            fullWidth>Registrar</Button>
+                                            fullWidth>{TEXT[language].signup.buttom}</Button>
                                         </div>
                                     </Form>
                                 )

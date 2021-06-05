@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
@@ -7,6 +7,10 @@ import DatePicker from 'react-datepicker'
 import setHours from 'date-fns/setHours'
 import setMinutes from 'date-fns/setMinutes'
 import TurnService from '../../services/TurnService';
+import { LanguageContext } from '../../providers/languageProvider';
+
+import TEXT from '../../helpers/Languages'
+
 
 registerLocale('es', es)
 
@@ -24,9 +28,10 @@ const excludedTimes = [
 
 
 const Calendar = (props) => {
-    debugger
+
     const turnService = TurnService()
     const [datesAlreadyTaken, setDatesAlreadyTaken] = useState([])
+    const [language, setLanguage] = useContext(LanguageContext)
 
 
     useEffect(() => { 
@@ -102,7 +107,7 @@ const Calendar = (props) => {
         onCalendarClose={() => props.setDate(selectDate)}
         onClickOutside={() => props.setDate(null)}
         showTimeSelect={true}
-        timeCaption="time"
+        timeCaption={TEXT[language].calendar.timeCaption}
         excludeTimes={excludedTimes}
         filterTime={filterTimes}
         minDate={new Date()}
@@ -112,10 +117,10 @@ const Calendar = (props) => {
         dateFormat="dd/MM/yyyy HH:mm"
         timeIntervals={90}
         filterDate={isSunday}
-        placeholderText="Elegir fecha"
+        placeholderText={TEXT[language].calendar.placeHolder}
         withPortal
         required={true}
-        locale="es"
+        locale={TEXT[language].calendar.locale}
       />
       
     );

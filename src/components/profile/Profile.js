@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useContext} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import UserService from '../../services/UserService'
 import Paper from '@material-ui/core/Paper';
@@ -6,6 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
+import { LanguageContext } from '../../providers/languageProvider';
+
+import TEXT from '../../helpers/Languages'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,6 +34,7 @@ const Profile = (props) => {
     const classes = useStyles()
 
     const [user, setUser] = useState({})
+    const [language, setLanguage] = useContext(LanguageContext)
 
     useEffect(() => {
         UserService().getUser(1).then((response) => {
@@ -43,14 +47,14 @@ const Profile = (props) => {
         <div>
             <Container maxWidth="sm">
             <Grid container>
-                <Grid item xs={12} className={classes.subtitles}><h2>Mis datos</h2></Grid>
+                <Grid item xs={12} className={classes.subtitles}><h2>{TEXT[language].profile.header1}</h2></Grid>
                 <Grid item xs={12} className={classes.subtitles}>
                     
-                    <Grid item xs={12}><h3>Datos de cuenta</h3></Grid>
+                    <Grid item xs={12}><h3>{TEXT[language].profile.header2}</h3></Grid>
                     <Paper className={classes.paper}>
                         <Grid container spacing={1}>
                                 <Grid item xs={4}>
-                                    E-mail
+                                    {TEXT[language].profile.email}
                                 </Grid>
                                 <Grid item xs={4}>
                                     {user.email}
@@ -65,7 +69,7 @@ const Profile = (props) => {
                     <Paper className={classes.paper}>
                         <Grid container spacing={1}>
                                 <Grid item xs={4}>
-                                    Password
+                                    {TEXT[language].profile.password}
                                 </Grid>
                                 <Grid item xs={4}>
                                     {user.password}
@@ -82,11 +86,11 @@ const Profile = (props) => {
                 
                 <Grid item xs={12} className={classes.subtitles}>
                     
-                    <Grid item xs={12}><h3>Datos personales</h3></Grid>
+                    <Grid item xs={12}><h3>{TEXT[language].profile.header3}</h3></Grid>
                     <Paper className={classes.paper}>
                         <Grid container spacing={1}>
                                 <Grid item xs={4}>
-                                    Nombre y apellido
+                                 {TEXT[language].profile.fullname}
                                 </Grid>
                                 <Grid item xs={4}>
                                     {user.fullname}
@@ -101,7 +105,7 @@ const Profile = (props) => {
                     <Paper className={classes.paper}>
                         <Grid container spacing={1}>
                                 <Grid item xs={4}>
-                                    Fecha de nacimiento
+                                    {TEXT[language].profile.dateofbirth}
                                 </Grid>
                                 <Grid item xs={4}>
                                     {new Date(user.dateOfBirth).toLocaleDateString()}
@@ -116,7 +120,7 @@ const Profile = (props) => {
                     <Paper className={classes.paper}>
                         <Grid container spacing={1}>
                                 <Grid item xs={4}>
-                                    Telefono
+                                    {TEXT[language].profile.phone}
                                 </Grid>
                                 <Grid item xs={4}>
                                     {user.contactNumber}
@@ -131,7 +135,7 @@ const Profile = (props) => {
                 </Grid>
                 <Grid item xs={12} className={classes.subtitles}>
                     
-                    <Grid item xs={12}><h3>Domicilios</h3></Grid>
+                    <Grid item xs={12}><h3>{TEXT[language].profile.address}</h3></Grid>
                     <Paper className={classes.paper}>
                         {user.address}
                     </Paper>
