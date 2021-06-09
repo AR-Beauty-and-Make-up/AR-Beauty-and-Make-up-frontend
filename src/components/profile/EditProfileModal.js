@@ -17,6 +17,8 @@ const EditProfileModal = (props) => {
   const campoRequerido = (event) => {
     if(event.target.value === ""){
       setIncomplete(true)
+    }else {
+      setIncomplete(false)
     }
   }
   const handleClose = () => {
