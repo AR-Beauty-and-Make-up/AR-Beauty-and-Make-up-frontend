@@ -13,19 +13,26 @@ import Notification from '../notification/Notification'
 import React, { useContext } from 'react';
 import { UserContext } from '../../providers/userProvider';
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
     },
     paper: {
       padding: 20,
-      height: '55vh',
-      width: 350,
+      height: '45vh',
+      width: '35vh',
       margin: '20px auto'
     },
-    button: {
+    buttonDiv: {
         paddingTop: 70,
         paddingBottom: 10
+    },
+    button: {
+        backgroundColor: "#f3d5d7",
+        '&:hover': {
+            backgroundColor: "#f3d5d7"
+        }
     }
   }));
 
@@ -52,9 +59,12 @@ const Login = (props) => {
     }
 
     const login = ({email, password}, properties) => {
+        
         SERVICE.loginUser(email, password).then((response) => {
+            console.log("pasa esto 1")
             setUser(response.data)
             properties.resetForm()
+            localStorage.setItem('user', JSON.stringify(response.data))
         })
         .then(() => {
             props.setNotication(<Notification message="Se ha iniciado sesion exitosamente" />)
@@ -97,8 +107,8 @@ const Login = (props) => {
                                             {(error) => <Error error={error} />}
                                             </ErrorMessage>}/>
 
-                                        <div className={classes.button}>
-                                            <Button  type='submit' color='primary' variant='contained' 
+                                        <div className={classes.buttonDiv}>
+                                            <Button  type='submit' className={classes.button} variant='contained' 
                                             fullWidth>Iniciar sesion</Button>
                                         </div>
                                     </Form>

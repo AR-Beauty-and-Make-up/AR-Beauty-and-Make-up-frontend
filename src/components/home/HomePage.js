@@ -1,42 +1,23 @@
 import React from 'react'
-import {useState, useEffect} from 'react'
-import TurnService from '../../services/TurnService'
+import img1 from "../../static/images/home2.jpg"
+import img2 from "../../static/images/home.jpg"
+import Slider from 'infinite-react-carousel';
 import './homepage.scss'
 
 
-const useTurns = () => {
-    
-    const [turns, setTurns] = useState([])
-
-    return {turns, setTurns}
-
-}
-
-const HomePage = (props) => {
-
-
-    const {turns, setTurns} = useTurns()
-
-    useEffect(async () => {
-        const response =  await TurnService().getTurns()
-
-        setTurns(response.data)
-    }, []);
-
-    const turnFunc = (turn) => {
-
-        console.log(turn.id)
-        return (
-            <div>
-                {turn.id}
-            </div>
-        )
-
-    }
+const HomePage = () => {
 
     return(
         <div className="home-page">
-            
+            <Slider dots>
+                <div>
+                    <img src={img2} alt="logo" className={{height: 100}}/>
+                </div>
+                <div>
+                    <img src={img1} alt="logo" className={{height: 100}}/>
+                </div>
+                
+            </Slider>
         </div>
     )
 

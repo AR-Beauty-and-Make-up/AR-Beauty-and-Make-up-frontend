@@ -3,26 +3,14 @@ import {ProductContext} from '../../providers/productProvider'
 
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import CartShopping from './CartShopping'
 import Drawer from '@material-ui/core/Drawer'
 import { useLocation } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyle = makeStyles((theme) => ({
-    cart: {
-      position: "fixed",
-      zIndex: 100,
-      right: "20px",
-      top: "70px",
-    },
-  }))
-
 
 
 const Cart = () => {
 
-    const classes = useStyle()
     const [products, removeProduct, addProduct] = useContext(ProductContext)
     const [openCart, setOpenCart] = useState(false)
     const {pathname} = useLocation()
@@ -44,9 +32,9 @@ const Cart = () => {
                 <Drawer anchor="right" open={openCart} onClose={() => setOpenCart(false)}>
                     <CartShopping />
                 </Drawer>
-                <IconButton className={classes.cart} onClick={() => setOpenCart(true)}>
+                <IconButton onClick={() => setOpenCart(true)}>
                 <Badge badgeContent={products.length} color='error' onClick={()=>  console.log(products)}>
-                    <ShoppingCartIcon  fontSize='large'/>
+                    <ShoppingCartOutlinedIcon  fontSize='large'/>
                 </Badge> 
                 </IconButton>
           </>

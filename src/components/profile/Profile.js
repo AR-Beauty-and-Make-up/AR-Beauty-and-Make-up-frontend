@@ -1,11 +1,12 @@
-import {useEffect, useState} from 'react'
+import { useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import UserService from '../../services/UserService'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
+
+import { UserContext } from '../../providers/userProvider'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,13 +31,7 @@ const Profile = (props) => {
 
     const classes = useStyles()
 
-    const [user, setUser] = useState({})
-
-    useEffect(() => {
-        UserService().getUser(1).then((response) => {
-            setUser(response.data)
-        })
-    }, [])
+    const [user, setUser] = useContext(UserContext)
 
 
     return (
