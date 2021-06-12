@@ -1,18 +1,16 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {makeStyles} from '@material-ui/core/styles';
 import UserService from '../../services/UserService'
-import { useContext } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import {useContext} from 'react'
+import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import IconButton from '@material-ui/core/IconButton';
 import EditProfileModal from "./EditProfileModal";
 import {Button} from "@material-ui/core";
 import EditPasswordModal from "./EditPasswordModal";
 
-import { UserContext } from '../../providers/userProvider'
+import {UserContext} from '../../providers/userProvider'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,21 +38,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 const Profile = (props) => {
 
-    const classes = useStyles()
+  const classes = useStyles()
 
   const [user, setUser] = useContext(UserContext)
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [editPasswordOpen, setEditPasswordOpen] = useState(false)
 
-
-  useEffect(() => {
-    UserService().getUser(1).then((response) => {
-      setUser(response.data)
-    })
-  }, [])
 
   const handleClickOpen = () => setEditModalOpen(true);
 
