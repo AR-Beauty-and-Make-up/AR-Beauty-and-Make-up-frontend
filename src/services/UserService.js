@@ -17,11 +17,17 @@ const UserService = () => {
         return axios.post(`${SERVICE_URL}/validateUser`, {email: email, password: password}) 
     }
 
+    const updateUser = (id, userToUpdate) => {
+        debugger
+        return axios.put(`${SERVICE_URL}/updateUser/${id}`, userToUpdate )
+    }
+
 
     return {
         getUser: getUser,
         postUser: postUser,
-        loginUser: loginUser
+        loginUser: loginUser,
+        updateUser: updateUser
     }
 
 }

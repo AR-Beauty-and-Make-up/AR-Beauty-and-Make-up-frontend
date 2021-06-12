@@ -7,6 +7,8 @@ import Container from '@material-ui/core/Container';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
 import EditProfileModal from "./EditProfileModal";
+import {Button} from "@material-ui/core";
+import EditPasswordModal from "./EditPasswordModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,10 +18,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: 'left',
     backgroundColor: '#c8adab',
-    '&:hover': {
-      fontWeight: 'bold',
-      cursor: 'pointer'
-    }
   },
   subtitles: {
     textAlign: 'left'
@@ -28,6 +26,13 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'right',
 
   },
+  buttonEdition: {
+    margin: '5%',
+    backgroundColor: '#c8adab',
+    '&:hover': {
+      fontWeight: 'bold'
+    }
+  }
 }));
 
 
@@ -37,10 +42,7 @@ const Profile = (props) => {
 
   const [user, setUser] = useState({})
   const [editModalOpen, setEditModalOpen] = useState(false)
-  const [dataToUpdate, setDataToUpdate] = useState()
-  const [typeToEdit, setTypeToEdit] = useState("text")
-  const [labelDialog, setLabelDialog] = useState()
-  const [defaultValue, setDefaultValue] = useState()
+  const [editPasswordOpen, setEditPasswordOpen] = useState(false)
 
 
   useEffect(() => {
@@ -49,13 +51,19 @@ const Profile = (props) => {
     })
   }, [])
 
-  const handleClickOpen = () => {
-    setEditModalOpen(true);
-  };
+  const handleClickOpen = () => setEditModalOpen(true);
 
-  const handleClose = () => {
-    setEditModalOpen(false);
-  };
+  const handleClose = () => setEditModalOpen(false);
+
+  const openChangePassword = () => setEditPasswordOpen(true);
+
+  const closePasswordEditModal = () => setEditPasswordOpen(false);
+
+  const updateData = (userToUpDate) => {
+    UserService().updateUser(user.id, userToUpDate).then((response) => {
+      setUser(response.data)
+    })
+  }
 
 
   return (
@@ -74,31 +82,15 @@ const Profile = (props) => {
                 <Grid item xs={4}>
                   {user.email}
                 </Grid>
-                <Grid item xs={4} className={classes.icon}>
-                  <IconButton aria-label="delete" className={classes.margin} size="small">
-                    <ArrowForwardIosIcon fontSize="inherit"/>
-                  </IconButton>
-                </Grid>
               </Grid>
             </Paper>
-            <Paper className={classes.paper} onClick={() => {
-              setDataToUpdate("Contraseña")
-              setLabelDialog("Nueva Contraseña")
-              setTypeToEdit("password")
-              setDefaultValue(user.password)
-              handleClickOpen()
-            }}>
+            <Paper className={classes.paper}>
               <Grid container spacing={1}>
                 <Grid item xs={4}>
                   Password
                 </Grid>
                 <Grid item xs={4}>
                   {user.password}
-                </Grid>
-                <Grid item xs={4} className={classes.icon}>
-                  <IconButton aria-label="delete" className={classes.margin} size="small">
-                    <ArrowForwardIosIcon fontSize="inherit"/>
-                  </IconButton>
                 </Grid>
               </Grid>
             </Paper>
@@ -108,24 +100,13 @@ const Profile = (props) => {
           <Grid item xs={12} className={classes.subtitles}>
 
             <Grid item xs={12}><h3>Datos personales</h3></Grid>
-            <Paper className={classes.paper} onClick={() => {
-              setDataToUpdate("Nombre y Apellido")
-              setLabelDialog("Nuevo nombre")
-              setTypeToEdit("text")
-              setDefaultValue(user.fullname)
-              handleClickOpen()
-            }}>
+            <Paper className={classes.paper}>
               <Grid container spacing={1}>
                 <Grid item xs={4}>
                   Nombre y apellido
                 </Grid>
                 <Grid item xs={4}>
                   {user.fullname}
-                </Grid>
-                <Grid item xs={4} className={classes.icon}>
-                  <IconButton aria-label="delete" className={classes.margin} size="small">
-                    <ArrowForwardIosIcon fontSize="inherit"/>
-                  </IconButton>
                 </Grid>
               </Grid>
             </Paper>
@@ -137,20 +118,9 @@ const Profile = (props) => {
                 <Grid item xs={4}>
                   {new Date(user.dateOfBirth).toLocaleDateString()}
                 </Grid>
-                <Grid item xs={4} className={classes.icon}>
-                  <IconButton aria-label="delete" className={classes.margin} size="small">
-                    <ArrowForwardIosIcon fontSize="inherit"/>
-                  </IconButton>
-                </Grid>
               </Grid>
             </Paper>
-            <Paper className={classes.paper} onClick={() => {
-              setDataToUpdate("Teléfono")
-              setLabelDialog("Nuevo Teléfono")
-              setTypeToEdit("text")
-              setDefaultValue(user.contactNumber)
-              handleClickOpen()
-            }}>
+            <Paper className={classes.paper}>
               <Grid container spacing={1}>
                 <Grid item xs={4}>
                   Telefono
@@ -158,36 +128,30 @@ const Profile = (props) => {
                 <Grid item xs={4}>
                   {user.contactNumber}
                 </Grid>
-                <Grid item xs={4} className={classes.icon}>
-                  <IconButton aria-label="delete" className={classes.margin} size="small">
-                    <ArrowForwardIosIcon fontSize="inherit"/>
-                  </IconButton>
-                </Grid>
               </Grid>
             </Paper>
           </Grid>
           <Grid item xs={12} className={classes.subtitles}>
 
             <Grid item xs={12}><h3>Domicilios</h3></Grid>
-            <Paper className={classes.paper} onClick={() => {
-              setDataToUpdate("Domicilio")
-              setLabelDialog("Nuevo Domicilio")
-              setTypeToEdit("text")
-              setDefaultValue(user.address)
-              handleClickOpen()
-            }}>
+            <Paper className={classes.paper}>
               {user.address}
             </Paper>
           </Grid>
 
         </Grid>
+        <Button className={classes.buttonEdition} onClick={openChangePassword}>Cambiar Contraseña</Button>
+        <Button className={classes.buttonEdition} onClick={handleClickOpen}>Editar Información</Button>
       </Container>
 
+
       {editModalOpen && <EditProfileModal onClose={handleClose}
-                                          title={dataToUpdate}
-                                          type={typeToEdit}
-                                          label={labelDialog}
-                                          value={defaultValue}/>}
+                                          user={user}
+                                          changeValue={updateData}/>}
+
+      {editPasswordOpen && <EditPasswordModal onClose={closePasswordEditModal}
+                                              user={user}
+                                              changePassword={updateData}/>}
 
     </div>
   )
