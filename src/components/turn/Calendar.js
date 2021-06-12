@@ -101,7 +101,7 @@ const Calendar = (props) => {
         onCalendarClose={() => props.setDate(selectDate)}
         onClickOutside={() => props.setDate(null)}
         showTimeSelect={true}
-        timeCaption="time"
+        timeCaption="Hora"
         excludeTimes={excludedTimes}
         filterTime={filterTimes}
         minDate={new Date()}

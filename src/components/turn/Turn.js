@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: 'left',
     color: theme.palette.text.secondary,
-    backgroundColor: '#c8adab',
+    backgroundColor: '#d1a4a6',
     '&:hover': {
         fontWeight: 'bold'
     }
