@@ -21,13 +21,19 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
       padding: 20,
-      height: '55vh',
-      width: 350,
+      height: '45vh',
+      width: '35vh',
       margin: '20px auto'
     },
-    button: {
+    buttonDiv: {
         paddingTop: 70,
         paddingBottom: 10
+    },
+        button: {
+            backgroundColor: "#f3d5d7",
+            '&:hover': {
+                backgroundColor: "#f3d5d7"
+        }
     },
     error: {
         color: 'red'
@@ -128,8 +134,8 @@ const SignUp = (props) => {
                                             {(error) => <Error error={error} />}
                                             </ErrorMessage>}/>
 
-                                        <div className={classes.button}>
-                                            <Button  type='submit' color='primary' variant='contained' 
+                                        <div className={classes.buttonDiv}>
+                                            <Button  type='submit' className={classes.button} variant='contained' 
                                             fullWidth>Registrar</Button>
                                         </div>
                                     </Form>

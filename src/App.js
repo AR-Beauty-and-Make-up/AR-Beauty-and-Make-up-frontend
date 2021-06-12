@@ -7,7 +7,7 @@ import Navbar from './components/navbar/Navbar'
 import Turn from './components/turn/Turn'
 import Store from './components/store/Store'
 
-import Cart from './components/cart/Cart'
+
 import Profile from './components/profile/Profile'
 import Login from './components/login/Login'
 import SignUp from './components/login/SignUp'
@@ -36,7 +36,7 @@ const App = () => {
       <UserProvider>
       <ProductProvider>
         <Navbar />
-        <Cart />
+        
         
         <Switch>
           <Route

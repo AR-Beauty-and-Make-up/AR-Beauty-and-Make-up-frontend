@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {makeStyles} from '@material-ui/core/styles';
 import UserService from '../../services/UserService'
+import { useContext } from 'react'
+import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
@@ -9,6 +11,8 @@ import IconButton from '@material-ui/core/IconButton';
 import EditProfileModal from "./EditProfileModal";
 import {Button} from "@material-ui/core";
 import EditPasswordModal from "./EditPasswordModal";
+
+import { UserContext } from '../../providers/userProvider'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,11 +40,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+
 const Profile = (props) => {
 
-  const classes = useStyles()
+    const classes = useStyles()
 
-  const [user, setUser] = useState({})
+  const [user, setUser] = useContext(UserContext)
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [editPasswordOpen, setEditPasswordOpen] = useState(false)
 
