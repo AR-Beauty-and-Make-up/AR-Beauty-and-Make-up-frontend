@@ -49,7 +49,7 @@ const EditProfileModal = (props) => {
                                   campoRequerido(e)
                        setNewName(e.target.value)}}
                      id="validation-outlined-input"
-                     label="Obligatorio"
+                     label="Nombre y Apellido"
                      defaultValue={props.user.fullname}
                      autoFocus
                      margin="dense"
@@ -61,7 +61,7 @@ const EditProfileModal = (props) => {
                        campoRequerido(e)
                        setNewDateOfBirth(e.target.value)}}
                      id="validation-outlined-input"
-                     label="Obligatorio"
+                     label="Fecha de Nacimiento"
                      defaultValue={props.user.dateOfBirth}
                      autoFocus
                      margin="dense"
@@ -73,7 +73,7 @@ const EditProfileModal = (props) => {
                        campoRequerido(e)
                        setNewContactNumber(e.target.value)}}
                      id="validation-outlined-input"
-                     label="Obligatorio"
+                     label="Número de contacto"
                      defaultValue={props.user.contactNumber}
                      autoFocus
                      margin="dense"
@@ -85,7 +85,7 @@ const EditProfileModal = (props) => {
                        campoRequerido(e)
                        setNewAddress(e.target.value)}}
                      id="validation-outlined-input"
-                     label="Obligatorio"
+                     label="Dirección"
                      defaultValue={props.user.address}
                      autoFocus
                      margin="dense"
