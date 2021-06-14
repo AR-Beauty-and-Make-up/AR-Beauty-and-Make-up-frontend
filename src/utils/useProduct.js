@@ -1,34 +1,58 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 
 
 const useCart = () => {
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState(() =>  JSON.parse(localStorage.getItem('cart')) || [])
+
+
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(products))
+      }, [products])
 
     const removeProduct = (item) => {
-        debugger
         
-        const selected = products.filter(({product, quantity}) => product.id == item.id)
-        if(selected.length > 0) {
+        const [selected] = products.filter(({product, quantity}) => product.id == item.id)
 
-            if (selected[0].quantity === 1) {
-                let newProducts = products.filter(({product, quantity}) => product.id != item.id)
-
-                setProducts(newProducts)
-            }
-            else {
-                selected[0].quantity -= 1
-            }  
-            
+        if (selected.quantity === 1) {
+            const newProducts = products.filter(({product, quantity}) => product.id != item.id)
+            setProducts(newProducts)
         }
+        else {
+            setProducts(subtractQuantity(products, item))
+        }  
+            
+        
     }
+
+    const subtractQuantity = (prods, item) => {
+        const newProds = [...prods]
+
+        newProds.forEach((prod) => {
+            if(prod.product.id === item.id) {
+                prod.quantity -= 1
+            }
+        })
+        return newProds
+    }
+
+    const addQuantity = (prods, item) => {
+
+        const newProds = [...prods]
+
+        newProds.forEach((prod) => {
+            if(prod.product.id === item.id) {
+                prod.quantity += 1
+            }
+        })
+        return newProds
+        
+    }   
 
     const addProduct = (item) => {
         
         const selected = products.filter(({product, quantity}) => product.id == item.id)
         if(selected.length > 0) {
-            debugger
-            selected[0].quantity += 1  
-            
+            setProducts(addQuantity(products, item))
         }
         else {
             setProducts(prevProducts => [...prevProducts, {product:item, quantity: 1}])

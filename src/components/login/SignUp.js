@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     paper: {
       padding: 20,
       height: '45vh',
-      width: '35vh',
+      width: '20vw',
       margin: '20px auto'
     },
     buttonDiv: {

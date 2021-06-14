@@ -24,7 +24,7 @@ const CartItem = (props) => {
 
 
     return (
-        <Container>
+        <Container maxWidth='xs'>
             <Grid container>
                 <Grid item xs={8}>
                     <Grid container>
@@ -35,7 +35,7 @@ const CartItem = (props) => {
                             {"Precio:" + props.item.product.price.toFixed(2)}
                         </Grid>
                         <Grid item xs={6} className={classes.total}>
-                            {"Total:" + (props.item.product.price * counter).toFixed(2)}
+                            {"Subtotal:" + (props.item.product.price * counter).toFixed(2)}
                         </Grid>
                         <Grid item xs={12}>
                             <Paper>
@@ -69,7 +69,7 @@ const CartItem = (props) => {
                     
                 </Grid>
                 <Grid item xs={4}>
-                    <img src={props.item.product.photo} height={"120px"} alt={"Producto"} />
+                    <img src={props.item.product.photo} height={"150px"} alt={"Producto"} />
                 </Grid>
             </Grid>
         </Container>
