@@ -11,10 +11,13 @@ import Store from './components/store/Store'
 import Profile from './components/profile/Profile'
 import Login from './components/login/Login'
 import SignUp from './components/login/SignUp'
+import Checkout from './components/checkout/Checkout'
 
 
 import {UserProvider} from './providers/userProvider'
 import {ProductProvider} from './providers/productProvider'
+import {CartProvider} from './providers/cartProvider'
+
 
 
 const App = () => {
@@ -34,6 +37,7 @@ const App = () => {
 
     <div className='App'>
       <UserProvider>
+      <CartProvider>
       <ProductProvider>
         <Navbar />
         
@@ -76,9 +80,15 @@ const App = () => {
             path="/sign-up/"
             render={() => <SignUp setNotication={setNotification} />} />
 
+          <Route
+            exact
+            path="/check-out/"
+            render={() => <Checkout />} />    
+
         </Switch>
         {notification}
       </ProductProvider>
+      </CartProvider>
       </UserProvider>
     </div>
 

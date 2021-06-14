@@ -1,6 +1,6 @@
 import {useContext, useState} from 'react'
 import {ProductContext} from '../../providers/productProvider'
-
+import {CartContext} from '../../providers/cartProvider'
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
@@ -12,7 +12,7 @@ import { useLocation } from 'react-router-dom'
 const Cart = () => {
 
     const [products, removeProduct, addProduct] = useContext(ProductContext)
-    const [openCart, setOpenCart] = useState(false)
+    const [openCart, setOpenCart] = useContext(CartContext)
     const {pathname} = useLocation()
 
     
@@ -33,7 +33,7 @@ const Cart = () => {
                     <CartShopping />
                 </Drawer>
                 <IconButton onClick={() => setOpenCart(true)}>
-                <Badge badgeContent={products.length} color='error' onClick={()=>  console.log(products)}>
+                <Badge badgeContent={products.length} color='error'>
                     <ShoppingCartOutlinedIcon  fontSize='large'/>
                 </Badge> 
                 </IconButton>

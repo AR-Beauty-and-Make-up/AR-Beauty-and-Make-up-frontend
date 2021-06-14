@@ -6,7 +6,7 @@ import { Button, CardActionArea, CardActions } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
-import {useContext} from 'react'
+import {useContext, useEffect} from 'react'
 import {ProductContext} from '../../providers/productProvider'
 
 const useStyles = makeStyles((theme) => ({
@@ -60,8 +60,7 @@ const Product = (props) => {
             <CardActions>
                 <Grid container justify="center" spacing={1}>
                     <Button size="medium"  onClick={() => {
-                      addProduct(props.prod)
-                      
+                      addProduct(props.prod)   
                       }}>
                     Agregar al carrito
                     </Button>
