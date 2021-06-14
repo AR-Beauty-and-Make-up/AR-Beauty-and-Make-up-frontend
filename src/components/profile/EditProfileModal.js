@@ -1,21 +1,19 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
+import {UserContext} from "../../providers/userProvider";
 
 
 const EditProfileModal = (props) => {
 
 
-  const [editModalOpen, setEditModalOpen] = useState(true)
+  const [user, setUser] = useContext(UserContext)
   const [incomplete, setIncomplete] = useState(false)
-  const [newName, setNewName] = useState(props.user.fullname)
-  const [newDateOfBirth, setNewDateOfBirth] = useState(props.user.dateOfBirth)
-  const [newContactNumber, setNewContactNumber] = useState(props.user.contactNumber)
-  const [newAddress, setNewAddress] = useState(props.user.address)
+  const [dataOfUser, setDataOfUser] = useState({...user})
 
   const campoRequerido = (event) => {
     if(event.target.value === ""){
@@ -24,24 +22,36 @@ const EditProfileModal = (props) => {
       setIncomplete(false)
     }
   }
-  const handleClose = () => {
-    props.onClose();
-  };
 
   const saveChanges = () => {
-    props.changeValue({
-      fullname: newName,
-      dateOfBirth: newDateOfBirth,
-      contactNumber: newContactNumber,
-      address: newAddress,
-      password: props.user.password
-    });
-    props.onClose();
+    setUser(dataOfUser)
+    props.onClose()
+  }
+
+  const setNewName = (name) => {
+    var updatedUser = {...dataOfUser}
+    updatedUser.fullname = name
+    setDataOfUser(updatedUser)
+  }
+  const setNewDateOfBirth = (date) => {
+    var updatedUser = {...dataOfUser}
+    updatedUser.dateOfBirth = date
+    setDataOfUser(updatedUser)
+  }
+  const setNewContactNumber = (number) => {
+    var updatedUser = {...dataOfUser}
+    updatedUser.contactNumber = number
+    setDataOfUser(updatedUser)
+  }
+  const setNewAddress = (anAddress) => {
+    var updatedUser = {...dataOfUser}
+    updatedUser.address = anAddress
+    setDataOfUser(updatedUser)
   }
 
   return (
     <div>
-      <Dialog open={editModalOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={true} onClose={props.onClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Editá Tus Datos</DialogTitle>
         <DialogContent>
           <TextField required
@@ -50,7 +60,7 @@ const EditProfileModal = (props) => {
                        setNewName(e.target.value)}}
                      id="validation-outlined-input"
                      label="Nombre y Apellido"
-                     defaultValue={props.user.fullname}
+                     defaultValue={user.fullname}
                      autoFocus
                      margin="dense"
                      type="text"
@@ -62,7 +72,7 @@ const EditProfileModal = (props) => {
                        setNewDateOfBirth(e.target.value)}}
                      id="validation-outlined-input"
                      label="Fecha de Nacimiento"
-                     defaultValue={props.user.dateOfBirth}
+                     defaultValue={user.dateOfBirth}
                      autoFocus
                      margin="dense"
                      type="date"
@@ -74,7 +84,7 @@ const EditProfileModal = (props) => {
                        setNewContactNumber(e.target.value)}}
                      id="validation-outlined-input"
                      label="Número de contacto"
-                     defaultValue={props.user.contactNumber}
+                     defaultValue={user.contactNumber}
                      autoFocus
                      margin="dense"
                      type="text"
@@ -86,7 +96,7 @@ const EditProfileModal = (props) => {
                        setNewAddress(e.target.value)}}
                      id="validation-outlined-input"
                      label="Dirección"
-                     defaultValue={props.user.address}
+                     defaultValue={user.address}
                      autoFocus
                      margin="dense"
                      type="text"
@@ -94,7 +104,7 @@ const EditProfileModal = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button color="black" onClick={handleClose}>
+          <Button color="black" onClick={props.onClose}>
             Cancelar
           </Button>
           <Button color="black" disabled={incomplete} onClick={saveChanges}>

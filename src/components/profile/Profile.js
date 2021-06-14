@@ -46,11 +46,9 @@ const Profile = (props) => {
   const [editPasswordOpen, setEditPasswordOpen] = useState(false)
 
 
-  const handleClickOpen = () => setEditModalOpen(true);
+
 
   const handleClose = () => setEditModalOpen(false);
-
-  const openChangePassword = () => setEditPasswordOpen(true);
 
   const closePasswordEditModal = () => setEditPasswordOpen(false);
 
@@ -135,14 +133,12 @@ const Profile = (props) => {
           </Grid>
 
         </Grid>
-        <Button className={classes.buttonEdition} onClick={openChangePassword}>Cambiar Contraseña</Button>
-        <Button className={classes.buttonEdition} onClick={handleClickOpen}>Editar Información</Button>
+        <Button className={classes.buttonEdition} onClick={() => setEditPasswordOpen(true)}>Cambiar Contraseña</Button>
+        <Button className={classes.buttonEdition} onClick={() => setEditModalOpen(true)}>Editar Información</Button>
       </Container>
 
 
-      {editModalOpen && <EditProfileModal onClose={handleClose}
-                                          user={user}
-                                          changeValue={updateData}/>}
+      {editModalOpen && <EditProfileModal onClose={handleClose}/>}
 
       {editPasswordOpen && <EditPasswordModal onClose={closePasswordEditModal}
                                               user={user}
