@@ -52,8 +52,9 @@ const Profile = (props) => {
 
   const closePasswordEditModal = () => setEditPasswordOpen(false);
 
-  const updateData = (userToUpDate) => {
-    UserService().updateUser(user.id, userToUpDate).then((response) => {
+  const updateData = (newData) => {
+    debugger
+    UserService().updateUser(user.id, newData).then((response) => {
       setUser(response.data)
     })
   }

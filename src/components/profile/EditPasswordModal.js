@@ -31,6 +31,7 @@ const EditPasswordModal = (props) => {
 
   const saveChanges = () => {
     setUser(newDataUser)
+    props.changePassword()
     props.onClose()
   }
 

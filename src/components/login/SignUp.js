@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
       margin: '20px auto'
     },
     buttonDiv: {
-        paddingTop: 70,
-        paddingBottom: 10
+        paddingTop: '20%',
+        paddingBottom: '10%'
     },
         button: {
             backgroundColor: "#f3d5d7",

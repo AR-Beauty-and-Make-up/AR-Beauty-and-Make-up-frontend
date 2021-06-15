@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import TextField from "@material-ui/core/TextField";
@@ -6,6 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import {UserContext} from "../../providers/userProvider";
+import UserService from "../../services/UserService";
 
 
 const EditProfileModal = (props) => {
@@ -24,7 +25,9 @@ const EditProfileModal = (props) => {
   }
 
   const saveChanges = () => {
-    setUser(dataOfUser)
+    UserService().updateUser(user.id, dataOfUser).then((response) => {
+      setUser(response.data)
+    })
     props.onClose()
   }
 
