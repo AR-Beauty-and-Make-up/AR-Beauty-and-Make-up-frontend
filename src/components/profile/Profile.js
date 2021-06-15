@@ -52,14 +52,6 @@ const Profile = (props) => {
 
   const closePasswordEditModal = () => setEditPasswordOpen(false);
 
-  const updateData = (newData) => {
-    debugger
-    UserService().updateUser(user.id, newData).then((response) => {
-      setUser(response.data)
-    })
-  }
-
-
   return (
     <div>
       <Container maxWidth="sm">
@@ -141,9 +133,7 @@ const Profile = (props) => {
 
       {editModalOpen && <EditProfileModal onClose={handleClose}/>}
 
-      {editPasswordOpen && <EditPasswordModal onClose={closePasswordEditModal}
-                                              user={user}
-                                              changePassword={updateData}/>}
+      {editPasswordOpen && <EditPasswordModal onClose={closePasswordEditModal}/>}
 
     </div>
   )

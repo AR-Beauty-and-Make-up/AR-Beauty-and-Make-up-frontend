@@ -7,6 +7,7 @@ import ErrorIcon from '@material-ui/icons/Error';
 import Button from "@material-ui/core/Button";
 import React, {useContext, useState} from "react";
 import {UserContext} from "../../providers/userProvider";
+import UserService from "../../services/UserService";
 
 
 const EditPasswordModal = (props) => {
@@ -25,13 +26,11 @@ const EditPasswordModal = (props) => {
       setIncomplete(false)
     }
   }
-  const handleClose = () => {
-    props.onClose();
-  };
 
   const saveChanges = () => {
-    setUser(newDataUser)
-    props.changePassword()
+    UserService().updateUser(user.id, newDataUser).then((response) => {
+      setUser(response.data)
+    })
     props.onClose()
   }
 
@@ -52,7 +51,7 @@ const EditPasswordModal = (props) => {
 
   return (
     <div>
-      <Dialog open={true} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={true} onClose={props.onClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Cambio de Contraseña</DialogTitle>
         <DialogContent>
           <TextField required
@@ -93,7 +92,7 @@ const EditPasswordModal = (props) => {
           {!validPassword && <span><ErrorIcon color="error"></ErrorIcon> Las contraseñas no coinciden</span>}
         </DialogContent>
         <DialogActions>
-          <Button color="black" onClick={handleClose}>
+          <Button color="black" onClick={props.onClose}>
             Cancelar
           </Button>
           <Button color="black" disabled={incomplete} onClick={saveChanges} >
