@@ -5,14 +5,17 @@ import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import ErrorIcon from '@material-ui/icons/Error';
 import Button from "@material-ui/core/Button";
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
+import {UserContext} from "../../providers/userProvider";
+import UserService from "../../services/UserService";
 
 
 const EditPasswordModal = (props) => {
 
-  const [passwordModalOpen, setPasswordModalOpen] = useState(true)
+  const [user, setUser] = useContext(UserContext)
+  const [newDataUser, setNewDataUser] = useState({...user})
+
   const [incomplete, setIncomplete] = useState(true)
-  const [newPassword, setNewPassword] = useState("")
   const [validPassword, setValidPassword] = useState(true)
   const [isValidOldPassword, setIsValidOldPassword] = useState(true)
 
@@ -23,33 +26,32 @@ const EditPasswordModal = (props) => {
       setIncomplete(false)
     }
   }
-  const handleClose = () => {
-    props.onClose();
-  };
 
   const saveChanges = () => {
-    props.changePassword({
-      fullname: props.user.fullname,
-      dateOfBirth: props.user.dateOfBirth,
-      contactNumber: props.user.contactNumber,
-      address: props.user.address,
-      password: newPassword
-  })
+    UserService().updateUser(user.id, newDataUser).then((response) => {
+      setUser(response.data)
+    })
     props.onClose()
   }
 
   const validOldPassword = (event) => {
-    setIsValidOldPassword(props.user.password === event)
+    setIsValidOldPassword(user.password === event)
   }
 
   const validatePassword = (event) =>{
-    setValidPassword(newPassword === event)
+    setValidPassword(newDataUser.password === event)
+  }
+
+  const setNewPassword = (pass) => {
+    var updatedUser = {...newDataUser}
+    updatedUser.password = pass
+    setNewDataUser(updatedUser)
   }
 
 
   return (
     <div>
-      <Dialog open={passwordModalOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={true} onClose={props.onClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Cambio de Contraseña</DialogTitle>
         <DialogContent>
           <TextField required
@@ -90,7 +92,7 @@ const EditPasswordModal = (props) => {
           {!validPassword && <span><ErrorIcon color="error"></ErrorIcon> Las contraseñas no coinciden</span>}
         </DialogContent>
         <DialogActions>
-          <Button color="black" onClick={handleClose}>
+          <Button color="black" onClick={props.onClose}>
             Cancelar
           </Button>
           <Button color="black" disabled={incomplete} onClick={saveChanges} >
