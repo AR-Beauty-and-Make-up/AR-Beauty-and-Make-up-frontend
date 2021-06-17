@@ -18,6 +18,9 @@ import TurnService from '../../services/TurnService';
 import {servicesAR} from "../../helpers/Constants";
 
 import Calendar from "./Calendar"
+import Notification from "../notification/Notification";
+import Alert from "@material-ui/lab/Alert";
+import AlertTitle from "@material-ui/lab/AlertTitle";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -56,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Turn = () => {
+const Turn = (props) => {
 
   const turnService = TurnService()
   const classes = useStyles();
@@ -70,6 +73,7 @@ const Turn = () => {
     showPersonalInfo: false,
     notification: false,
     showFade: true,
+    showError: false,
   })
 
   const [turn, setTurn] = useState({
@@ -266,9 +270,12 @@ const Turn = () => {
         newTurn.contactNumber = contact
 
         setTurn(newTurn)
-        turnService.postTurn(newTurn)
-        console.log(newTurn)
-        setSteps(['showPersonalInfo', 'notification'])
+        turnService.postTurn(newTurn).then((response) => {
+          setSteps(['showPersonalInfo', 'notification'])
+        })
+          .catch((error) => {
+            setSteps(['showPersonalInfo','showServices', 'showError'])
+        })
       },
     });
 
@@ -361,8 +368,22 @@ const Turn = () => {
     return <></>
   }
 
+  const Error = () => {
+    if(showSteps.showError){
+      return(
+        <Alert onClose={() => {setSteps(['showError'])}} variant="outlined" severity="error">
+          Ocurrió un error, intentelo de nuevo.
+        </Alert>
+      )
+    }
+
+    return <></>
+  }
+
+
   return (
     <Container maxWidth="sm">
+      <Error/>
       <ChooseService/>
       <ChooseDate/>
       <CheckTurn/>

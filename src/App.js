@@ -52,12 +52,12 @@ const App = () => {
           <Route
             exact
             path="/scheduler"
-            render={() => <Scheduler/>}/>
+            render={() => <Scheduler setNotication={setNotification}/>}/>
           
           <Route
             exact
             path="/services"
-            render={() => <Turn />}/>
+            render={() => <Turn setNotication={setNotification}/>}/>
 
           <Route
             exact
