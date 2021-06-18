@@ -10,6 +10,7 @@ import ModalAgenda from "./ModalAgenda";
 import EntitiesValidator from "../../helpers/EntitiesValidator";
 import RemoveModalConfirmation from "./RemoveModalConfirmation";
 import UpdateSucceed from "./UpdateSucceed";
+import Notification from "../notification/Notification";
 
 
 
@@ -132,9 +133,15 @@ class Scheduler extends React.Component {
     this.setState({showModal: true, selected: turn});
     if(this.validateTurn(turn)){
       TurnService().updateTurn(this.buildTurn(turn))
+        .then((response) => {
+          this._closeModal();
+          this.setState({isUpdated: true, updatedSucceed: true})
+        })
+        .catch((error) => {
+          this.props.setNotication(<Notification message="Ocurrió un error, vuelva a intentarlo" />)
+        })
     }
-    this._closeModal();
-    this.setState({isUpdated: true, updatedSucceed: true})
+
   }
 
   validateTurn(turn) {
