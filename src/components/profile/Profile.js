@@ -1,7 +1,5 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import {makeStyles} from '@material-ui/core/styles';
-import UserService from '../../services/UserService'
-import {useContext} from 'react'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
@@ -10,6 +8,7 @@ import {Button} from "@material-ui/core";
 import EditPasswordModal from "./EditPasswordModal";
 
 import {UserContext} from '../../providers/userProvider'
+import moment from "moment-timezone";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,7 +101,7 @@ const Profile = (props) => {
                   Fecha de nacimiento
                 </Grid>
                 <Grid item xs={4}>
-                  {new Date(user.dateOfBirth).toLocaleDateString()}
+                  {moment(user.dateOfBirth).tz( "America/Argentina/Buenos_Aires").format("DD-MM-YYYY")}
                 </Grid>
               </Grid>
             </Paper>

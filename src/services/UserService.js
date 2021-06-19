@@ -18,7 +18,6 @@ const UserService = () => {
     }
 
     const updateUser = (id, userToUpdate) => {
-        debugger
         return axios.put(`${SERVICE_URL}/updateUser/${id}`, userToUpdate )
     }
 
