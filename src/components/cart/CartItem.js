@@ -19,7 +19,7 @@ const useStyle = makeStyles((theme) => ({
 const CartItem = (props) => {
 
     const classes = useStyle()
-    const [products, removeProduct, addProduct] = useContext(ProductContext)
+    const [products, removeProduct, addProduct, initProducts] = useContext(ProductContext)
     const [counter, setCounter] = useState(props.item.quantity)
 
 

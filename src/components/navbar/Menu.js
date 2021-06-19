@@ -101,7 +101,7 @@ const MenuListComposition = () =>  {
           >
           <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
             <MenuItem onClick={() => history.push("/profile")} >Perfil</MenuItem>
-            <MenuItem onClick={handleClose}>Mis compras</MenuItem>
+            <MenuItem onClick={() => history.push("/purchases")}>Mis compras</MenuItem>
             <MenuItem onClick={() => close()}>Cerrar sesion</MenuItem>
           </MenuList>
         </Menu>

@@ -42,7 +42,7 @@ const CartShopping = (props) => {
     
     
     const classes = useStyle()
-    const [products, removeProduct, addProduct] = useContext(ProductContext)
+    const [products, removeProduct, addProduct, initProducts] = useContext(ProductContext)
     const [openCart, setOpenCart] = useContext(CartContext)
     const history = useHistory()
     

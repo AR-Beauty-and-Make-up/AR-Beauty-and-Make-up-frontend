@@ -76,7 +76,7 @@ const Profile = (props) => {
                   Password
                 </Grid>
                 <Grid item xs={4}>
-                  {user.password}
+                    *********
                 </Grid>
               </Grid>
             </Paper>
@@ -102,7 +102,7 @@ const Profile = (props) => {
                   Fecha de nacimiento
                 </Grid>
                 <Grid item xs={4}>
-                  {new Date(user.dateOfBirth).toLocaleDateString()}
+                  {user.dateOfBirth}
                 </Grid>
               </Grid>
             </Paper>

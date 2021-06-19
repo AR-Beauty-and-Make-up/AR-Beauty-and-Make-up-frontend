@@ -60,7 +60,11 @@ const useCart = () => {
         
     }
 
-    return [products, removeProduct, addProduct]
+    const initProducts = () => {
+        setProducts([])
+    }
+
+    return [products, removeProduct, addProduct, initProducts]
 }
 
 export default useCart

@@ -18,16 +18,25 @@ const UserService = () => {
     }
 
     const updateUser = (id, userToUpdate) => {
-        debugger
         return axios.put(`${SERVICE_URL}/updateUser/${id}`, userToUpdate )
     }
 
+    const addPurchase = (id, purchase) => {
+        return axios.put(`${SERVICE_URL}/addPurchase/${id}`, {items: purchase, purchaseDate: new Date()} )
+    }
+
+
+    const getPurchases = (id) => {
+        return axios.get(`${SERVICE_URL}/purchases/${id}`)
+    }
 
     return {
         getUser: getUser,
         postUser: postUser,
         loginUser: loginUser,
-        updateUser: updateUser
+        updateUser: updateUser,
+        addPurchase: addPurchase,
+        getPurchases: getPurchases
     }
 
 }
