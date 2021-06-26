@@ -16,6 +16,8 @@ const EditProfileModal = (props) => {
   const [incomplete, setIncomplete] = useState(false)
   const [dataOfUser, setDataOfUser] = useState({...user})
 
+  debugger
+
   const campoRequerido = (event) => {
     if(event.target.value === ""){
       setIncomplete(true)

@@ -75,7 +75,7 @@ const Profile = (props) => {
                   Password
                 </Grid>
                 <Grid item xs={4}>
-                  {user.password}
+                    *********
                 </Grid>
               </Grid>
             </Paper>

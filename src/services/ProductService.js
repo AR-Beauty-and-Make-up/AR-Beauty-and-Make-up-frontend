@@ -14,9 +14,14 @@ const ProductService = () => {
         return axios.get(`${SERVICE_URL}/products/page?page=${page}`)
     }
 
+    const checkOut = (purchase) => {
+        return axios.post(`${SERVICE_URL}/check-out`, {purchaseItems: purchase})
+    } 
+
     return {
         getProducts: getProducts,
-        getPageProducts: getPageProducts
+        getPageProducts: getPageProducts,
+        checkOut: checkOut
     }
 
 

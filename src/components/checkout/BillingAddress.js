@@ -6,6 +6,13 @@ import * as Yup from 'yup'
 
 import { useContext, useState } from 'react';
 import { UserContext } from '../../providers/userProvider';
+import {ProductContext} from '../../providers/productProvider'
+
+import ProductService from '../../services/ProductService'
+import { useHistory } from "react-router-dom";
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,15 +48,31 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: "#f3d5d7"
         }
         
-    }
+    },
+    buttonProgress: {
+        color: green[500],
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+    },
+      wrapper: {
+        margin: theme.spacing(1),
+        position: 'relative',
+      },
 
   }));
 
 
 
 const BillingAddress = () => {
-
-   const [purchase, setPurchase] = useState({
+   
+    const SERVICE = ProductService()
+    const history = useHistory()
+    const [products, removeProduct, addProduct, initProducts] = useContext(ProductContext)
+    const [loading, setLoading] = useState(false)
+    const [purchase, setPurchase] = useState({
         billingAddress: null,
         paymentMethod: null,
         purchaseItems: null
@@ -59,24 +82,25 @@ const BillingAddress = () => {
     const classes = useStyles()
 
 
+
     const validationSchema = Yup.object({
 
         fullname: Yup.string('Ingrese nombre y apellido completo')
-                     .required('Este campo es obligatorio'),
-    
+                        .required('Este campo es obligatorio'),
+
         email: Yup.string('Ingrese un correo electronico')
-                  .email('Ingrese un correo electronico valido')
-                  .required('Este campo es obligatorio'),
-    
+                    .email('Ingrese un correo electronico valido')
+                    .required('Este campo es obligatorio'),
+
         contactNumber: Yup.string('Ingrese un numero de contacto')
-                          .length(11, 'Numero de contacto debe incluir prefijo 011')
-                          .required('Este campo es obligatorio'),
+                            .length(11, 'Numero de contacto debe incluir prefijo 011')
+                            .required('Este campo es obligatorio'),
 
         address: Yup.string('Ingrese direccion de entrega')
                     .required('Este campo es obligatorio'),
 
         city: Yup.string('Ingrese ciudad donde se realizara la entrega')
-                 .required('Este campo es obligatorio'),
+                    .required('Este campo es obligatorio'),
         
         zipCode: Yup.string('Ingrese codigo postal')
                     .required('Este campo es obligatorio'),
@@ -95,7 +119,14 @@ const BillingAddress = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+            
+            setLoading(true)
+            SERVICE.checkOut(products).then((response) => {
+                
+                setLoading(false)
+                window.location = response.data
+            })
+
         }
     }
     )
@@ -107,18 +138,18 @@ const BillingAddress = () => {
     }
 
     const handleChange = (event) => {
- 
+
         if(event.target.value == value) {
             setValue('')
             setPurchase((prevPurchase) => {
-              prevPurchase['billingAddress'] = null
-              return prevPurchase})
+                prevPurchase['billingAddress'] = null
+                return prevPurchase})
         }
         else {
             setValue(event.target.value)
             setPurchase((prevPurchase) => {
-              prevPurchase['billingAddress'] = event.target.value
-              return prevPurchase})
+                prevPurchase['billingAddress'] = event.target.value
+                return prevPurchase})
 
             formik.values.fullname = user.fullname
             formik.values.email = user.email
@@ -258,13 +289,19 @@ const BillingAddress = () => {
                         </FormControl>
                     </Paper>
                 </Grid>
-
-                <Button className={classes.button} variant="contained"  type="submit">
+                <div className={classes.wrapper}>
+                <Button className={classes.button} 
+                        disabled={loading}
+                        variant="contained"  
+                        type="submit">
                     Finalizar compra
                 </Button>
+                {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                </div>
+                
             </form>
         </Container>
-      )
+        )
 }
 
 

@@ -12,13 +12,15 @@ import Profile from './components/profile/Profile'
 import Login from './components/login/Login'
 import SignUp from './components/login/SignUp'
 import Checkout from './components/checkout/Checkout'
-
+import Approved from './components/postpayment/Approved'
+import Purchase from './components/purchase/Purchase'
 
 import {UserProvider} from './providers/userProvider'
 import {ProductProvider} from './providers/productProvider'
 import {CartProvider} from './providers/cartProvider'
 
 
+import {Helmet} from "react-helmet";
 
 const App = () => {
 
@@ -36,9 +38,12 @@ const App = () => {
   return (
 
     <div className='App'>
+      <Helmet>
+        <script src="https://sdk.mercadopago.com/js/v2"></script>
+      </Helmet>
       <UserProvider>
       <CartProvider>
-      <ProductProvider>
+      <ProductProvider> 
         <Navbar />
         
         
@@ -83,13 +88,24 @@ const App = () => {
           <Route
             exact
             path="/check-out/"
-            render={() => <Checkout />} />    
+            render={() => <Checkout />} />
+
+          <Route
+            exact
+            path="/success/"
+            render={() => <Approved />} /> 
+            
+          <Route
+            exact
+            path="/purchases/"
+            render={() => <Purchase />} />
+
 
         </Switch>
         {notification}
       </ProductProvider>
       </CartProvider>
-      </UserProvider>
+        </UserProvider>
     </div>
 
   );
