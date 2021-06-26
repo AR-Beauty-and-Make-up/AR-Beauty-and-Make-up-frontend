@@ -10,12 +10,13 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Container } from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
 import moment from "moment-timezone";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
+    //overflow: 'scroll'
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -29,72 +30,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function ControlledAccordions() {
-    const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
-  
-    const handleChange = (panel) => (event, isExpanded) => {
-      setExpanded(isExpanded ? panel : false);
-    };
-  
-    return (
-      <div className={classes.root}>
-        
-        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2bh-content"
-            id="panel2bh-header"
-          >
-            <Typography className={classes.heading}>Users</Typography>
-            <Typography className={classes.secondaryHeading}>
-              You are currently not an owner
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
-              diam eros in elit. Pellentesque convallis laoreet laoreet.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel3bh-content"
-            id="panel3bh-header"
-          >
-            <Typography className={classes.heading}>Advanced settings</Typography>
-            <Typography className={classes.secondaryHeading}>
-              Filtering has been entirely disabled for whole web server
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas eros,
-              vitae egestas augue. Duis vel est augue.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel4bh-content"
-            id="panel4bh-header"
-          >
-            <Typography className={classes.heading}>Personal data</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas eros,
-              vitae egestas augue. Duis vel est augue.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-      </div>
-    );
-  }
-
 
 const Purchase = () => {
 
@@ -107,10 +42,21 @@ const Purchase = () => {
     const handleChange = (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false);
     };
+
+    const sortPurchases = (purchaseA, purchaseB) => {
+      return purchaseB.id - purchaseA.id 
+    }
+
+    const total = (purchase) => {
+      const reducer = (acc, curValue) => acc + curValue
+
+      return purchase.purchaseItems.map((item) => item.product.price * item.quantity).reduce(reducer)
+    }
     
     useEffect(() => {
         SERVICE.getPurchases(user.id).then((response) => {
-            setPurchases(response.data)
+            const purchases = response.data.sort(sortPurchases)
+            setPurchases(purchases)
         })
     }, [])
 
@@ -122,13 +68,32 @@ const Purchase = () => {
         )
     }
 
+    const AccordionElement = (props) => {
+      return (
+        <Grid Container style={{display: 'flex', alignItems: 'flex-end'}}>
+          <Grid item xs={3}>
+            <img src={props.item.product.photo} height={"150px"} alt={"Producto"} />
+          </Grid>
+          <Grid item xs={3} style={{display: 'flex', justifyContent: 'flex-start'}}>
+          <Typography>
+                {props.item.product.productName +' x ' +props.item.quantity}
+          </Typography>
+          </Grid>
+          <Grid item xs={6} style={{display: 'flex', justifyContent: 'flex-end'}}>
+          <Typography>
+                {'Precio: ' + props.item.product.price * props.item.quantity}
+          </Typography>
+          </Grid>
+        </Grid>
+      )
+    }
+
     const ListOfPurchases = () => {
         return (
             <Container>  
             <div className={classes.root}>
-                {
+                {   
                     purchases.map((purchase, index) => {
-                        debugger
                         return(
                             <Accordion expanded={expanded === index} onChange={handleChange(index)}>
                             <AccordionSummary
@@ -138,25 +103,14 @@ const Purchase = () => {
                             >
                                 
                                 <Typography className={classes.heading}>Compra realizada:</Typography>
-                                <Typography className={classes.secondaryHeading}>{moment(purchase.purchaseDate).tz( "America/Argentina/Buenos_Aires").format("DD-MM-YYYY")}</Typography>
+                                <Typography className={classes.secondaryHeading}>{moment(purchase.date).tz( "America/Argentina/Buenos_Aires").format("DD-MM-YYYY")}</Typography>
+                                <Typography className={classes.heading}>Total:</Typography>
+                                <Typography className={classes.secondaryHeading}>{total(purchase)}</Typography>
                                 
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Container>
-                                <Typography>
-                                    {purchase.items.map((item) => {
-                                        return (
-                                            <div style={{display: 'flex', justifyContent: "space-around"}}>
-                                                <div>
-                                                    {item.product.productName}
-                                                </div>
-                                                <div>
-                                                    {item.quantity}
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
-                                </Typography>
+                                {purchase.purchaseItems.map((item) => <AccordionElement item={item} />)}
                                 </Container>   
                             </AccordionDetails>
                             </Accordion>

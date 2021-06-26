@@ -18,12 +18,13 @@ const Approved = () => {
 
     useEffect(() => {
 
+        debugger
         let params = new URLSearchParams(document.location.search.substring(1));
         let status = params.get("collection_status")
 
         if(status === 'approved'){
             SERVICE.addPurchase(user.id, products).then(() => {
-
+                debugger
                 setLoading(false)
                 cleanCart()
             })

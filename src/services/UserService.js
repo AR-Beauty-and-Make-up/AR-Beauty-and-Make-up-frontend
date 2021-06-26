@@ -22,7 +22,7 @@ const UserService = () => {
     }
 
     const addPurchase = (id, purchase) => {
-        return axios.put(`${SERVICE_URL}/addPurchase/${id}`, {items: purchase, purchaseDate: new Date()} )
+        return axios.put(`${SERVICE_URL}/addPurchase/${id}`, {purchaseItems: purchase, date: new Date()} )
     }
 
 

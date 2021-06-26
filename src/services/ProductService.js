@@ -15,7 +15,7 @@ const ProductService = () => {
     }
 
     const checkOut = (purchase) => {
-        return axios.post(`${SERVICE_URL}/check-out`, {items: purchase})
+        return axios.post(`${SERVICE_URL}/check-out`, {purchaseItems: purchase})
     } 
 
     return {
