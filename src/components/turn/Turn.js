@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -20,7 +20,6 @@ import {servicesAR} from "../../helpers/Constants";
 import Calendar from "./Calendar"
 import Notification from "../notification/Notification";
 import Alert from "@material-ui/lab/Alert";
-import AlertTitle from "@material-ui/lab/AlertTitle";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -85,6 +84,8 @@ const Turn = (props) => {
     contactNumber: ""
 
   })
+
+  const [codeErrorMessage, setCodeErrorMessage] = useState(null)
 
 
   const ChooseService = () => {
@@ -274,8 +275,16 @@ const Turn = (props) => {
           setSteps(['showPersonalInfo', 'notification'])
         })
           .catch((error) => {
-            setSteps(['showPersonalInfo','showServices', 'showError'])
-        })
+            if (error.request.status === 400) {
+              debugger
+              setCodeErrorMessage(error.response.data.message)
+              setSteps(['showPersonalInfo', 'showServices', 'showError'])
+            } else {
+              setCodeErrorMessage("Ocurrio un error, intente nuevamente")
+              setSteps(['showPersonalInfo', 'showServices', 'showError'])
+            }
+
+          })
       },
     });
 
@@ -369,10 +378,12 @@ const Turn = (props) => {
   }
 
   const Error = () => {
-    if(showSteps.showError){
-      return(
-        <Alert onClose={() => {setSteps(['showError'])}} variant="outlined" severity="error">
-          Ocurrió un error, intentelo de nuevo.
+    if (showSteps.showError) {
+      return (
+        <Alert onClose={() => {
+          setSteps(['showError'])
+        }} variant="outlined" severity="error">
+          {codeErrorMessage}
         </Alert>
       )
     }
