@@ -28,9 +28,11 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonEdition: {
     margin: '5%',
-    backgroundColor: '#c8adab',
+    textTransform: 'capitalize',
+    color: '#FFFFFF',
+    backgroundColor: '#000000',
     '&:hover': {
-      fontWeight: 'bold'
+      backgroundColor: 'rgb(0,0,0, 0.7)'
     }
   }
 }));
