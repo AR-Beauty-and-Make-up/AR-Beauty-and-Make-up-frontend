@@ -18,9 +18,14 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: 'left',
     backgroundColor: '#c8adab',
+
   },
   subtitles: {
-    textAlign: 'left'
+    textAlign: 'left',
+    fontWeight: 'bold'
+  },
+  info: {
+    fontWeight: 'normal'
   },
   icon: {
     textAlign: 'right',
@@ -28,9 +33,11 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonEdition: {
     margin: '5%',
-    backgroundColor: '#c8adab',
+    textTransform: 'capitalize',
+    color: '#FFFFFF',
+    backgroundColor: '#000000',
     '&:hover': {
-      fontWeight: 'bold'
+      backgroundColor: 'rgb(0,0,0, 0.7)'
     }
   }
 }));
@@ -64,18 +71,8 @@ const Profile = (props) => {
                 <Grid item xs={4}>
                   E-mail
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={4} className={classes.info}>
                   {user.email}
-                </Grid>
-              </Grid>
-            </Paper>
-            <Paper className={classes.paper}>
-              <Grid container spacing={1}>
-                <Grid item xs={4}>
-                  Password
-                </Grid>
-                <Grid item xs={4}>
-                    *********
                 </Grid>
               </Grid>
             </Paper>
@@ -90,7 +87,7 @@ const Profile = (props) => {
                 <Grid item xs={4}>
                   Nombre y apellido
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={4} className={classes.info}>
                   {user.fullname}
                 </Grid>
               </Grid>
@@ -100,7 +97,7 @@ const Profile = (props) => {
                 <Grid item xs={4}>
                   Fecha de nacimiento
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={4} className={classes.info}>
                   {moment(user.dateOfBirth).tz( "America/Argentina/Buenos_Aires").format("DD-MM-YYYY")}
                 </Grid>
               </Grid>
@@ -110,7 +107,7 @@ const Profile = (props) => {
                 <Grid item xs={4}>
                   Telefono
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={4} className={classes.info}>
                   {user.contactNumber}
                 </Grid>
               </Grid>
@@ -120,7 +117,9 @@ const Profile = (props) => {
 
             <Grid item xs={12}><h3>Domicilios</h3></Grid>
             <Paper className={classes.paper}>
-              {user.address}
+              <Grid container spacing={1} className={classes.info}>
+                {user.address}
+              </Grid>
             </Paper>
           </Grid>
 
