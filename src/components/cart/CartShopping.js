@@ -1,10 +1,10 @@
-import { Container, Grid, Button } from "@material-ui/core"
+import {Button, Container, Grid} from "@material-ui/core"
 import CartItem from './CartItem'
 
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import {useContext, useState} from 'react'
 import {ProductContext} from '../../providers/productProvider'
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {CartContext} from '../../providers/cartProvider'
 
 
@@ -65,7 +65,7 @@ const CartShopping = (props) => {
                     <h2>Tus compras</h2>
                 </Grid>
                 <Grid item xs={12}>
-                    {products.length == 0? <p>Aun no tienes compras</p>: null}
+                    {products.length == 0? <p data-testid="Empty Cart">Aun no tienes compras</p>: null}
                     {products.map((product) => {
 
                         return (
@@ -82,7 +82,7 @@ const CartShopping = (props) => {
                     <div className={classes.footer}>
                         <div className={classes.price}>
                             <h3>Total:</h3>
-                            <p>{total.toFixed(2)}</p>
+                            <p data-testid="total" aria-label="Total price">{total.toFixed(2)}</p>
                         </div>
                         <div className={classes.divButton}>
                             <Button className={classes.button} variant="contained"  onClick={() => {
