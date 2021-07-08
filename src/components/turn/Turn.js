@@ -94,12 +94,12 @@ const Turn = (props) => {
       return (
         <Fade in={showSteps.showServices} timeout={500}>
           <div className={classes.root}>
-            <h2>Elegir Servicio</h2>
+            <h2 aria-label="Choose service">Elegir Servicio</h2>
             <Grid container spacing={1}>
               {servicesAR.map((service) => {
                 return (
                   <Grid key={service} item xs={12}>
-                    <Paper className={classes.paper} onClick={() => {
+                    <Paper aria-label={service.label} className={classes.paper} onClick={() => {
                       setService(service.value)
                       setSteps(['showServices', 'showDate'])
                     }}>
@@ -153,7 +153,7 @@ const Turn = (props) => {
             <Paper className={classes.selectedService} onClick={() => {
               setSteps(['showDate', 'showServices'])
             }}>
-              <b>{turn.service}</b>
+              <b data-testid="Service selected">{turn.service}</b>
             </Paper>
           </Grid>
           <Grid item xs={12}>
@@ -163,7 +163,7 @@ const Turn = (props) => {
             <Calendar date={turn.date} setDate={setDate}/>
           </Grid>
           <Grid item xs={12}>
-            <Button style={{background: '#100d0d', color: '#f4f1f1'}}
+            <Button aria-label="Save date" style={{background: '#100d0d', color: '#f4f1f1'}}
                     onClick={() => {
                       setSteps(['showDate', 'showCheckedTurn'])
 
@@ -202,7 +202,7 @@ const Turn = (props) => {
             <Paper className={classes.selectedService} onClick={(event) => {
               setSteps(['showDate', 'showCheckedTurn'])
             }}>
-              <b>{turn.date.toLocaleString().slice(0, -3) + " HS"}</b>
+              <b data-testid="Selected date">{turn.date.toLocaleString().slice(0, -3) + " HS"}</b>
             </Paper>
           </Grid>
           <Grid item xs={12}>
