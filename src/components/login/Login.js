@@ -61,7 +61,7 @@ const Login = (props) => {
     const login = ({email, password}, properties) => {
         
         SERVICE.loginUser(email, password).then((response) => {
-            console.log("pasa esto 1")
+
             setUser(response.data)
             properties.resetForm()
             localStorage.setItem('user', JSON.stringify(response.data))

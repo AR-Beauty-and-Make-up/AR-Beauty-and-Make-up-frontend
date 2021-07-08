@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Avatar } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 import { UserContext } from '../../providers/userProvider';
+import UserService from '../../services/UserService';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,9 +73,10 @@ const MenuListComposition = () =>  {
   }
 
   const close = () => {
-    localStorage.removeItem('user')
-    setUser(null)
-    history.push('/')
+    UserService().logout().then(() => {
+      setUser(null)
+      history.push('/')
+    })
   }
 
 

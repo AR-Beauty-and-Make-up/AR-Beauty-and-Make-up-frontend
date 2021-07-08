@@ -14,7 +14,7 @@ const UserService = () => {
     }
 
     const loginUser = (email, password) => {
-        return axios.post(`${SERVICE_URL}/validateUser`, {email: email, password: password}) 
+        return axios.post(`${SERVICE_URL}/validateUser`, {email: email, password: password}, { withCredentials: true }) 
     }
 
     const updateUser = (id, userToUpdate) => {
@@ -25,9 +25,16 @@ const UserService = () => {
         return axios.put(`${SERVICE_URL}/addPurchase/${id}`, {purchaseItems: purchase, date: new Date()} )
     }
 
-
     const getPurchases = (id) => {
         return axios.get(`${SERVICE_URL}/purchases/${id}`)
+    }
+
+    const getUserAuthenticated = () => {
+        return axios.get(`${SERVICE_URL}/user/`, {withCredentials: true})
+    }
+
+    const logout = () => {
+        return axios.post(`${SERVICE_URL}/logout-user`, {withCredentials: true}) 
     }
 
     return {
@@ -36,7 +43,9 @@ const UserService = () => {
         loginUser: loginUser,
         updateUser: updateUser,
         addPurchase: addPurchase,
-        getPurchases: getPurchases
+        getPurchases: getPurchases,
+        getUserAuthenticated: getUserAuthenticated,
+        logout: logout
     }
 
 }
