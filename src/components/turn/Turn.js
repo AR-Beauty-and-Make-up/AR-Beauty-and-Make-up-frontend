@@ -54,6 +54,11 @@ const useStyles = makeStyles((theme) => ({
   },
   notificationStyle: {
     textAlign: 'left'
+  },
+  titleMessage: {
+    color: 'purple',
+    fontWeight: '600',
+    fontSize: 'larger'
   }
 }));
 
@@ -362,16 +367,13 @@ const Turn = (props) => {
     if (showSteps.notification) {
       return (
         <div className={classes.notificationStyle}>
-          <h3 style={{color: 'purple'}}>Revisa tu correo</h3>
-          <h4>Enviamos un mail de confimacion a <b>{turn.email}</b></h4>
-          <br/>
-          <br/>
-          <h6>
-            Deberás confirmar tu reserva dentro de los próximos 15 minutos.
-          </h6>
-          <h6>
-            De lo contrario, será cancelada automaticamente.
-          </h6>
+          <p className={classes.titleMessage}>Gracias por confiar en nosotros!</p>
+
+          <p>Enviamos un mail de confimacion con los datos del turno y nuestra dirección a {turn.email}</p>
+
+          <p>En caso de querer anular o cambiar su turno, por favor contactenos por whatsapp al1162434990 o a traves de nuestras redes sociales</p>
+
+
         </div>
       )
     }
