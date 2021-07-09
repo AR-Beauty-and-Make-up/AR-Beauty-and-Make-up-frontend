@@ -42,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     backgroundColor: '#d1a4a6',
     fontSize: '130%',
+    '&:hover': {
+      cursor: 'pointer'
+    }
   },
   icon: {
     textAlign: 'right',
@@ -369,9 +372,9 @@ const Turn = (props) => {
         <div className={classes.notificationStyle}>
           <p className={classes.titleMessage}>Gracias por confiar en nosotros!</p>
 
-          <p>Enviamos un mail de confimacion con los datos del turno y nuestra dirección a {turn.email}</p>
+          <p>Enviamos un mail de confimación con los datos del turno y nuestra dirección a {turn.email}</p>
 
-          <p>En caso de querer anular o cambiar su turno, por favor contactenos por whatsapp al1162434990 o a traves de nuestras redes sociales</p>
+          <p>En caso de querer anular o cambiar su turno, por favor contactenos por whatsapp al 1162434990 o a través de nuestras redes sociales</p>
 
 
         </div>
