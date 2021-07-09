@@ -1,19 +1,18 @@
-
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import { Button, TextField, Typography } from '@material-ui/core';
-import { useHistory } from "react-router-dom";
+import {Button, TextField, Typography} from '@material-ui/core';
+import {useHistory} from "react-router-dom";
 
-import { Formik, Form, ErrorMessage, Field } from 'formik';
+import {ErrorMessage, Field, Form, Formik} from 'formik';
 import * as Yup from 'yup';
 
 import Notification from '../notification/Notification'
 
 import UserService from '../../services/UserService'
 
-import { useContext } from 'react';
-import { UserContext } from '../../providers/userProvider';
+import {useContext} from 'react';
+import {UserContext} from '../../providers/userProvider';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,9 +20,8 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
       padding: 20,
-      height: '45vh',
-      width: '20vw',
-      margin: '20px auto'
+        width: '20%',
+        margin: '3% 37%'
     },
     buttonDiv: {
         paddingTop: '20%',
