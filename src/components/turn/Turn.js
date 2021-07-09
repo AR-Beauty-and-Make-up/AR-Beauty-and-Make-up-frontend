@@ -42,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     backgroundColor: '#d1a4a6',
     fontSize: '130%',
+    '&:hover': {
+      cursor: 'pointer'
+    }
   },
   icon: {
     textAlign: 'right',
@@ -54,6 +57,11 @@ const useStyles = makeStyles((theme) => ({
   },
   notificationStyle: {
     textAlign: 'left'
+  },
+  titleMessage: {
+    color: 'purple',
+    fontWeight: '600',
+    fontSize: 'larger'
   }
 }));
 
@@ -76,7 +84,7 @@ const Turn = (props) => {
   })
 
   const [turn, setTurn] = useState({
-    service: "",
+    service: {},
     date: null,
     email: "",
     name: "",
@@ -99,8 +107,8 @@ const Turn = (props) => {
               {servicesAR.map((service) => {
                 return (
                   <Grid key={service} item xs={12}>
-                    <Paper aria-label={service.label} className={classes.paper} onClick={() => {
-                      setService(service.value)
+                    <Paper aria-label={service} className={classes.paper} onClick={() => {
+                      setService(service)
                       setSteps(['showServices', 'showDate'])
                     }}>
                       <Grid container spacing={1}>
@@ -153,7 +161,7 @@ const Turn = (props) => {
             <Paper className={classes.selectedService} onClick={() => {
               setSteps(['showDate', 'showServices'])
             }}>
-              <b data-testid="Service selected">{turn.service}</b>
+              <b data-testid="Service selected">{turn.service.label}</b>
             </Paper>
           </Grid>
           <Grid item xs={12}>
@@ -195,7 +203,7 @@ const Turn = (props) => {
             <Paper className={classes.selectedService} onClick={(event) => {
               setSteps(['showCheckedTurn', 'showServices'])
             }}>
-              <b>{turn.service}</b>
+              <b>{turn.service.label}</b>
             </Paper>
           </Grid>
           <Grid item xs={12}>
@@ -265,6 +273,7 @@ const Turn = (props) => {
       onSubmit: (values) => {
         const {email, firstName, lastName, contact} = values
         var newTurn = {...turn}
+        newTurn.service = turn.service.value
         newTurn.email = email
         newTurn.name = firstName
         newTurn.lastname = lastName
@@ -361,16 +370,13 @@ const Turn = (props) => {
     if (showSteps.notification) {
       return (
         <div className={classes.notificationStyle}>
-          <h3 style={{color: 'purple'}}>Revisa tu correo</h3>
-          <h4>Enviamos un mail de confimacion a <b>{turn.email}</b></h4>
-          <br/>
-          <br/>
-          <h6>
-            Deberás confirmar tu reserva dentro de los próximos 15 minutos.
-          </h6>
-          <h6>
-            De lo contrario, será cancelada automaticamente.
-          </h6>
+          <p className={classes.titleMessage}>Gracias por confiar en nosotros!</p>
+
+          <p>Enviamos un mail de confimación con los datos del turno y nuestra dirección a {turn.email}</p>
+
+          <p>En caso de querer anular o cambiar su turno, por favor contactenos por whatsapp al 1162434990 o a través de nuestras redes sociales</p>
+
+
         </div>
       )
     }

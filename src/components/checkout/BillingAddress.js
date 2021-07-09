@@ -1,18 +1,29 @@
-import { useFormik } from 'formik'
-import { Button, TextField, Typography, Container, Grid, Paper } from '@material-ui/core'
-import {FormLabel, FormControl, RadioGroup, FormControlLabel, Radio} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import {useFormik} from 'formik'
+import {
+    Button,
+    Container,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Grid,
+    Paper,
+    Radio,
+    RadioGroup,
+    TextField,
+    Typography
+} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles';
 import * as Yup from 'yup'
 
-import { useContext, useState } from 'react';
-import { UserContext } from '../../providers/userProvider';
+import {useContext, useState} from 'react';
+import {UserContext} from '../../providers/userProvider';
 import {ProductContext} from '../../providers/productProvider'
 
 import ProductService from '../../services/ProductService'
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { green } from '@material-ui/core/colors';
+import {green} from '@material-ui/core/colors';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     },
     PaperRadioButton: {
         paddingTop: 5,
-        paddingBottom: 150,
+        paddingBottom: '5%',
     },
     paper: {
         textAlign: 'left',
