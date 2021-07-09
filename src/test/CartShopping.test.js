@@ -7,6 +7,7 @@ import CartShopping from "../components/cart/CartShopping";
 import {ProductProvider} from "../providers/productProvider";
 import Product from "../components/store/Product";
 import CartItem from "../components/cart/CartItem";
+import {UserProvider} from "../providers/userProvider";
 
 
 function createFakeProduct(aQuantity) {
@@ -33,34 +34,36 @@ function renderCartShopping(item) {
   return render(
     <CartProvider>
       <ProductProvider value={item}>
-        <CartShopping>
-          <CartItem item={item}
-          />
-        </CartShopping>
-
+        <UserProvider>
+          <CartShopping>
+            <CartItem item={item}
+            />
+          </CartShopping>
+        </UserProvider>
       </ProductProvider>
     </CartProvider>
   );
 }
+
 describe('Flujo de agregar y quitar poductos del carrito', () => {
 
   const fakeItem = createFakeProduct(0)
 
   it('Cart is empty at first', () => {
-      const {getByTestId} = renderCartShopping()
-      expect(getByTestId('Empty Cart')).toHaveTextContent('Aun no tienes compras')
-    })
+    const {getByTestId} = renderCartShopping()
+    expect(getByTestId('Empty Cart')).toHaveTextContent('Aun no tienes compras')
+  })
 
   it('Added a product in cart, has a product price and total price', () => {
-      renderProduct(fakeItem.product);
-      const addButton = screen.getByTestId(fakeItem.product.id + " add-button")
+    renderProduct(fakeItem.product);
+    const addButton = screen.getByTestId(fakeItem.product.id + " add-button")
 
-      userEvent.click(addButton)
-      const {getByTestId} = renderCartShopping()
+    userEvent.click(addButton)
+    const {getByTestId} = renderCartShopping()
 
-      expect(getByTestId(fakeItem.product.productName)).toHaveTextContent('Crema para cara')
-      expect(getByTestId("total")).toHaveTextContent(fakeItem.product.price)
-    })
+    expect(getByTestId(fakeItem.product.productName)).toHaveTextContent('Crema para cara')
+    expect(getByTestId("total")).toHaveTextContent(fakeItem.product.price)
+  })
 
   it('click on button + increments product quantity in 1, change total price but not change productPrice', () => {
     const total = fakeItem.product.price * 2
