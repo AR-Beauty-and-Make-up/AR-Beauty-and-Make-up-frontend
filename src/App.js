@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import './App.css';
 import HomePage from './components/home/HomePage'
-import {Switch, Route} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import Scheduler from './components/scheduler/Scheduler'
 import Navbar from './components/navbar/Navbar'
 import Turn from './components/turn/Turn'

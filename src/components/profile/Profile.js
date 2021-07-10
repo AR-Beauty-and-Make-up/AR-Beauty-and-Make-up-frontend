@@ -17,8 +17,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: 'left',
-    backgroundColor: '#c8adab',
-
+    backgroundColor: '#d1a4a6',
   },
   subtitles: {
     textAlign: 'left',

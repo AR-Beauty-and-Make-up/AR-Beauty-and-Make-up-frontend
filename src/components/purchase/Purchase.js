@@ -1,22 +1,31 @@
-
-import { useEffect, useContext, useState } from "react"
+import React, {useContext, useEffect, useState} from "react"
 import UserService from "../../services/UserService"
-import { UserContext } from "../../providers/userProvider"
-
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {UserContext} from "../../providers/userProvider"
+import {makeStyles} from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Container, Grid } from "@material-ui/core";
+import {Container, Grid} from "@material-ui/core";
 import moment from "moment-timezone";
+import './purchase.scss'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
+    margin: '5% 0%'
     //overflow: 'scroll'
+  },
+  title: {
+    textAlign: 'start',
+    fontSize: 'larger',
+    fontWeight: '500',
+    padding: '0% 17%',
+  },
+  accordion: {
+    display: 'flex',
+    alignItems: 'center'
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -30,110 +39,124 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 const Purchase = () => {
 
-    const SERVICE =  UserService()
-    const [user, setUser] = useContext(UserContext)
-    const [purchases, setPurchases] = useState([])
-    const [expanded, setExpanded] = useState(false)
-    const classes = useStyles();
-  
-    const handleChange = (panel) => (event, isExpanded) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const SERVICE = UserService()
+  const [user, setUser] = useContext(UserContext)
+  const [purchases, setPurchases] = useState([])
+  const [expanded, setExpanded] = useState(false)
+  const classes = useStyles();
 
-    const sortPurchases = (purchaseA, purchaseB) => {
-      return purchaseB.id - purchaseA.id 
-    }
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
-    const total = (purchase) => {
-      const reducer = (acc, curValue) => acc + curValue
+  const sortPurchases = (purchaseA, purchaseB) => {
+    return purchaseB.id - purchaseA.id
+  }
 
-      return purchase.purchaseItems.map((item) => item.product.price * item.quantity).reduce(reducer)
-    }
-    
-    useEffect(() => {
-        SERVICE.getUserAuthenticated().then((response) => {
+  const total = (purchase) => {
+    const reducer = (acc, curValue) => acc + curValue
 
-          SERVICE.getPurchases(response.data.id).then((response) => {
-            const purchases = response.data.sort(sortPurchases)
-            setPurchases(purchases)
-          })
+    return purchase.purchaseItems.map((item) => item.product.price * item.quantity).reduce(reducer)
+  }
 
-        })
-        
-    }, [])
+  useEffect(() => {
+    SERVICE.getUserAuthenticated().then((response) => {
 
-    const NoPurchase = () => {
-        return (
-            <div>
-                Aun no hay compras realizadas
-            </div>
-        )
-    }
+      SERVICE.getPurchases(response.data.id).then((response) => {
+        const purchases = response.data.sort(sortPurchases)
+        setPurchases(purchases)
+      })
 
-    const AccordionElement = (props) => {
-      return (
-        <Grid Container style={{display: 'flex', alignItems: 'flex-end'}}>
-          <Grid item xs={3}>
-            <img src={props.item.product.photo} height={"150px"} alt={"Producto"} />
-          </Grid>
-          <Grid item xs={3} style={{display: 'flex', justifyContent: 'flex-start'}}>
-          <Typography>
-                {props.item.product.productName +' x ' +props.item.quantity}
-          </Typography>
-          </Grid>
-          <Grid item xs={6} style={{display: 'flex', justifyContent: 'flex-end'}}>
-          <Typography>
-                {'Precio: ' + props.item.product.price * props.item.quantity}
-          </Typography>
+    })
+
+  }, [])
+
+  const NoPurchase = () => {
+    return (
+      <div>
+        Aun no hay compras realizadas
+      </div>
+    )
+  }
+
+  const AccordionElement = (props) => {
+    return (
+      <Grid Container className={classes.accordion}>
+        <Grid item xs={6} className="photoContainer">
+          <img src={props.item.product.photo} alt={"Producto"}/>
+        </Grid>
+        <Grid item xs={6} className={classes.accordion}>
+          <Grid Container>
+            <Grid item xs={12} className={classes.accordion}>
+              <Typography>
+                {props.item.product.productName + ' x ' + props.item.quantity}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} className={classes.accordion}>
+              <Typography>
+                {'Precio unitario: ' + props.item.product.price.toFixed(2)}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} className={classes.accordion}>
+              <Typography>
+                {'Subtotal: ' + (props.item.product.price * props.item.quantity).toFixed(2)}
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
-      )
-    }
 
-    const ListOfPurchases = () => {
-        return (
-            <Container>  
-            <div className={classes.root}>
-                {   
-                    purchases.map((purchase, index) => {
-                        return(
-                            <Accordion expanded={expanded === index} onChange={handleChange(index)}>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1bh-content"
-                                id="panel1bh-header"
-                            >
-                                
-                                <Typography className={classes.heading}>Compra realizada:</Typography>
-                                <Typography className={classes.secondaryHeading}>{moment(purchase.date).tz( "America/Argentina/Buenos_Aires").format("DD-MM-YYYY")}</Typography>
-                                <Typography className={classes.heading}>Total:</Typography>
-                                <Typography className={classes.secondaryHeading}>{total(purchase)}</Typography>
-                                
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Container>
-                                {purchase.purchaseItems.map((item) => <AccordionElement item={item} />)}
-                                </Container>   
-                            </AccordionDetails>
-                            </Accordion>
-                        )
-                    })
-                }
-            </div>
-            </Container>
-        )
-    }
-
-
-    return(
-        <div>
-            {!purchases&&<NoPurchase />}
-            {!!purchases&&<ListOfPurchases />}
-        </div>
+      </Grid>
     )
+  }
+
+  const ListOfPurchases = () => {
+    return (
+      <div>
+        <div className={classes.title}>Mis Compras</div>
+        <Container maxWidth="md">
+          <div className={classes.root}>
+            {
+              purchases.map((purchase, index) => {
+                return (
+                  <Accordion expanded={expanded === index}
+                             onChange={handleChange(index)}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon/>}
+                      aria-controls="panel1bh-content"
+                      id="panel1bh-header"
+                    >
+
+                      <Typography className={classes.heading}>Fecha de compra :</Typography>
+                      <Typography
+                        className={classes.secondaryHeading}>{moment(purchase.date).tz("America/Argentina/Buenos_Aires").format("DD-MM-YYYY")}</Typography>
+                      <Typography className={classes.heading}>Total:</Typography>
+                      <Typography className={classes.secondaryHeading}>{total(purchase).toFixed(2)}</Typography>
+
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Container>
+                        {purchase.purchaseItems.map((item) => <AccordionElement item={item}/>)}
+                      </Container>
+                    </AccordionDetails>
+                  </Accordion>
+                )
+              })
+            }
+          </div>
+        </Container>
+      </div>
+    )
+  }
+
+
+  return (
+    <div>
+      {!purchases && <NoPurchase/>}
+      {!!purchases && <ListOfPurchases/>}
+    </div>
+  )
 }
 
 
