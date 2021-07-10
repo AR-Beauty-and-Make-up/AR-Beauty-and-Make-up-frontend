@@ -1,10 +1,10 @@
-import { Container, Grid, Button } from "@material-ui/core"
+import {Button, Grid} from "@material-ui/core"
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Paper from '@material-ui/core/Paper';
 
 import {makeStyles} from '@material-ui/core/styles';
-import {useContext, useState} from 'react'
+import {useContext} from 'react'
 import {ProductContext} from '../../providers/productProvider'
 
 import './cartItem.scss';
@@ -80,8 +80,8 @@ const CartItem = (props) => {
                             <Grid data-testid={props.item.product.id + "quantity"} item xs={4} className={classes.quantity}>
                                 {counter}
                             </Grid>
-                            <Grid data-testid={props.item.product.id + "minus-unit-button"} item xs={4} className={classes.total}>
-                                <Button onClick={() => {   
+                            <Grid  item xs={4} className={classes.total}>
+                                <Button data-testid={props.item.product.id + "minus-unit-button"} onClick={() => {
                                         removeProduct(props.item.product)
                                         props.setTotal(prevTotal => prevTotal - props.item.product.price)
                                     }}>
