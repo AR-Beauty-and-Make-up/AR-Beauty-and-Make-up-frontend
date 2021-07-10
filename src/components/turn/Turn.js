@@ -107,7 +107,7 @@ const Turn = (props) => {
               {servicesAR.map((service) => {
                 return (
                   <Grid key={service} item xs={12}>
-                    <Paper aria-label={service} className={classes.paper} onClick={() => {
+                    <Paper aria-label={service.label} className={classes.paper} onClick={() => {
                       setService(service)
                       setSteps(['showServices', 'showDate'])
                     }}>
@@ -280,6 +280,7 @@ const Turn = (props) => {
         newTurn.contactNumber = contact
 
         setTurn(newTurn)
+        debugger
         turnService.postTurn(newTurn).then((response) => {
           setSteps(['showPersonalInfo', 'notification'])
         })

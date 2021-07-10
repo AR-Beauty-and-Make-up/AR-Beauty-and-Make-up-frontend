@@ -132,12 +132,15 @@ class Scheduler extends React.Component {
   editEvent(turn) {
     this.setState({showModal: true, selected: turn});
     if(this.validateTurn(turn)){
+      
       TurnService().updateTurn(this.buildTurn(turn))
         .then((response) => {
+          
           this._closeModal();
           this.setState({isUpdated: true, updatedSucceed: true})
         })
         .catch((error) => {
+          console.log(error)
           this.props.setNotication(<Notification message="Ocurrió un error, vuelva a intentarlo" />)
         })
     }

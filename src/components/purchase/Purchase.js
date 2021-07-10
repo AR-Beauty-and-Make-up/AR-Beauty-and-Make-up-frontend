@@ -36,7 +36,7 @@ const Purchase = () => {
     const SERVICE =  UserService()
     const [user, setUser] = useContext(UserContext)
     const [purchases, setPurchases] = useState([])
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = useState(false)
     const classes = useStyles();
   
     const handleChange = (panel) => (event, isExpanded) => {
@@ -54,10 +54,15 @@ const Purchase = () => {
     }
     
     useEffect(() => {
-        SERVICE.getPurchases(user.id).then((response) => {
+        SERVICE.getUserAuthenticated().then((response) => {
+
+          SERVICE.getPurchases(response.data.id).then((response) => {
             const purchases = response.data.sort(sortPurchases)
             setPurchases(purchases)
+          })
+
         })
+        
     }, [])
 
     const NoPurchase = () => {

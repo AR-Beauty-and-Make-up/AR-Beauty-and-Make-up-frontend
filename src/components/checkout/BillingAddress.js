@@ -162,12 +162,12 @@ const BillingAddress = () => {
                 prevPurchase['billingAddress'] = event.target.value
                 return prevPurchase})
 
-            formik.values.fullname = user.fullname
-            formik.values.email = user.email
-            formik.values.contactNumber = "0"+user.contactNumber
-            formik.values.address = user.address.split(',')[0]
-            formik.values.city = user.address.split(',')[1]
-            formik.values.zipCode = user.address.split(',')[2].split("(")[1].split(")")[0]
+            formik.values.fullname = user?.fullname
+            formik.values.email = user?.email
+            formik.values.contactNumber = "0"+user?.contactNumber
+            formik.values.address = user?.address.split(',')[0]
+            formik.values.city = user?.address.split(',')[1]
+            formik.values.zipCode = user?.address.split(',')[2].split("(")[1].split(")")[0]
         }
     }
 
@@ -175,17 +175,17 @@ const BillingAddress = () => {
         return (
             <div className={classes.radio}>
                 <Typography variant="h6">
-                    {user.address}
+                    {user?.address}
                 </Typography>
                 <div style={{display: "flex", flexDirection: "column"}}>
                     <Typography variant="span">
-                        {user.fullname}
+                        {user?.fullname}
                     </Typography>
                     <Typography variant="span">
-                        {"0"+user.contactNumber}
+                        {"0"+user?.contactNumber}
                     </Typography>
                     <Typography variant="span">
-                        {user.email}
+                        {user?.email}
                     </Typography>
                 </div>
             </div>
@@ -293,7 +293,7 @@ const BillingAddress = () => {
                     <Paper className={classes.paper}>
                         <FormControl component="fieldset">
                             <RadioGroup value={value} >
-                                <FormControlLabel className={classes.radio} value={user.address} 
+                                <FormControlLabel className={classes.radio} value={user?.address} 
                                 control={<Radio onClick={handleChange}/>} 
                                 label={<UserDetail  />} />
                             </RadioGroup>
