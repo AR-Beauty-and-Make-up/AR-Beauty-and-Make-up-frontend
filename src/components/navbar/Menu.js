@@ -6,6 +6,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import {useHistory} from "react-router-dom";
 import {UserContext} from '../../providers/userProvider';
 import UserService from '../../services/UserService';
+import { useCookies } from 'react-cookie'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +23,7 @@ const MenuListComposition = () =>  {
   const anchorRef = useRef(null)
   const history = useHistory()
   const [user, setUser] = useContext(UserContext)
-
+  const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
 
 
   const handleToggle = () => {
@@ -73,6 +74,7 @@ const MenuListComposition = () =>  {
 
   const close = () => {
     UserService().logout().then(() => {
+      removeCookie("jwt")
       setUser(null)
       history.push('/')
     })
