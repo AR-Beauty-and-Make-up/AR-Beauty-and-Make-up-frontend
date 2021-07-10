@@ -1,12 +1,11 @@
 import React from "react";
 import '@testing-library/jest-dom';
-import {render, screen} from "@testing-library/react";
+import {cleanup, render, screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {CartProvider} from "../providers/cartProvider";
 import CartShopping from "../components/cart/CartShopping";
 import {ProductProvider} from "../providers/productProvider";
 import Product from "../components/store/Product";
-import CartItem from "../components/cart/CartItem";
 import {UserProvider} from "../providers/userProvider";
 
 
@@ -30,14 +29,13 @@ function renderProduct(product) {
 }
 
 
-function renderCartShopping(item) {
+function renderCartShopping(itemList) {
   return render(
     <CartProvider>
-      <ProductProvider value={item}>
+      <ProductProvider value={itemList}>
         <UserProvider>
           <CartShopping>
-            <CartItem item={item}
-            />
+
           </CartShopping>
         </UserProvider>
       </ProductProvider>
@@ -47,7 +45,16 @@ function renderCartShopping(item) {
 
 describe('Flujo de agregar y quitar poductos del carrito', () => {
 
-  const fakeItem = createFakeProduct(0)
+  let fakeItem
+
+  beforeEach(() => {
+    fakeItem = createFakeProduct(1)
+  })
+
+  afterEach(() => {
+    cleanup()
+  })
+
 
   it('Cart is empty at first', () => {
     const {getByTestId} = renderCartShopping()
@@ -67,7 +74,7 @@ describe('Flujo de agregar y quitar poductos del carrito', () => {
 
   it('click on button + increments product quantity in 1, change total price but not change productPrice', () => {
     const total = fakeItem.product.price * 2
-    const {getByTestId} = renderCartShopping(fakeItem)
+    const {getByTestId} = renderCartShopping([fakeItem])
     const plusButton = screen.getByTestId(fakeItem.product.id + "add-unit-button")
 
     userEvent.click(plusButton)
@@ -78,20 +85,12 @@ describe('Flujo de agregar y quitar poductos del carrito', () => {
     expect(getByTestId("total")).toHaveTextContent(total.toString())
   })
 
-  it('click on button - decrements product quantity in 1', () => {
-    const {getByTestId} = renderCartShopping(fakeItem)
+
+  it('click on button - decrements product quantity and the cart is empty again', () => {
+    const {getByTestId} = renderCartShopping([fakeItem])
     const miniusButton = screen.getByTestId(fakeItem.product.id + "minus-unit-button")
 
     userEvent.click(miniusButton)
-
-    expect(getByTestId(fakeItem.product.id + "quantity")).toHaveTextContent("1")
-    expect(getByTestId("total")).toHaveTextContent(fakeItem.product.price)
-  })
-
-  it('click on button - decrements product quantity in 1 and the cart is empty again', () => {
-    const {getByTestId} = renderCartShopping(fakeItem)
-    const miniusButton = screen.getByTestId(fakeItem.product.id + "minus-unit-button")
-
     userEvent.click(miniusButton)
 
     expect(getByTestId('Empty Cart')).toHaveTextContent('Aun no tienes compras')

@@ -1,5 +1,4 @@
-
-import React, { createContext } from 'react'
+import React, {createContext} from 'react'
 import useProduct from "../utils/useProduct"
 
 export const ProductContext = createContext()
@@ -7,7 +6,7 @@ export const ProductContext = createContext()
 export const ProductProvider = props => {
 
     return (
-        <ProductContext.Provider value={useProduct()}>
+        <ProductContext.Provider value={useProduct(props.value)}>
             {props.children}
         </ProductContext.Provider>
 
