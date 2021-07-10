@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import {useContext, useEffect, useRef, useState} from 'react';
 import Button from '@material-ui/core/Button';
-import {Menu, MenuItem} from '@material-ui/core';
+import {Avatar, Menu, MenuItem} from '@material-ui/core';
 import MenuList from '@material-ui/core/MenuList';
-import { makeStyles } from '@material-ui/core/styles';
-import { Avatar } from '@material-ui/core';
-import { useHistory } from "react-router-dom";
-import { UserContext } from '../../providers/userProvider';
+import {makeStyles} from '@material-ui/core/styles';
+import {useHistory} from "react-router-dom";
+import {UserContext} from '../../providers/userProvider';
 import UserService from '../../services/UserService';
 
 const useStyles = makeStyles((theme) => ({
@@ -60,13 +59,13 @@ const MenuListComposition = () =>  {
   }, [open]);
 
   const AvatarLogin = () => {
-    if(user.photo){
-      return <Avatar className={classes.avatar} alt="Avatar" src={user.photo} />
+    if(user?.photo){
+      return <Avatar className={classes.avatar} alt="Avatar" src={user?.photo} />
     }
     else {
       return (
         <Avatar className={classes.avatar} alt="Avatar" >
-          L
+          {user?.fullname[0].toUpperCase()}
         </Avatar>
       )
     }
