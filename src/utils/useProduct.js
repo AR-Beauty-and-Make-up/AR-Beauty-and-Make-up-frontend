@@ -1,8 +1,8 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 
 
-const useCart = () => {
-    const [products, setProducts] = useState(() =>  JSON.parse(localStorage.getItem('cart')) || [])
+const useCart = (productsList) => {
+    const [products, setProducts] = useState(() =>  JSON.parse(localStorage.getItem('cart')) || productsList ||[])
 
 
     useEffect(() => {
