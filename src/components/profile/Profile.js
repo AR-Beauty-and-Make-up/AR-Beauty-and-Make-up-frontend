@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -9,6 +9,8 @@ import EditPasswordModal from "./EditPasswordModal";
 
 import {UserContext} from '../../providers/userProvider'
 import moment from "moment-timezone";
+import {useHistory} from "react-router";
+import UserService from "../../services/UserService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,16 +48,24 @@ const Profile = (props) => {
 
   const classes = useStyles()
 
+  const history = useHistory()
+  const SERVICE =  UserService()
   const [user, setUser] = useContext(UserContext)
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [editPasswordOpen, setEditPasswordOpen] = useState(false)
 
-
-
-
   const handleClose = () => setEditModalOpen(false);
 
   const closePasswordEditModal = () => setEditPasswordOpen(false);
+
+  useEffect(() => {
+    SERVICE.getUserAuthenticated().then((response) => {
+      if(!response.data){
+        history.push('/')
+      }
+      })
+
+  }, [])
 
   return (
     <div>

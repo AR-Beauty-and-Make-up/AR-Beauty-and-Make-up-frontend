@@ -285,7 +285,6 @@ const Turn = (props) => {
         })
           .catch((error) => {
             if (error.request.status === 400) {
-              debugger
               setCodeErrorMessage(error.response.data.message)
               setSteps(['showPersonalInfo', 'showServices', 'showError'])
             } else {
@@ -370,7 +369,7 @@ const Turn = (props) => {
     if (showSteps.notification) {
       return (
         <div className={classes.notificationStyle}>
-          <p className={classes.titleMessage}>Gracias por confiar en nosotros!</p>
+          <p className={classes.titleMessage}>Gracias {turn.name} por confiar en nosotros!</p>
 
           <p>Enviamos un mail de confimación con los datos del turno y nuestra dirección a {turn.email}</p>
 
