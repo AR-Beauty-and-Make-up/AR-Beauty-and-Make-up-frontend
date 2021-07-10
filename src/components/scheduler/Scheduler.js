@@ -1,7 +1,6 @@
 import React from 'react'
-import {ReactAgenda, ReactAgendaCtrl, guid, getUnique, getLast, getFirst, Modal} from 'react-agenda';
+import {ReactAgenda, Modal} from 'react-agenda';
 import {withRouter} from "react-router-dom";
-import NavbarAR from "../navbar/Navbar";
 import TurnService from "../../services/TurnService";
 import moment from 'moment-timezone';
 import './scheduler.scss';

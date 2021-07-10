@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
       }
 }))
 
-const Approved = () => {
+const Rejected = () => {
 
     const classes = useStyles()
 
@@ -47,12 +47,10 @@ const Approved = () => {
     const Message = () => {
         return (
             <div className={classes.notificationStyle}>
-              <p className={classes.titleMessage}>Gracias por confiar en nosotros!</p>
-    
-              <p>Enviamos un mail con tu factura a la dirección de correo: {user?.email}</p>
+              <p className={classes.titleMessage}>Lamentablemente ha ocurrido un error!</p>
     
               <p>Favor contactenos por whatsapp al 1162434990 o 
-                  a través de nuestras redes sociales para coordinar la entrega de su compra.</p>
+                  a través de nuestras redes sociales por cualquier consulta.</p>
     
     
             </div>
@@ -70,4 +68,4 @@ const Approved = () => {
 }
 
 
-export default Approved
+export default Rejected

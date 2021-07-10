@@ -12,7 +12,7 @@ import Profile from './components/profile/Profile'
 import Login from './components/login/Login'
 import SignUp from './components/login/SignUp'
 import Checkout from './components/checkout/Checkout'
-import Approved from './components/postpayment/Approved'
+import Postpayment from './components/postpayment/Postpayment'
 import Purchase from './components/purchase/Purchase'
 
 import {UserProvider} from './providers/userProvider'
@@ -39,6 +39,7 @@ const App = () => {
 
     <div className='App'>
       <Helmet>
+        <style>{'html { background-color: #f4f1f1; }'}</style>
         <script src="https://sdk.mercadopago.com/js/v2"></script>
       </Helmet>
       <UserProvider>
@@ -92,8 +93,8 @@ const App = () => {
 
           <Route
             exact
-            path="/success/"
-            render={() => <Approved />} /> 
+            path="/postpayment/"
+            render={() => <Postpayment />} /> 
             
           <Route
             exact
