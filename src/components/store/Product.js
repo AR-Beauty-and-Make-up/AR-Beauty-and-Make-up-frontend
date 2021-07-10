@@ -2,11 +2,11 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import { Button, CardActionArea, CardActions } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import {Button, CardActionArea, CardActions} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
-import {useContext, useEffect} from 'react'
+import {useContext} from 'react'
 import {ProductContext} from '../../providers/productProvider'
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +49,7 @@ const Product = (props) => {
                 title="Contemplative Reptile"
                 />
                 <CardContent>
-                <Typography gutterBottom variant="h7" component="div">
+                <Typography data-testid={props.prod.productName} gutterBottom variant="h7" component="div">
                     {props.prod.productName}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -59,7 +59,7 @@ const Product = (props) => {
             </CardActionArea>
             <CardActions>
                 <Grid container justify="center" spacing={1}>
-                    <Button size="medium"  onClick={() => {
+                    <Button data-testid={props.prod.id + " add-button"} size="medium"  onClick={() => {
                       addProduct(props.prod)   
                       }}>
                     Agregar al carrito

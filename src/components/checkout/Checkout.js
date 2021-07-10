@@ -1,13 +1,12 @@
-
-import {Paper, Grid, Container } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles';
+import {Container, Grid, Paper} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles';
 import BillingAddress from './BillingAddress'
 import ShopSummary from './ShopSummary'
 
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        height: '80vh'
+        marginBottom: '2%'
     },
   }));
 
