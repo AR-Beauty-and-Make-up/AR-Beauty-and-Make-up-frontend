@@ -17,6 +17,6 @@ describe('Turn', () => {
     const botonService = screen.getByLabelText("Masaje Reductor")
     userEvent.click(botonService)
     const selectedService = screen.getByTestId("Service selected")
-    expect(selectedService).toHaveTextContent("MasajeReductor");
+    expect(selectedService).toHaveTextContent("Masaje Reductor");
   })
 })
