@@ -45,7 +45,7 @@ const CartItem = (props) => {
                     <Grid item xs={12}>
                         <h5>{props.item.product.productName}</h5>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid data-testid={props.item.product.id + "product-price"} item xs={6}>
                         <Grid container className={classes.prices}>
                         <p>
                             <b>
@@ -55,7 +55,7 @@ const CartItem = (props) => {
                         </p>
                         </Grid>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid data-testid={props.item.product.id + "subtotal"} item xs={6}>
                         <Grid container className={classes.prices}>
                         <p>
                             <b>
@@ -69,18 +69,18 @@ const CartItem = (props) => {
                         <Paper className="paper" square elevation={0}>
                             <Grid container>
                                 <Grid item xs={4}>
-                                <Button onClick={() => {   
+                                <Button data-testid={props.item.product.id + "add-unit-button"} onClick={() => {   
                                         addProduct(props.item.product)
                                         props.setTotal(prevTotal => prevTotal + props.item.product.price)
                                     }}>
-                                <AddIcon/>
+                                    <AddIcon/>
                                 </Button>
                                 
                             </Grid>
-                            <Grid item xs={4} className={classes.quantity}>
+                            <Grid data-testid={props.item.product.id + "quantity"} item xs={4} className={classes.quantity}>
                                 {counter}
                             </Grid>
-                            <Grid item xs={4} className={classes.total}>
+                            <Grid data-testid={props.item.product.id + "minus-unit-button"} item xs={4} className={classes.total}>
                                 <Button onClick={() => {   
                                         removeProduct(props.item.product)
                                         props.setTotal(prevTotal => prevTotal - props.item.product.price)
