@@ -9,7 +9,6 @@ import {ProductContext} from '../../providers/productProvider'
 
 const useStyles = makeStyles((theme) => ({ 
     paper: {
-        //backgroundColor: '#d1a4a6',
         width: '30vw',
         height: '50vh',
         overflow: 'scroll'

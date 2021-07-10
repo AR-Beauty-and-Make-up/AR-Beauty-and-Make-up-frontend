@@ -2,9 +2,9 @@ import { useEffect, useContext, useState } from "react"
 import { ProductContext } from "../../providers/productProvider"
 import { UserContext } from "../../providers/userProvider"
 import UserService from "../../services/UserService"
-import { CircularProgress, Paper } from "@material-ui/core"
+import { CircularProgress } from "@material-ui/core"
 import {makeStyles} from '@material-ui/core/styles';
-import { Container } from "@material-ui/core"
+import { Container, Paper } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({ 
     notificationStyle: {
@@ -18,14 +18,13 @@ const useStyles = makeStyles((theme) => ({
       }
 }))
 
-const Approved = () => {
+const Pending = () => {
 
     const classes = useStyles()
 
     const [loading, setLoading] = useState(true)
     const [products, removeProduct, addProduct, initProducts]  =  useContext(ProductContext)
     const [user, setUser] = useContext(UserContext)
-    const SERVICE = UserService()
 
     const cleanCart = () => {
             localStorage.removeItem('cart')
@@ -33,14 +32,8 @@ const Approved = () => {
     }
 
     useEffect(() => {
-        SERVICE.getUserAuthenticated().then((response) => {
-            SERVICE.addPurchase(response.data.id, products).then(() => {
-                
-                setLoading(false)
-                cleanCart()
-            })
-        })
-        
+        setLoading(false)
+        cleanCart()        
     }, [])
 
 
@@ -49,16 +42,13 @@ const Approved = () => {
             <div className={classes.notificationStyle}>
               <p className={classes.titleMessage}>Gracias por confiar en nosotros!</p>
     
-              <p>Enviamos un mail con tu factura a la dirección de correo: {user?.email}</p>
+              <p>Una vez hayamos registrado tu pago. Enviaremos un mail con tu factura a la dirección de correo: {user?.email}</p>
     
               <p>Favor contactenos por whatsapp al 1162434990 o 
-                  a través de nuestras redes sociales para coordinar la entrega de su compra.</p>
-    
-    
+                  a través de nuestras redes sociales ante cualquier consulta.</p>
             </div>
           )
     }
-
 
     return (
         <Container maxWidth="md">
@@ -67,7 +57,8 @@ const Approved = () => {
             </Paper>
         </Container>
     )
+    
 }
 
 
-export default Approved
+export default Pending

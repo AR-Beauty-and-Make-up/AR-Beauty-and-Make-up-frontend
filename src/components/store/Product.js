@@ -46,7 +46,7 @@ const Product = (props) => {
                 className={classes.media}
                 src={props.prod.photo}
                 component="img"
-                title="Contemplative Reptile"
+                title={props.prod.productName}
                 />
                 <CardContent>
                 <Typography data-testid={props.prod.productName} gutterBottom variant="h7" component="div">

@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react'
+import {useContext} from 'react'
 import {ProductContext} from '../../providers/productProvider'
 import {CartContext} from '../../providers/cartProvider'
 import IconButton from '@material-ui/core/IconButton';
