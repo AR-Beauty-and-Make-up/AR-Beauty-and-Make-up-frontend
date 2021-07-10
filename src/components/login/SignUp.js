@@ -69,12 +69,12 @@ const SignUp = (props) => {
             properties.resetForm()
         })
         .then(() => {
-            props.setNotication(<Notification message="Se ha dado de alta usuario exitosamente" />)
+            props.setNotification(<Notification message="Se ha dado de alta usuario exitosamente" />)
         }).then(() => {
             history.push('/')
         })
           .catch((e) => {
-              props.setNotication(<Notification message="El mail ingresado ya se encuentra registrado."/>)
+              props.setNotification(<Notification message="El mail ingresado ya se encuentra registrado."/>)
           })
         
     }

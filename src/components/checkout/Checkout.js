@@ -2,6 +2,9 @@ import {Container, Grid, Paper} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles';
 import BillingAddress from './BillingAddress'
 import ShopSummary from './ShopSummary'
+import {useEffect} from "react";
+import UserService from "../../services/UserService";
+import {useHistory} from "react-router";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -14,6 +17,17 @@ const useStyles = makeStyles((theme) => ({
 const Checkout = () => {
 
     const classes = useStyles()
+    const SERVICE = UserService()
+    const history = useHistory()
+
+    useEffect(() => {
+        SERVICE.getUserAuthenticated().then((response) => {
+            if(!response.data){
+                history.push('/')
+            }
+        })
+
+    }, [])
 
     return (
         <Container maxWidth="xl">

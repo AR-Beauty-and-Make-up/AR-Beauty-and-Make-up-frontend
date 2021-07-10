@@ -10,6 +10,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {Container, Grid} from "@material-ui/core";
 import moment from "moment-timezone";
 import './purchase.scss'
+import {useHistory} from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 const Purchase = () => {
 
   const SERVICE = UserService()
+  const history = useHistory()
   const [user, setUser] = useContext(UserContext)
   const [purchases, setPurchases] = useState([])
   const [expanded, setExpanded] = useState(false)
@@ -63,11 +65,14 @@ const Purchase = () => {
 
   useEffect(() => {
     SERVICE.getUserAuthenticated().then((response) => {
-
-      SERVICE.getPurchases(response.data.id).then((response) => {
-        const purchases = response.data.sort(sortPurchases)
-        setPurchases(purchases)
-      })
+      if(!!response.data){
+        SERVICE.getPurchases(response.data.id).then((response) => {
+          const purchases = response.data.sort(sortPurchases)
+          setPurchases(purchases)
+        })
+      }else{
+        history.push('/')
+      }
 
     })
 
@@ -84,7 +89,7 @@ const Purchase = () => {
   const AccordionElement = (props) => {
     return (
       <Grid Container className={classes.accordion}>
-        <Grid item xs={6} className="photoContainer">
+        <Grid item xs={6} className="photoContainerPurchase">
           <img src={props.item.product.photo} alt={"Producto"}/>
         </Grid>
         <Grid item xs={6} className={classes.accordion}>

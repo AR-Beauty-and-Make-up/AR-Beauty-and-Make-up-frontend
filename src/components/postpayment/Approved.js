@@ -1,10 +1,9 @@
-import { useEffect, useContext, useState } from "react"
-import { ProductContext } from "../../providers/productProvider"
-import { UserContext } from "../../providers/userProvider"
+import {useContext, useEffect, useState} from "react"
+import {ProductContext} from "../../providers/productProvider"
+import {UserContext} from "../../providers/userProvider"
 import UserService from "../../services/UserService"
-import { CircularProgress, Paper } from "@material-ui/core"
+import {CircularProgress, Container, Paper} from "@material-ui/core"
 import {makeStyles} from '@material-ui/core/styles';
-import { Container } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({ 
     notificationStyle: {
@@ -47,7 +46,7 @@ const Approved = () => {
     const Message = () => {
         return (
             <div className={classes.notificationStyle}>
-              <p className={classes.titleMessage}>Gracias por confiar en nosotros!</p>
+              <p className={classes.titleMessage}>Gracias {user.fullname} por confiar en nosotros!</p>
     
               <p>Enviamos un mail con tu factura a la dirección de correo: {user?.email}</p>
     

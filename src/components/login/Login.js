@@ -66,11 +66,11 @@ const Login = (props) => {
       localStorage.setItem('user', JSON.stringify(response.data))
     })
       .then(() => {
-        props.setNotication(<Notification message="Se ha iniciado sesion exitosamente"/>)
+        props.setNotification(<Notification message="Se ha iniciado sesion exitosamente"/>)
       }).then(() => {
       history.push('/')
     }).catch((error) => {
-      props.setNotication(<Notification message="Los datos ingresados son incorrectos"/>)
+      props.setNotification(<Notification message="Los datos ingresados son incorrectos"/>)
     })
   }
 

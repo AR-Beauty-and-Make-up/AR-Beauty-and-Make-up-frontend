@@ -1,5 +1,5 @@
 import React from 'react'
-import {ReactAgenda, Modal} from 'react-agenda';
+import {Modal, ReactAgenda} from 'react-agenda';
 import {withRouter} from "react-router-dom";
 import TurnService from "../../services/TurnService";
 import moment from 'moment-timezone';
@@ -10,7 +10,6 @@ import EntitiesValidator from "../../helpers/EntitiesValidator";
 import RemoveModalConfirmation from "./RemoveModalConfirmation";
 import UpdateSucceed from "./UpdateSucceed";
 import Notification from "../notification/Notification";
-
 
 
 require('moment/locale/es.js');
@@ -38,6 +37,7 @@ class Scheduler extends React.Component {
       removeConfirmModal: false,
       isUpdated: false
     }
+
 
     this.handleItemEdit = this.handleItemEdit.bind(this)
     this.handleRangeSelection = this.handleRangeSelection.bind(this)
@@ -140,7 +140,7 @@ class Scheduler extends React.Component {
         })
         .catch((error) => {
           console.log(error)
-          this.props.setNotication(<Notification message="Ocurrió un error, vuelva a intentarlo" />)
+          this.props.setNotification(<Notification message="Ocurrió un error, vuelva a intentarlo" />)
         })
     }
 

@@ -58,12 +58,12 @@ const App = () => {
           <Route
             exact
             path="/scheduler"
-            render={() => <Scheduler setNotication={setNotification}/>}/>
+            render={() => <Scheduler setNotification={setNotification}/>}/>
           
           <Route
             exact
             path="/services"
-            render={() => <Turn setNotication={setNotification}/>}/>
+            render={() => <Turn />}/>
 
           <Route
             exact
@@ -79,12 +79,12 @@ const App = () => {
           <Route
             exact
             path="/login/"
-            render={() => <Login setNotication={setNotification} />} />
+            render={() => <Login setNotification={setNotification} />} />
           
           <Route
             exact
             path="/sign-up/"
-            render={() => <SignUp setNotication={setNotification} />} />
+            render={() => <SignUp setNotification={setNotification} />} />
 
           <Route
             exact
