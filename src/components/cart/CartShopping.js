@@ -77,7 +77,7 @@ const CartShopping = (props) => {
         <Grid item xs={12}>
           {products.length == 0 ? <p data-testid="Empty Cart">Aun no tienes compras</p> : null}
           {products.map((product) => {
-
+          console.log(product.productName)
             return (
               <Grid item xs={12} className={classes.item}>
                 <CartItem item={product}
