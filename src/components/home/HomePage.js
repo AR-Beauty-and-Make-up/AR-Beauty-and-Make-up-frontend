@@ -6,25 +6,27 @@ import Slider from 'infinite-react-carousel';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
 
+import './home.scss'
+
 const useStyles = makeStyles((theme) => ({
     root: {
       marginBottom: 10,
     },
     img: {
-        height: 500
+        height: "100%"
     }
   }));
 const HomePage = () => {
     const classes = useStyles()
 
     return(
-        <Container maxWidth="md">
-            <Slider dots arrows={false} autoplay={true} autoplaySpeed={4500}>
-                <div>
-                    <img src={img2} alt="logo" className={classes.img}/>
+        <Container maxWidth="xl">
+            <Slider dots autoplay={true} autoplaySpeed={4500}>
+                <div className="photoContainerHome">
+                    <img src={img2} alt="logo" />
                 </div>
-                <div>
-                    <img src={img1} alt="logo" className={classes.img}/>
+                <div className="photoContainerHome">
+                    <img src={img1} alt="logo" />
                 </div>
                 
             </Slider>
