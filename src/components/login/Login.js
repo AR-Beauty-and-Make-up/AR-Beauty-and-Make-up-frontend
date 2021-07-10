@@ -12,7 +12,7 @@ import UserService from '../../services/UserService'
 import Notification from '../notification/Notification'
 import React, {useContext} from 'react';
 import {UserContext} from '../../providers/userProvider';
-
+import { useCookies } from 'react-cookie'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +40,7 @@ const Login = (props) => {
   const history = useHistory()
   const SERVICE = UserService()
   const [user, setUser] = useContext(UserContext)
+  const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
 
   const initialValues = {
     email: '',
@@ -58,20 +59,28 @@ const Login = (props) => {
   }
 
   const login = ({email, password}, properties) => {
-
     SERVICE.loginUser(email, password).then((response) => {
 
-      setUser(response.data)
-      properties.resetForm()
-      localStorage.setItem('user', JSON.stringify(response.data))
+      document.cookie = "jwt="+response.data+"; Max-Age=2600000; Secure"
+      setCookie("jwt", response.data, {path: "/", httpOnly: true, maxAge: 26000})
+    }).then(() => {
+
+      SERVICE.getUserAuthenticated().then((response) => {
+
+        setUser(response.data)
+        properties.resetForm()
+        localStorage.setItem('user', JSON.stringify(response.data))
+      })
+        .then(() => {
+          props.setNotification(<Notification message="Se ha iniciado sesion exitosamente"/>)
+        }).then(() => {
+        history.push('/')
+      }).catch((error) => {
+        props.setNotification(<Notification message="Los datos ingresados son incorrectos"/>)
+      })
+
     })
-      .then(() => {
-        props.setNotification(<Notification message="Se ha iniciado sesion exitosamente"/>)
-      }).then(() => {
-      history.push('/')
-    }).catch((error) => {
-      props.setNotification(<Notification message="Los datos ingresados son incorrectos"/>)
-    })
+    
   }
 
   return (
