@@ -11,6 +11,7 @@ const useCart = () => {
 
     const removeProduct = (item) => {
         
+
         const [selected] = products.filter(({product, quantity}) => product.id == item.id)
 
         if (selected.quantity === 1) {

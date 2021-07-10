@@ -72,7 +72,7 @@ const Profile = (props) => {
                   E-mail
                 </Grid>
                 <Grid item xs={4} className={classes.info}>
-                  {user.email}
+                  {user?.email}
                 </Grid>
               </Grid>
             </Paper>
@@ -88,7 +88,7 @@ const Profile = (props) => {
                   Nombre y apellido
                 </Grid>
                 <Grid item xs={4} className={classes.info}>
-                  {user.fullname}
+                  {user?.fullname}
                 </Grid>
               </Grid>
             </Paper>
@@ -98,7 +98,7 @@ const Profile = (props) => {
                   Fecha de nacimiento
                 </Grid>
                 <Grid item xs={4} className={classes.info}>
-                  {moment(user.dateOfBirth).tz( "America/Argentina/Buenos_Aires").format("DD-MM-YYYY")}
+                  {moment(user?.dateOfBirth).tz( "America/Argentina/Buenos_Aires").format("DD-MM-YYYY")}
                 </Grid>
               </Grid>
             </Paper>
@@ -108,7 +108,7 @@ const Profile = (props) => {
                   Telefono
                 </Grid>
                 <Grid item xs={4} className={classes.info}>
-                  {user.contactNumber}
+                  {user?.contactNumber}
                 </Grid>
               </Grid>
             </Paper>
@@ -118,7 +118,7 @@ const Profile = (props) => {
             <Grid item xs={12}><h3>Domicilios</h3></Grid>
             <Paper className={classes.paper}>
               <Grid container spacing={1} className={classes.info}>
-                {user.address}
+                {user?.address}
               </Grid>
             </Paper>
           </Grid>

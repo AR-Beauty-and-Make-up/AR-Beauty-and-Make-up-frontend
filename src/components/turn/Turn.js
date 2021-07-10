@@ -271,6 +271,7 @@ const Turn = (props) => {
         newTurn.contactNumber = contact
 
         setTurn(newTurn)
+        debugger
         turnService.postTurn(newTurn).then((response) => {
           setSteps(['showPersonalInfo', 'notification'])
         })

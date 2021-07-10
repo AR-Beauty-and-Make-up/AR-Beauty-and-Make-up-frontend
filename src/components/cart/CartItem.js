@@ -1,4 +1,4 @@
-import { Container, Grid } from "@material-ui/core"
+import { Container, Grid, Button } from "@material-ui/core"
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Paper from '@material-ui/core/Paper';
@@ -7,12 +7,22 @@ import { makeStyles } from '@material-ui/core/styles';
 import {useContext, useState} from 'react'
 import {ProductContext} from '../../providers/productProvider'
 
+import './cartItem.scss';
+
 const useStyle = makeStyles((theme) => ({
-  total: {
-    textAlign:"right"
+  item: {
+      backgroundColor: "#f4f1f1",
+      border: "2px solid #1a1616"
   },
   quantity: {
       textAlign: "center"
+  },
+  textElements: {
+    display: "flex",
+    alignItems: "flex-end"
+  },
+  prices: {
+    fontSize: "14px"
   }
 }))
 
@@ -20,59 +30,74 @@ const CartItem = (props) => {
 
     const classes = useStyle()
     const [products, removeProduct, addProduct, initProducts] = useContext(ProductContext)
-    const [counter, setCounter] = useState(props.item.quantity)
-
+    const counter = props.item.quantity
 
     return (
-        <Container maxWidth='xs'>
-            <Grid container>
-                <Grid item xs={8}>
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <h2>{props.item.product.productName}</h2>
-                        </Grid>
-                        <Grid item xs={6}>
-                            {"Precio:" + props.item.product.price.toFixed(2)}
-                        </Grid>
-                        <Grid item xs={6} className={classes.total}>
-                            {"Subtotal:" + (props.item.product.price * counter).toFixed(2)}
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Paper>
-                                <Grid container>
-                                 <Grid item xs={4}>
-                                    <AddIcon  onClick={() => 
-                                        {   
-                                            setCounter(prevCounter => prevCounter + 1)
-                                            addProduct(props.item.product)
-                                            props.setTotal(prevTotal => prevTotal + props.item.product.price)
-                                        }}/>
-                                </Grid>
-                                <Grid item xs={4} className={classes.quantity}>
-                                    {counter}
-                                </Grid>
-                                <Grid item xs={4} className={classes.total}>
-                                    <RemoveIcon onClick={() => 
-                                        {   
-                                            setCounter(prevCounter => prevCounter - 1)
-                                            removeProduct(props.item.product)
-                                            props.setTotal(prevTotal => prevTotal - props.item.product.price)
-                                        }}
-                                    />
-                                </Grid>
-                                </Grid>
-                            </Paper>
-                        </Grid>
+       
+        <Grid className={classes.item} container spacing={2}>
 
-
-                    </Grid>
-                    
-                </Grid>
-                <Grid item xs={4}>
-                    <img src={props.item.product.photo} height={"150px"} alt={"Producto"} />
-                </Grid>
+            <Grid className="photoContainer" item xs={5}>
+                <img src={props.item.product.photo}  alt={"Producto"} />
             </Grid>
-        </Container>
+
+            <Grid item xs={7} className={classes.textElements}>
+                <Grid container >
+                    <Grid item xs={12}>
+                        <h5>{props.item.product.productName}</h5>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Grid container className={classes.prices}>
+                        <p>
+                            <b>
+                            Precio: 
+                            </b>
+                            <span>{(props.item.product.price.toFixed(2))}</span>
+                        </p>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Grid container className={classes.prices}>
+                        <p>
+                            <b>
+                                Subtotal: 
+                            </b>
+                            <span>{(props.item.product.price * counter).toFixed(2)}</span>
+                        </p>
+                        </Grid>
+                    </Grid>
+                    <Grid  item xs={12} >
+                        <Paper className="paper" square elevation={0}>
+                            <Grid container>
+                                <Grid item xs={4}>
+                                <Button onClick={() => {   
+                                        addProduct(props.item.product)
+                                        props.setTotal(prevTotal => prevTotal + props.item.product.price)
+                                    }}>
+                                <AddIcon/>
+                                </Button>
+                                
+                            </Grid>
+                            <Grid item xs={4} className={classes.quantity}>
+                                {counter}
+                            </Grid>
+                            <Grid item xs={4} className={classes.total}>
+                                <Button onClick={() => {   
+                                        removeProduct(props.item.product)
+                                        props.setTotal(prevTotal => prevTotal - props.item.product.price)
+                                    }}>
+                                    <RemoveIcon />
+                                </Button>
+                            </Grid>
+                            </Grid>
+                        </Paper>
+                    </Grid>
+
+
+                </Grid>
+                
+            </Grid>
+            
+        </Grid>
     )
 }
 

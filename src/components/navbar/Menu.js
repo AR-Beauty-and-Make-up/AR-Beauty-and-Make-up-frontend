@@ -66,7 +66,7 @@ const MenuListComposition = () =>  {
     else {
       return (
         <Avatar className={classes.avatar} alt="Avatar" >
-          {user.fullname[0].toUpperCase()}
+          L
         </Avatar>
       )
     }

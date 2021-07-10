@@ -145,7 +145,7 @@ const Navbar = () =>  {
             </Grid>
             <Grid item xs={6} className={classes.login}>
               <Loginbuttom />
-              <Cart />
+              {!user?.isAdmin&&<Cart />}
             </Grid>
           </Grid>
         </Toolbar>
